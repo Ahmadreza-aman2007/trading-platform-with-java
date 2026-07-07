@@ -1,8 +1,10 @@
 package app.controllers;
 
-import app.controllers.utils.ControllersUtils;
-import app.controllers.utils.InputValidator;
+import app.models.User;
+import app.utils.ControllersUtils;
+import app.utils.InputValidator;
 import app.models.LoginRequest;
+import app.utils.SessionManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
@@ -14,7 +16,6 @@ import javafx.scene.layout.StackPane;
 
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -22,7 +23,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Objects;
 
-import static app.controllers.utils.ControllersUtils.clearLable;
+import static app.utils.ControllersUtils.clearLable;
 
 public class LoginController {
     @FXML
@@ -54,6 +55,7 @@ public class LoginController {
         if (hasError){
             return;
         }
+        sendLoginRequest(username,pass);
     }
     private void sendLoginRequest(String username,String password){
         LoginRequest loginRequest=new LoginRequest(username,password);
@@ -72,13 +74,31 @@ public class LoginController {
                             String rRole=jsonNode.get("role").asText();
                             String rFullname=jsonNode.get("fullname").asText();
                             String rPhoneNumber=jsonNode.get("phoneNumber").asText();
+                            User u= new User(rUsername,rPhoneNumber,rRole,rFullname);
+                            SessionManager.setCurrentUser(u);
+                            SessionManager.setToken(rToken);
+                            javafx.application.Platform.runLater(this::goToMainPage);
+                            break;
+                        }
+                        case 404:{
+                            javafx.application.Platform.runLater(()->usernameError.setText("نام کاربری یافت نشد."));
+                            break;
+                        }
+                        case 401:{
+                            javafx.application.Platform.runLater(()->passError.setText("رمز عبور اشنباه است"));
+                            break;
+                        }
+                        case 500:{
+                            javafx.application.Platform.runLater(()->passError.setText("خطای سرور"));
+                            break;
                         }
                     }
                 } catch (Exception e) {
+                    System.err.println(e.getMessage());
                 }
             }).start();
         }catch (Exception e){
-
+            System.err.println(e.getMessage());
         }
     }
 
@@ -103,6 +123,20 @@ public class LoginController {
             stage.show();
         } catch (Exception e) {
             System.err.println("error in go to register page    " + e.getMessage());
+        }
+    }
+
+    public  void goToMainPage(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_page.fxml"));
+            Scene s = new Scene(loader.load());
+            String mainCss = Objects.requireNonNull(getClass().getResource("/css/main.css")).toExternalForm();
+            Stage stage = (Stage) root.getScene().getWindow();
+            s.getStylesheets().addAll(mainCss);
+            stage.setScene(s);
+            stage.show();
+        } catch (Exception e) {
+            System.err.println("error in go to main page    " + e.getMessage());
         }
     }
 

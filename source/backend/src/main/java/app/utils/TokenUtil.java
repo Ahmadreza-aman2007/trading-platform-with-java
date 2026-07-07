@@ -13,12 +13,18 @@ import java.util.Map;
 
 @Service
 public class TokenUtil {
-    @Value("${token.secret}")
+    @Value("${token.secret:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}")
     private String secret;
-    @Value("${token.expiration}")
+    @Value("${token.expiration:86400000}")
     private Long expiration;
     
     public String generateToken(String username, String role) {
+        if(expiration==null){
+            expiration= 86400000L;
+        }
+        if(secret==null){
+            secret="404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
+        }
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
         return createToken(claims, username);

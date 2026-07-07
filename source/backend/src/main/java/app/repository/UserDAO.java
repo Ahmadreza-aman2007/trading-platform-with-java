@@ -145,7 +145,7 @@ public class UserDAO {
             s.setString(1, username);
             ResultSet res = s.executeQuery();
             if (res.next()) {
-                if (res.getString("user_type").equals("MANAGER")) {
+                if (res.getString("user_role").equals("MANAGER")) {
                     return new Manager(res.getInt("id"), username, res.getString("password"),
                             res.getString("phone_number"), res.getString("fullname"));
                 } else {
@@ -170,7 +170,7 @@ public class UserDAO {
             s.setString(1, phoneNumber);
             ResultSet res = s.executeQuery();
             if (res.next()) {
-                if (res.getString("user_type").equals("MANAGER")) {
+                if (res.getString("user_role").equals("MANAGER")) {
                     return new Manager(res.getInt("id"), res.getString("username"), res.getString("password"),
                             phoneNumber, res.getString("fullname"));
                 } else {
@@ -195,7 +195,7 @@ public class UserDAO {
             s.setInt(1, id);
             ResultSet res = s.executeQuery();
             if (res.next()) {
-                if (res.getString("user_type").equals("MANAGER")) {
+                if (res.getString("user_role").equals("MANAGER")) {
                     return new Manager(id, res.getString("username"), res.getString("password"),
                             res.getString("phone_number"), res.getString("fullname"));
                 } else {

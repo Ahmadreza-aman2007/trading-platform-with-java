@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.controllers.utils.ControllersUtils;
-import app.controllers.utils.InputValidator;
+import app.utils.ControllersUtils;
+import app.utils.InputValidator;
 import app.models.RegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
@@ -20,7 +20,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Objects;
 
-import static app.controllers.utils.ControllersUtils.clearLable;
+import static app.utils.ControllersUtils.clearLable;
 
 public class RegisterController {
     @FXML

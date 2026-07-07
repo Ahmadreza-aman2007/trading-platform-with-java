@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.controllers.utils.ControllersUtils;
+import app.utils.ControllersUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
