@@ -1,0 +1,24 @@
+@font-face {
+    src:url("/fonts/Vazir.ttf");
+}
+.root{
+    -fx-font-size:1em;
+    -fx-text-alignment:right;
+    -fx-padding:0.5em;
+    -fx-background-color:#ffffff;
+    -fx-font-family: "Vazir";
+}
+.title-label{
+    -fx-font-size:2em;
+}
+.responsive-button{
+    -fx-font-size:1em;
+}
+.text-field{
+    -fx-font-size: 0.8em;
+    -fx-background-radius: 0.5em;
+}
+.btn{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0.3em;
+}
