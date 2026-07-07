@@ -1,0 +1,5 @@
+package app.enums;
+
+public enum Login {
+    SUCCESS_COMMON_USER,SUCCESS_MANAGER,USERNAME_NOT_FOUND,WRONG_PASSWORD
+}
