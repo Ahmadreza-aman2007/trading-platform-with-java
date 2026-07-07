@@ -1,0 +1,10 @@
+.root{
+    -fx-pref-width: 5em;
+}
+
+.login-div{
+    -fx-background-color: #a666269d;
+    -fx-pref-width: 40em;
+    -fx-background-radius: 0.2em;
+    -fx-padding:2em;
+}

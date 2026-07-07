@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Button?>
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.RegisterController" fx:id="root" nodeOrientation="RIGHT_TO_LEFT">
+    <VBox styleClass="register-div" maxHeight="-Infinity" maxWidth="-Infinity" alignment="CENTER">
+        <Label text="ثبت نام" />
+        <HBox>
+            <Label text="نام نمایشی"/>
+            <TextField fx:id="fullnameField"/>
+            <Label fx:id="fullnameError"/>
+        </HBox>
+        <HBox>
+            <Label text="نام کاربری"/>
+            <TextField fx:id="usernameField"/>
+            <Label fx:id="usernameError"/>
+        </HBox>
+        <HBox>
+            <Label text="شماره تلفن"/>
+            <TextField fx:id="phoneNumberField"/>
+            <Label fx:id="phoneNumberError"/>
+        </HBox>
+        <HBox>
+            <Label text="رمز عبور"/>
+            <PasswordField fx:id="passwordField"/>
+            <Label fx:id="passError"/>
+        </HBox>
+        <HBox>
+            <Label text="تکرار رمز"/>
+            <PasswordField fx:id="rPasswordField"/>
+            <Label fx:id="rPassError"/>
+        </HBox>
+        <HBox>
+            <Label text="بازگشت به صفحه "/>
+            <Hyperlink text="ورود" onAction="#goToLoginPage"/>
+        </HBox>
+        <HBox>
+            <Label fx:id="errorLabel"/>
+            <Label fx:id="messageLabel"/>
+        </HBox>
+        <HBox>
+            <Button text="بازنشانی" onAction="#resetFields"/>
+            <Button text="ثبت نام" onAction="#register"/>
+        </HBox>
+    </VBox>
+</StackPane>
