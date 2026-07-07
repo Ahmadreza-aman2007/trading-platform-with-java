@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class Token {
+public class TokenUtil {
     @Value("${token.secret}")
     private String secret;
     @Value("${token.expiration}")
@@ -33,5 +33,9 @@ public class Token {
     private Key getSignKey() {
         byte[] keyBytes = secret.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public Long getExpiration() {
+        return expiration;
     }
 }

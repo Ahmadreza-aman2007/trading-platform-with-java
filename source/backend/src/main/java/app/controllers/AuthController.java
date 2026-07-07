@@ -3,8 +3,11 @@ package app.controllers;
 import app.dto.login.LoginRequest;
 import app.dto.login.LoginResponse;
 import app.dto.register.RegisterRequest;
+import app.entities.users.Manager;
+import app.entities.users.enums.UserRole;
+import app.repository.UserDAO;
 import app.services.AuthService;
-import app.utils.Token;
+import app.utils.TokenUtil;
 import app.entities.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,20 +30,21 @@ public class AuthController {
         }
     }
     @Autowired
-    private Token token;
+    private static TokenUtil token;
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            User user = AuthService.login(loginRequest);
-            if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found");
-            }
-            String sToken = token.generateToken(user.getUsername(), user.getUserRole().name());
-            LoginResponse loginResponse = new LoginResponse(sToken, user.getUsername(), user.getFullname(),
-                    user.getUserRole().name(), user.getPhoneNumber());
+            String res=AuthService.login(loginRequest);
+            User user= (User) UserDAO.loadUserByUsername(loginRequest.getUsername());
+            LoginResponse loginResponse=new LoginResponse(res, user.getUsername(),user.getFullname(),user.getUserRole().name(), user.getPhoneNumber());
             return ResponseEntity.ok(loginResponse);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            String message=e.getMessage();
+            if(message.equals("user notFound")){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("کاربر یافت نشد");
+            } else if (message.equals("wrong pass")) {
+                return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("رمز عبور اشتباه است");
+            }else {return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("خطای سرور :"+message);}
         }
     }
 }
