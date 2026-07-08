@@ -29,10 +29,24 @@ public class DatabaseInitializer {
                     FOREIGN KEY (username) REFERENCES users(username)
                 )
                 """;
+        String cites= """
+                CREATE TABLE IF NOT EXISTS cities(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    city TEXT  UNIQUE NOT NULL
+                )
+                """;
+        String productCategory= """
+                CREATE TABLE IF NOT EXISTS product_categories(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    product_category TEXT UNIQUE NOT NULL
+                )
+                """;
         try (Connection c = DatabaseConnection.getConnection();
                 Statement s = c.createStatement()) {
             s.execute(createUsers);
             s.execute(tokens);
+            s.execute(cites);
+            s.execute(productCategory);
             System.out.println("Database is ready");
 
         } catch (SQLException e) {
