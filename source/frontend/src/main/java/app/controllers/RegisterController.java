@@ -3,6 +3,8 @@ package app.controllers;
 import app.utils.ControllersUtils;
 import app.utils.InputValidator;
 import app.models.RegisterRequest;
+import app.utils.PageChanger;
+import app.utils.enums.Pages;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +22,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Objects;
 
-import static app.utils.ControllersUtils.clearLable;
+import static app.utils.ControllersUtils.clearLabel;
 
 public class RegisterController {
     @FXML
@@ -153,14 +155,7 @@ public class RegisterController {
     @FXML
     public void goToLoginPage() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login.fxml"));
-            Scene s = new Scene(loader.load());
-            String mainCssPath = Objects.requireNonNull(getClass().getResource("/css/main.css")).toExternalForm();
-            String loginCssPath = Objects.requireNonNull(getClass().getResource("/css/login.css")).toExternalForm();
-            s.getStylesheets().addAll(mainCssPath, loginCssPath);
-            Stage stage = (Stage) root.getScene().getWindow();
-            stage.setScene(s);
-            stage.show();
+            PageChanger.changePage(Pages.LOGIN_PAGE,root);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -177,11 +172,11 @@ public class RegisterController {
 
     public void errorHandling() {
         fullnameField.textProperty().addListener((observableValue, s, t1) -> {
-            clearLable(fullnameError);
+            clearLabel(fullnameError);
         });
-        phoneNumberField.textProperty().addListener(((observableValue, s, t1) -> clearLable(phoneNumberError)));
-        usernameField.textProperty().addListener(((observableValue, s, t1) -> clearLable(usernameError)));
-        passwordField.textProperty().addListener(((observableValue, s, t1) -> clearLable(passError)));
-        rPasswordField.textProperty().addListener(((observableValue, s, t1) -> clearLable(rPassError)));
+        phoneNumberField.textProperty().addListener(((observableValue, s, t1) -> clearLabel(phoneNumberError)));
+        usernameField.textProperty().addListener(((observableValue, s, t1) -> clearLabel(usernameError)));
+        passwordField.textProperty().addListener(((observableValue, s, t1) -> clearLabel(passError)));
+        rPasswordField.textProperty().addListener(((observableValue, s, t1) -> clearLabel(rPassError)));
     }
 }

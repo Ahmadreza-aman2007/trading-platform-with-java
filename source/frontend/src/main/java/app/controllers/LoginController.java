@@ -4,7 +4,9 @@ import app.models.User;
 import app.utils.ControllersUtils;
 import app.utils.InputValidator;
 import app.models.LoginRequest;
+import app.utils.PageChanger;
 import app.utils.SessionManager;
+import app.utils.enums.Pages;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
@@ -23,7 +25,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Objects;
 
-import static app.utils.ControllersUtils.clearLable;
+import static app.utils.ControllersUtils.clearLabel;
 
 public class LoginController {
     @FXML
@@ -113,14 +115,7 @@ public class LoginController {
     @FXML
     public void goToRegisterPage() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/register.fxml"));
-            Scene s = new Scene(loader.load());
-            String mainCss = Objects.requireNonNull(getClass().getResource("/css/main.css")).toExternalForm();
-            String registerCss = Objects.requireNonNull(getClass().getResource("/css/register.css")).toExternalForm();
-            Stage stage = (Stage) root.getScene().getWindow();
-            s.getStylesheets().addAll(mainCss, registerCss);
-            stage.setScene(s);
-            stage.show();
+            PageChanger.changePage(Pages.REGISTER_PAGE,root);
         } catch (Exception e) {
             System.err.println("error in go to register page    " + e.getMessage());
         }
@@ -128,13 +123,7 @@ public class LoginController {
 
     public  void goToMainPage(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_page.fxml"));
-            Scene s = new Scene(loader.load());
-            String mainCss = Objects.requireNonNull(getClass().getResource("/css/main.css")).toExternalForm();
-            Stage stage = (Stage) root.getScene().getWindow();
-            s.getStylesheets().addAll(mainCss);
-            stage.setScene(s);
-            stage.show();
+            PageChanger.changePage(Pages.MAIN_PAGE,root);
         } catch (Exception e) {
             System.err.println("error in go to main page    " + e.getMessage());
         }
@@ -146,7 +135,7 @@ public class LoginController {
     }
 
     public void errorHandling() {
-        usernameField.textProperty().addListener(((observableValue, s, t1) -> clearLable(usernameError)));
-        passField.textProperty().addListener(((observableValue, s, t1) -> clearLable(passError)));
+        usernameField.textProperty().addListener(((observableValue, s, t1) -> clearLabel(usernameError)));
+        passField.textProperty().addListener(((observableValue, s, t1) -> clearLabel(passError)));
     }
 }
