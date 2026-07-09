@@ -5,45 +5,47 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Button?>
-<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.RegisterController" fx:id="root" nodeOrientation="RIGHT_TO_LEFT">
-    <VBox styleClass="register-div" maxHeight="-Infinity" maxWidth="-Infinity" alignment="CENTER">
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="app.controllers.RegisterController" fx:id="root" nodeOrientation="RIGHT_TO_LEFT">
+    <VBox styleClass="register-div" maxHeight="-Infinity" maxWidth="-Infinity" alignment="CENTER"
+        spacing="80">
         <Label text="ثبت نام" />
-        <HBox>
-            <Label text="نام نمایشی"/>
-            <TextField fx:id="fullnameField"/>
-            <Label fx:id="fullnameError"/>
+        <HBox spacing="40" alignment="CENTER">
+            <Label text="نام نمایشی" />
+            <TextField fx:id="fullnameField" styleClass="field" />
+            <Label fx:id="fullnameError" styleClass="errorText" />
+        </HBox>
+        <HBox spacing="40" alignment="CENTER">
+            <Label text="نام کاربری" />
+            <TextField fx:id="usernameField" styleClass="field" />
+            <Label fx:id="usernameError" styleClass="errorText" />
+        </HBox>
+        <HBox spacing="40" alignment="CENTER">
+            <Label text="شماره تلفن" />
+            <TextField fx:id="phoneNumberField" styleClass="field" />
+            <Label fx:id="phoneNumberError" styleClass="errorText" />
+        </HBox>
+        <HBox spacing="40" alignment="CENTER">
+            <Label text="رمز عبور" />
+            <PasswordField fx:id="passwordField" styleClass="field" />
+            <Label fx:id="passError" styleClass="errorText" />
+        </HBox>
+        <HBox spacing="40" alignment="CENTER">
+            <Label text="تکرار رمز" />
+            <PasswordField fx:id="rPasswordField" styleClass="field" />
+            <Label fx:id="rPassError" styleClass="errorText" />
         </HBox>
         <HBox>
-            <Label text="نام کاربری"/>
-            <TextField fx:id="usernameField"/>
-            <Label fx:id="usernameError"/>
+            <Hyperlink text="بازگشت به صفحه ورود" onAction="#goToLoginPage" />
         </HBox>
         <HBox>
-            <Label text="شماره تلفن"/>
-            <TextField fx:id="phoneNumberField"/>
-            <Label fx:id="phoneNumberError"/>
+            <Label fx:id="errorLabel" />
+            <Label fx:id="messageLabel" />
         </HBox>
-        <HBox>
-            <Label text="رمز عبور"/>
-            <PasswordField fx:id="passwordField"/>
-            <Label fx:id="passError"/>
-        </HBox>
-        <HBox>
-            <Label text="تکرار رمز"/>
-            <PasswordField fx:id="rPasswordField"/>
-            <Label fx:id="rPassError"/>
-        </HBox>
-        <HBox>
-            <Label text="بازگشت به صفحه "/>
-            <Hyperlink text="ورود" onAction="#goToLoginPage"/>
-        </HBox>
-        <HBox>
-            <Label fx:id="errorLabel"/>
-            <Label fx:id="messageLabel"/>
-        </HBox>
-        <HBox>
-            <Button text="بازنشانی" onAction="#resetFields"/>
-            <Button text="ثبت نام" onAction="#register"/>
+        <HBox alignment="CENTER_RIGHT">
+            <Button text="بازنشانی" onAction="#resetFields" styleClass="primary-button" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="ثبت نام" onAction="#register" styleClass="primary-button" />
         </HBox>
     </VBox>
 </StackPane>

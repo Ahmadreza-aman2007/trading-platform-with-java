@@ -1,13 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
    fx:controller="app.controllers.MainController" fx:id="root"
    nodeOrientation="RIGHT_TO_LEFT">
-   <HBox styleClass="header">
-      <Button onAction="#goToLoginPage" text="ورود/ثبت نام"
-         styleClass="login-btn btn" />
-   </HBox>
+
+   <VBox fx:id="mainPage">
+      <HBox styleClass="header" alignment="CENTER_RIGHT">
+         <Label text="سمساری احمد و پارسا" styleClass="text-primary" />
+         <Region HBox.hgrow="ALWAYS"/>
+         <HBox>
+            <TextField promptText="جستوجو...." fx:id="searchField" styleClass="field searchField" />
+            <Button styleClass="primary-button">
+               <graphic>
+                  <ImageView fitHeight="40" fitWidth="40" preserveRatio="true">
+                     <image>
+                        <Image url="@/icons/search.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </HBox>
+         <Region HBox.hgrow="ALWAYS"/>
+         <HBox spacing="40">
+            <Button text="جستجوی پیشرفته" styleClass="primary-button" onAction="#openSearchBar"/>
+            <Button onAction="#goToLoginPage" text="ورود/ثبت نام"
+                    styleClass="primary-button" />
+         </HBox>
+      </HBox>
+      <ScrollPane>
+
+      </ScrollPane>
+   </VBox>
+   <VBox fx:id="searchPanel" styleClass="advanced-search-bar" alignment="CENTER" maxWidth="-Infinity" maxHeight="-Infinity" spacing="40">
+      <Label text="جستجوی پیشرفته "/>
+      <HBox>
+         <TextField promptText="کلمه کلیدی"/>
+      </HBox>
+      <HBox>
+         <ComboBox promptText="دسته بندی"/>
+         <Region HBox.hgrow="ALWAYS"/>
+         <ComboBox promptText="شهر"/>
+      </HBox>
+         <VBox>
+            <Label text="قیمت"/>
+            <HBox>
+               <Label text="از"/>
+               <Slider min="0" max="1000000000" value="0" showTickMarks="true" showTickLabels="true"/>
+               <Label text="0"/>
+            </HBox>
+            <HBox>
+            <Label text="تا"/>
+            <Slider min="0" max="1000000000" value="1000000000" showTickLabels="true" showTickMarks="true"/>
+            <Label text="1,000,000,000"/>
+         </HBox>
+            <HBox>
+               <Button text="بستن" styleClass="primary-button" onAction="#closeSearchBar"/>
+               <Region HBox.hgrow="ALWAYS"/>
+               <Button text="جستجو" styleClass="primary-button"/>
+            </HBox>
+
+         </VBox>
+   </VBox>
 
 
 </StackPane>

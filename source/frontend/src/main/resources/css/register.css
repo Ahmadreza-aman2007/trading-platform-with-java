@@ -1,0 +1,6 @@
+.register-div{
+    -fx-background-color: #fff;
+    -fx-padding: 1em 2em;
+    -fx-background-radius:0.2em;
+    -fx-pref-width: 40em;
+}

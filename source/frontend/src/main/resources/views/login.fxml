@@ -9,20 +9,23 @@
         <HBox styleClass="username-input-div" spacing="40">
             <Label text="نام کاربری" styleClass="label" labelFor="$usernameField" />
             <TextField fx:id="usernameField" promptText="نام کاربری خود را وارد کنید" />
-            <Label text=" " fx:id="usernameError"/>
+            <Label text=" " fx:id="usernameError" styleClass="errorText"/>
         </HBox>
         <HBox styleClass="pass-input-div" spacing="40">
             <Label text="رمز عبور" styleClass="label" labelFor="$passField" />
             <PasswordField fx:id="passField" promptText="رمز عبور خود را وارد کنید" />
-            <Label text=" " fx:id="passError"/>
+            <Label text=" " fx:id="passError" styleClass="errorText"/>
+        </HBox>
+        <HBox>
+            <Hyperlink onAction="#goToMainPage" text="بازگشت به صفحه اصلی"/>
         </HBox>
         <HBox styleClass="login-btns-div">
             <HBox>
                 <Label text="نام کاربری ندارید؟" />
-                <Hyperlink text="ثبت نام" onAction="#goToRegisterPage"/>
+                <Hyperlink text="ثبت نام" onAction="#goToRegisterPage" />
             </HBox>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Button onAction="#login" text="ورود" styleClass="login-btn btn"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button onAction="#login" text="ورود" styleClass="primary-button" />
         </HBox>
     </VBox>
 </StackPane>

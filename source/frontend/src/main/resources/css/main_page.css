@@ -1,0 +1,13 @@
+.header{
+    -fx-background-color: #ffffff;
+    -fx-padding: 10 20;
+    -fx-pref-height: 60;
+}
+.searchField{
+    -fx-pref-width:10em;
+}
+.advanced-search-bar{
+    -fx-pref-width:30em;
+    -fx-background-color:#fff;
+    -fx-padding:2em 4em;
+}

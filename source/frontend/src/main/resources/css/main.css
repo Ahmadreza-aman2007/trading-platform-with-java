@@ -2,11 +2,15 @@
     src:url("/fonts/Vazir.ttf");
 }
 .root{
-    -fx-font-size:1em;
+    -fx-font-size:0.8em;
     -fx-text-alignment:right;
-    -fx-padding:0.5em;
-    -fx-background-color:#ffffff;
+    -fx-background-color:#0f0f0f;
     -fx-font-family: "Vazir";
+}
+.primary-button{
+    -fx-background-color: #4a90e2;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 0.2em;
 }
 .title-label{
     -fx-font-size:2em;
@@ -14,11 +18,19 @@
 .responsive-button{
     -fx-font-size:1em;
 }
-.text-field{
-    -fx-font-size: 0.8em;
-    -fx-background-radius: 0.5em;
+.text-primary{
+    -fx-text-fill: #212529;
 }
-.btn{
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 0.3em;
+.text-muted{
+    -fx-text-fill: #6c757d;
+}
+.errorText{
+    -fx-text-fill:#ff0000;
+    -fx-font-size:0.6em;
+}
+.primary-button:hover{
+    -fx-background-color: #357abd;
+}
+.field{
+    -fx-background-radius: 0.2em;
 }

@@ -15,6 +15,7 @@ public class Main extends Application {
         FXMLLoader loader =new FXMLLoader(fxmlURL);
         Scene scene =new Scene(loader.load());
         addMainCss(scene);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/main_page.css")).toExternalForm());
         stage.setTitle("سمساری احمد و پارسا");
         stage.setScene(scene);
         stage.setMaximized(true);

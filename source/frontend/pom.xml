@@ -23,6 +23,12 @@
             <version>${javafx.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fluxvend</groupId>
+            <artifactId>svgfx</artifactId>
+            <version>0.0.2</version>
+        </dependency>
+
         <!-- JavaFX FXML -->
         <dependency>
             <groupId>org.openjfx</groupId>
