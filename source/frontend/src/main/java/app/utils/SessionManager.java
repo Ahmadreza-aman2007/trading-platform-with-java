@@ -14,11 +14,14 @@ public class SessionManager {
         SessionManager.currentUser = currentUser;
     }
 
-    public String getToken() {
+    public static String getToken() {
         return token;
     }
 
-    public User getCurrentUser() {
+    public static User getCurrentUser() {
         return currentUser;
+    }
+    public static boolean isLoggedIn() {
+        return currentUser != null;
     }
 }

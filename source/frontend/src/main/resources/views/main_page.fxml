@@ -28,7 +28,8 @@
          <HBox spacing="40">
             <Button text="جستجوی پیشرفته" styleClass="primary-button" onAction="#openSearchBar"/>
             <Button onAction="#goToLoginPage" text="ورود/ثبت نام"
-                    styleClass="primary-button" />
+                    styleClass="primary-button"  fx:id="loginButton"/>
+            <Button text="پنل کاربری" visible="false" fx:id="userPanel"/>
          </HBox>
       </HBox>
       <ScrollPane>

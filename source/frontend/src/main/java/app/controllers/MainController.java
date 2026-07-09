@@ -2,13 +2,17 @@ package app.controllers;
 
 import app.utils.ControllersUtils;
 import app.utils.PageChanger;
+import app.utils.SessionManager;
 import app.utils.enums.Pages;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import javax.swing.*;
 
 public class MainController {
     @FXML
@@ -17,7 +21,11 @@ public class MainController {
     private VBox searchPanel;
     @FXML
     private VBox mainPage;
-
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Button userPanel;
+    @FXML
     private BoxBlur blurEffect=new BoxBlur(9,9,3);
     @FXML
     public void goToLoginPage() {
@@ -43,5 +51,16 @@ public class MainController {
     public void initialize() {
         ControllersUtils.setRootFontSize(root);
         searchPanel.setVisible(false);
+        updateLoginStatus();
+    }
+    private void updateLoginStatus(){
+       if(SessionManager.isLoggedIn()){
+           loginButton.setVisible(false);
+           userPanel.setVisible(true);
+       }
+       else  {
+           loginButton.setVisible(true);
+           userPanel.setVisible(false);
+       }
     }
 }
