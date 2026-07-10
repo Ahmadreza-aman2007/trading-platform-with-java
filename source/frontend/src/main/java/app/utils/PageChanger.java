@@ -23,6 +23,10 @@ public class PageChanger {
                 goToRegisterPage(node);
                 break;
             }
+            case PANEL_PAGE -> {
+                goToPanelPage(node);
+                break;
+            }
         }
     }
 
@@ -43,6 +47,16 @@ public class PageChanger {
         Stage stage = (Stage) node.getScene().getWindow();
         Scene scene = addMainCss(new Scene(loader.load()));
         String mainPageCssPath = Objects.requireNonNull(PageChanger.class.getResource("/css/main_page.css"))
+                .toExternalForm();
+        scene.getStylesheets().add(mainPageCssPath);
+        ControllersUtils.setPageSettings(stage, node);
+        stage.setScene(scene);
+        stage.show();
+    }private static void goToPanelPage(Node node) throws IOException {
+        FXMLLoader loader = new FXMLLoader(PageChanger.class.getResource("/views/user_panel.fxml"));
+        Stage stage = (Stage) node.getScene().getWindow();
+        Scene scene = addMainCss(new Scene(loader.load()));
+        String mainPageCssPath = Objects.requireNonNull(PageChanger.class.getResource("/css/user_panel.css"))
                 .toExternalForm();
         scene.getStylesheets().add(mainPageCssPath);
         ControllersUtils.setPageSettings(stage, node);

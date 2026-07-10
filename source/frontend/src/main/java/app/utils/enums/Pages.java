@@ -1,5 +1,5 @@
 package app.utils.enums;
 
 public enum Pages {
-    MAIN_PAGE,LOGIN_PAGE,REGISTER_PAGE
+    MAIN_PAGE,LOGIN_PAGE,REGISTER_PAGE,PANEL_PAGE
 }

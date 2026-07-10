@@ -29,7 +29,7 @@
             <Button text="جستجوی پیشرفته" styleClass="primary-button" onAction="#openSearchBar"/>
             <Button onAction="#goToLoginPage" text="ورود/ثبت نام"
                     styleClass="primary-button"  fx:id="loginButton"/>
-            <Button text="پنل کاربری" visible="false" fx:id="userPanel"/>
+            <Button text="پنل کاربری" visible="false" fx:id="userPanel" styleClass="primary-button" onAction="#goToPanelPage"/>
          </HBox>
       </HBox>
       <ScrollPane>

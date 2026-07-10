@@ -34,3 +34,16 @@
 .field{
     -fx-background-radius: 0.2em;
 }
+.dashboard-info{
+    -fx-background-color: #fff;
+    -fx-background-radius: 0.2em;
+    -fx-padding: 1em;
+    -fx-pref-width: 8em;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
+    -fx-border-color: #ecf0f1;
+    -fx-border-radius: 0.2em;
+}
+
+.dashboard-info:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 6);
+}
