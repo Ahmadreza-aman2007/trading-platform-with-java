@@ -24,4 +24,8 @@ public class SessionManager {
     public static boolean isLoggedIn() {
         return currentUser != null;
     }
+    public  static void logout(){
+        currentUser = null;
+        token = null;
+    }
 }

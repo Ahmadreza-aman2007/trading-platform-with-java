@@ -37,6 +37,9 @@ public class AuthService {
         }
         TokenDAO.deleteAllExpireTokens();
         User user=UserDAO.loadUserByUsername(loginRequest.getUsername());
+        if (user.isBlocked()){
+            throw new Exception("user is blocked");
+        }
         String t=tokenUtil.generateToken(user.getUsername(),user.getUserRole().name());
         LocalDateTime expiresAt=LocalDateTime.now().plusSeconds(tokenUtil.getExpiration()/1000);
         Token newToken=new Token(t,user.getUsername(),LocalDateTime.now(),expiresAt,false);

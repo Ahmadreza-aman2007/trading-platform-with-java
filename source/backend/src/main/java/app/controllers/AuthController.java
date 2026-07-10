@@ -35,7 +35,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             String res=AuthService.login(loginRequest);
-            User user= (User) UserDAO.loadUserByUsername(loginRequest.getUsername());
+            User user=  UserDAO.loadUserByUsername(loginRequest.getUsername());
             LoginResponse loginResponse=new LoginResponse(res, user.getUsername(),user.getFullname(),user.getUserRole().name(), user.getPhoneNumber());
             return ResponseEntity.ok(loginResponse);
         } catch (Exception e) {
@@ -44,7 +44,11 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("کاربر یافت نشد");
             } else if (message.equals("wrong pass")) {
                 return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("رمز عبور اشتباه است");
-            }else {return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("خطای سرور :"+message);}
+            } else if (message.equals("user is blocked")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("کاربر مسدود است");
+            }
+
+            else {return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("خطای سرور :"+message);}
         }
     }
 }

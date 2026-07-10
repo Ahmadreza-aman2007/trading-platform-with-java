@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class MainController {
     @FXML
@@ -33,6 +34,14 @@ public class MainController {
             PageChanger.changePage(Pages.LOGIN_PAGE, root);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+    @FXML
+    private void goToPanelPage(){
+        try{
+            PageChanger.changePage(Pages.PANEL_PAGE,root);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     @FXML
@@ -57,10 +66,15 @@ public class MainController {
        if(SessionManager.isLoggedIn()){
            loginButton.setVisible(false);
            userPanel.setVisible(true);
+           loginButton.setManaged(false);
+           if(SessionManager.getCurrentUser().getRole().equals("MANAGER")){
+               goToLoginPage();
+           }
        }
        else  {
            loginButton.setVisible(true);
            userPanel.setVisible(false);
+           userPanel.setManaged(false);
        }
     }
 }
