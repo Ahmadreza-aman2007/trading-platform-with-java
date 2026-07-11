@@ -22,10 +22,12 @@ public class ManagerController {
         ArrayList<GetUsersResponse>users=ManagerService.getUsers(getUsersRequest.getUsername(),getUsersRequest.getToken());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }catch(Exception e){
+        System.out.println(e.getMessage());
         return switch (e.getMessage()) {
             case "token not found" -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case "this username does not match", "token expired" -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            default -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            default ->
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         };
     }
     }

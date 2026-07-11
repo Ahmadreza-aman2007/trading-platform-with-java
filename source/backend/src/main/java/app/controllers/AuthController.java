@@ -45,8 +45,9 @@ public class AuthController {
             } else if (message.equals("user is blocked")) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("کاربر مسدود است");
             }
-
-            else {return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("خطای سرور :"+message);}
+            else {
+                System.out.println(e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("خطای سرور :"+message);}
         }
     }
 }
