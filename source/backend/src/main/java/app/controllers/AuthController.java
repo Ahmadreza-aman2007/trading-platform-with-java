@@ -3,8 +3,6 @@ package app.controllers;
 import app.dto.login.LoginRequest;
 import app.dto.login.LoginResponse;
 import app.dto.register.RegisterRequest;
-import app.entities.users.Manager;
-import app.entities.users.enums.UserRole;
 import app.repository.UserDAO;
 import app.services.AuthService;
 import app.utils.TokenUtil;

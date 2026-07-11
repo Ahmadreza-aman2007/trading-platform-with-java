@@ -32,7 +32,7 @@ public class TokenDAO {
             throw new RuntimeException(e);
         }
     }
-    public boolean revokeToken(String token){
+    public static boolean revokeToken(String token){
         Token t=findByToken(token);
         if(t==null){
             return false;
@@ -47,7 +47,7 @@ public class TokenDAO {
             throw new RuntimeException(e);
         }
     }
-    public boolean revokeAllTokensForAUser(String username){
+    public static boolean revokeAllTokensForAUser(String username){
         if (!isUsernameExist(username)){
             return false;
         }
@@ -81,7 +81,7 @@ public class TokenDAO {
             throw new RuntimeException(e);
         }
     }
-    private Token findByToken(String token){
+    public static Token findByToken(String token){
         if (!isTokenExist(token)){
             return null;
         }

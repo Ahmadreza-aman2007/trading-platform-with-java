@@ -1,7 +1,10 @@
 package app.repository;
 
 import app.entities.users.*;
+import app.entities.users.enums.UserRole;
+
 import java.sql.*;
+import java.util.ArrayList;
 
 public class UserDAO {
     public static int saveUser(User user) {
@@ -57,18 +60,32 @@ public class UserDAO {
         return null;
     }
 
-    public static void getAllUsers() {
+    public static ArrayList<User> getAllUsers() throws Exception {
         String sqlQuery = "SELECT * FROM users";
         try (Connection c = DatabaseConnection.getConnection();
                 PreparedStatement s = c.prepareStatement(sqlQuery)) {
             ResultSet res = s.executeQuery();
+            ArrayList<User> users = new ArrayList<User>();
             while (res.next()) {
-                System.out.println(
-                        res.getInt("id") + " , " + res.getString("username") + " , " + res.getString("phone_number"));
+                User user = resultSetTOUser(res);
+                users.add(user);
             }
+            return users;
         } catch (Exception e) {
-            System.err.println("error in get users" + e.getMessage());
+            throw new Exception("error in get all users");
         }
+    }
+    private static User resultSetTOUser(ResultSet rs) throws SQLException {
+            User u = new User();
+            u.setUsername(rs.getString("username"));
+            u.setBlocked(rs.getBoolean("is_blocked"));
+            u.setFullname(rs.getString("fullname"));
+            u.setPhoneNumber(rs.getString("phone_number"));
+            u.setId(rs.getInt("id"));
+            u.setCreatedDate(rs.getString("created_at"));
+            u.setPassword(rs.getString("password"));
+            u.setUserRole(rs.getString("user_role").equals("MANAGER")? UserRole.MANAGER:UserRole.COMMON_USER);
+            return u;
     }
 
     public static boolean isUsernameExist(String username) {

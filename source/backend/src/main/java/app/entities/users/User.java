@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="users")
-public abstract class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,6 +24,7 @@ public abstract class User {
     @Column(name = "created_at")
     private String createdDate;
 
+    public User() {}
     public User(String username, String password, String phoneNumber, UserRole userRole, String fullname) {
         this.username = username;
         this.password = password;

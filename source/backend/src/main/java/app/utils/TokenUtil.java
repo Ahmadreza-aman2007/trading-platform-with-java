@@ -1,5 +1,7 @@
 package app.utils;
 
+import app.entities.token.Token;
+import app.repository.TokenDAO;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,5 +46,20 @@ public class TokenUtil {
 
     public Long getExpiration() {
         return expiration;
+    }
+    public static boolean isTokenValid(String username,String token) throws Exception {
+        Token t=TokenDAO.findByToken(token);
+        if(t==null){
+            throw new Exception("token not found");
+        }
+        if (!t.getUsername().equals(username)) {
+            throw new Exception("this username does not match");
+        }
+        if (LocalDateTime.now().isAfter(t.getExpiresAt())) {
+            TokenDAO.revokeToken(token);
+            throw new Exception("token expired");
+        }
+        TokenDAO.deleteAllExpireTokens();
+        return true;
     }
 }
