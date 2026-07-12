@@ -1,8 +1,8 @@
 package app.controllers.panel;
 
-import app.models.GetUsersRequest;
-import app.models.User;
-import app.models.UserResponseForManager;
+import app.models.requests.manager.EditUserRequest;
+import app.models.requests.manager.GetUsersRequest;
+import app.models.response.manager.UserResponseForManager;
 import app.utils.SessionManager;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,6 +25,8 @@ public class UsersListController {
     private final ObjectMapper mapper = new ObjectMapper();
     private final HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
     private ObservableList<UserResponseForManager> usersList = FXCollections.observableArrayList();
+    private int editUserId;
+    private boolean blocked;
     @FXML
     private TableView<UserResponseForManager> userTableView;
     @FXML
@@ -52,6 +53,7 @@ public class UsersListController {
     private Label errorMessage;
     @FXML
     private CheckBox blockCheckBox;
+
     @FXML
     private void initialize() {
         getUsers();
@@ -69,12 +71,13 @@ public class UsersListController {
                     openEditUserPanel(user);
                 });
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
-                }else{
+                } else {
                     button.setText("ویرایش");
                     setGraphic(button);
                 }
@@ -84,12 +87,15 @@ public class UsersListController {
     }
 
     @FXML
-    private void backToUsersList(){
+    private void backToUsersList() {
+        usersList.clear();
+        getUsers();
         usersListVbox.setManaged(true);
         usersListVbox.setVisible(true);
         editPanelVbox.setManaged(false);
         editPanelVbox.setVisible(false);
     }
+
     @FXML
     private void openEditUserPanel(UserResponseForManager user) {
         usersListVbox.setVisible(false);
@@ -100,66 +106,78 @@ public class UsersListController {
         fullnameLabel.setText(user.getFullname());
         phoneNumberLabel.setText(user.getPhoneNumber());
         createdDateLabel.setText(user.getCreatedDate());
+        blocked = user.isBlocked();
         blockCheckBox.setSelected(user.isBlocked());
+        editUserId = user.getId();
     }
+
     @FXML
-    private void sendEditRequest(UserResponseForManager user) {
-        if (blockCheckBox.isSelected()==user.isBlocked()){
+    private void sendEditRequest() {
+        EditUserRequest editUserRequest = new EditUserRequest(SessionManager.getCurrentUser().getUsername(),
+                SessionManager.getToken(), editUserId, blocked);
+        if (blockCheckBox.isSelected() == editUserRequest.isBlocked()) {
             errorMessage.setText("هیچ چیز تغییر داده نشد");
             return;
         }
-        user.setBlocked(!blockCheckBox.isSelected());
-        GetUsersRequest getUsersRequest = new GetUsersRequest(SessionManager.getCurrentUser().getUsername(),SessionManager.getToken());
-        try{
-            String json = mapper.writeValueAsString(user);
-            HttpRequest httpRequest=HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/manager/editUser")).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString(json)).timeout(Duration.ofSeconds(10)).build();
-            new Thread(()->{
-                try{
-                    HttpResponse<String> response=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
-                    int status=response.statusCode();
-                    if (status==200){
-                        getUsers();
+        editUserRequest.setBlocked(blockCheckBox.isSelected());
+        try {
+            String json = mapper.writeValueAsString(editUserRequest);
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(new URI("http://localhost:8080/api/manager/editUser"))
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
+                    .timeout(Duration.ofSeconds(10)).build();
+            new Thread(() -> {
+                try {
+                    HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                    int status = response.statusCode();
+                    if (status == 200) {
                         backToUsersList();
-                    }else{
-                        //TODO:this is for other status codes
+                    } else {
+                        // TODO:this is for other status codes
                     }
                 } catch (IOException | InterruptedException e) {
-                    throw new RuntimeException(e);
+                    System.err.println(e.getMessage());
                 }
             }).start();
-        }catch (Exception e){
+        } catch (Exception e) {
             errorMessage.setText(e.getMessage());
         }
     }
+
     @FXML
     private void getUsers() {
-        GetUsersRequest getUsersRequest = new GetUsersRequest(SessionManager.getCurrentUser().getUsername(),SessionManager.getToken());
-        try{
+        GetUsersRequest getUsersRequest = new GetUsersRequest(SessionManager.getCurrentUser().getUsername(),
+                SessionManager.getToken());
+        try {
             String json = mapper.writeValueAsString(getUsersRequest);
-            HttpRequest httpRequest=HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/manager/get-all-users")).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString(json)).timeout(Duration.ofSeconds(10)).build();
-            new Thread(()->{
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(new URI("http://localhost:8080/api/manager/get-all-users"))
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
+                    .timeout(Duration.ofSeconds(10)).build();
+            new Thread(() -> {
                 try {
-                    HttpResponse<String> response=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
-                    int status=response.statusCode();
-                    javafx.application.Platform.runLater(()->{
-                     try {
-                         if(status==200||status==204) {
-                             ArrayList<UserResponseForManager> users = mapper.readValue(response.body(), new TypeReference<ArrayList<UserResponseForManager>>() {
-                             });
-                             usersList.addAll(users);
-                             userTableView.setItems(usersList);
-                         }else  {
-                             //TODO:this is for other status codes
-                         }
-                     } catch (Exception e) {
-                         System.out.println(e);
-                     }
+                    HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                    int status = response.statusCode();
+                    javafx.application.Platform.runLater(() -> {
+                        try {
+                            if (status == 200 || status == 204) {
+                                ArrayList<UserResponseForManager> users = mapper.readValue(response.body(),
+                                        new TypeReference<ArrayList<UserResponseForManager>>() {
+                                        });
+                                usersList.addAll(users);
+                                userTableView.setItems(usersList);
+                            } else {
+                                // TODO:this is for other status codes
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
                     });
-                    } catch (IOException | InterruptedException e) {
+                } catch (IOException | InterruptedException e) {
                     System.out.println(e);
                 }
             }).start();
-    } catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }

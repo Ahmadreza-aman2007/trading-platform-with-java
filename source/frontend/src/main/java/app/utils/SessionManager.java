@@ -1,6 +1,6 @@
 package app.utils;
 
-import app.models.User;
+import app.models.entities.User;
 
 public class SessionManager {
     private static User currentUser;

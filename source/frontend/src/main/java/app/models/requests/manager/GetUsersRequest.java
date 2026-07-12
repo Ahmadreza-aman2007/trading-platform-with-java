@@ -1,4 +1,4 @@
-package app.models;
+package app.models.requests.manager;
 
 public class GetUsersRequest {
     private String username;

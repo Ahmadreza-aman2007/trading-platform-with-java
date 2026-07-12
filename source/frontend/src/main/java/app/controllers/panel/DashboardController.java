@@ -1,6 +1,6 @@
 package app.controllers.panel;
 
-import app.models.User;
+import app.models.entities.User;
 import app.utils.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

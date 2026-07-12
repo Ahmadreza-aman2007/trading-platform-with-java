@@ -1,4 +1,4 @@
-package app.models;
+package app.models.response.manager;
 
 public class UserResponseForManager {
     private int id;

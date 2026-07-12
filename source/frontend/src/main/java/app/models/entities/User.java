@@ -1,4 +1,4 @@
-package app.models;
+package app.models.entities;
 
 public class User {
     private String username;

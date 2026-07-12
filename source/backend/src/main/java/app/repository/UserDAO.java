@@ -75,17 +75,18 @@ public class UserDAO {
             throw new Exception("error in get all users");
         }
     }
+
     private static User resultSetTOUser(ResultSet rs) throws SQLException {
-            User u = new User();
-            u.setUsername(rs.getString("username"));
-            u.setBlocked(rs.getBoolean("is_blocked"));
-            u.setFullname(rs.getString("fullname"));
-            u.setPhoneNumber(rs.getString("phone_number"));
-            u.setId(rs.getInt("id"));
-            u.setCreatedDate(rs.getString("created_at"));
-            u.setPassword(rs.getString("password"));
-            u.setUserRole(rs.getString("user_role").equals("MANAGER")? UserRole.MANAGER:UserRole.COMMON_USER);
-            return u;
+        User u = new User();
+        u.setUsername(rs.getString("username"));
+        u.setBlocked(rs.getBoolean("is_blocked"));
+        u.setFullname(rs.getString("fullname"));
+        u.setPhoneNumber(rs.getString("phone_number"));
+        u.setId(rs.getInt("id"));
+        u.setCreatedDate(rs.getString("created_at"));
+        u.setPassword(rs.getString("password"));
+        u.setUserRole(rs.getString("user_role").equals("MANAGER") ? UserRole.MANAGER : UserRole.COMMON_USER);
+        return u;
     }
 
     public static boolean isUsernameExist(String username) {
@@ -232,16 +233,19 @@ public class UserDAO {
         try (Connection c = DatabaseConnection.getConnection();
                 PreparedStatement s = c.prepareStatement(sqlQuery)) {
             s.setString(1, u.getPassword());
+            System.out.println(u.getPassword());
             s.setInt(2, u.isBlocked() ? 1 : 0);
+            System.out.println(u.isBlocked());
             s.setString(3, u.getFullname());
+            System.out.println(u.getFullname());
             s.setInt(4, u.getId());
+            System.out.println(u.getId());
             int e = s.executeUpdate();
             if (e == 0) {
-                return 0;
+                throw new Exception("cant edit");
             } else {
                 return 1;
             }
-
         } catch (Exception e) {
             System.err.println("error in updating user :" + e.getMessage());
             return -2;

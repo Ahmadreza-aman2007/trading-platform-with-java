@@ -1,4 +1,4 @@
-package app.models;
+package app.models.requests.shared;
 
 public class LoginRequest {
     private String username;

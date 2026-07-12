@@ -4,8 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Hyperlink?>
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="app.controllers.PanelController" fx:id="root"
-    nodeOrientation="RIGHT_TO_LEFT">
+            fx:controller="app.controllers.panel.PanelController" fx:id="root"
+            nodeOrientation="RIGHT_TO_LEFT">
     <top>
         <HBox alignment="CENTER_RIGHT" styleClass="header">
             <Label text="به پنل کاربری خوش آمدید" />

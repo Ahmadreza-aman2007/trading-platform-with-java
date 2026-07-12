@@ -1,8 +1,8 @@
-package app.controllers;
+package app.controllers.registerPage;
 
 import app.utils.ControllersUtils;
 import app.utils.InputValidator;
-import app.models.RegisterRequest;
+import app.models.requests.shared.RegisterRequest;
 import app.utils.PageChanger;
 import app.utils.enums.Pages;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,18 +1,15 @@
-package app.controllers;
+package app.controllers.mainPage;
 
 import app.utils.ControllersUtils;
 import app.utils.PageChanger;
 import app.utils.SessionManager;
 import app.utils.enums.Pages;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class MainController {

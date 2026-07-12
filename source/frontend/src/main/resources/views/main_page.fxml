@@ -5,8 +5,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-   fx:controller="app.controllers.MainController" fx:id="root"
-   nodeOrientation="RIGHT_TO_LEFT">
+           fx:controller="app.controllers.mainPage.MainController" fx:id="root"
+           nodeOrientation="RIGHT_TO_LEFT">
 
    <VBox fx:id="mainPage">
       <HBox styleClass="header" alignment="CENTER_RIGHT">

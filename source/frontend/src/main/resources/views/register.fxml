@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Button?>
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="app.controllers.RegisterController" fx:id="root" nodeOrientation="RIGHT_TO_LEFT">
+           fx:controller="app.controllers.registerPage.RegisterController" fx:id="root" nodeOrientation="RIGHT_TO_LEFT">
     <VBox styleClass="register-div" maxHeight="-Infinity" maxWidth="-Infinity" alignment="CENTER"
         spacing="80">
         <Label text="ثبت نام" />

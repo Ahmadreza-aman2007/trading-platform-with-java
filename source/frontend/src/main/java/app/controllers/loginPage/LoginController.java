@@ -1,9 +1,9 @@
-package app.controllers;
+package app.controllers.loginPage;
 
-import app.models.User;
+import app.models.entities.User;
 import app.utils.ControllersUtils;
 import app.utils.InputValidator;
-import app.models.LoginRequest;
+import app.models.requests.shared.LoginRequest;
 import app.utils.PageChanger;
 import app.utils.SessionManager;
 import app.utils.enums.Pages;
