@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<VBox  xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-       fx:controller="app.controllers.panel.UsersListController" spacing="40"
-       nodeOrientation="RIGHT_TO_LEFT">
-    <Label text="لیست کاربران"/>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.controllers.panel.UsersListController" spacing="40"
+      nodeOrientation="RIGHT_TO_LEFT">
+    <VBox fx:id="usersListVbox">
+        <Label text="لیست کاربران"/>
+        <TableView fx:id="userTableView">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID"/>
+                <TableColumn fx:id="usernameColumn" text="نام کاربری"/>
+                <TableColumn fx:id="blockedColumn" text="وضعیت بلاک بودن"/>
+                <TableColumn fx:id="actionColumn" text="ویرایش کاربر"/>
+            </columns>
+        </TableView>
+    </VBox>
+    <VBox fx:id="editPanelVbox" visible="false" managed="false">
+        <Label text="ویرایش کاربر" />
+        <HBox>
+            <Label text="نام کاربری     " />
+            <Label text="نام کاربری" fx:id="usernameLabel" />
+        </HBox><HBox>
+        <Label text="تاریخ ساخت     " />
+        <Label text="تاریخ ساخت" fx:id="createdDateLabel"/>
+    </HBox><HBox>
+        <Label text="نام کامل     " />
+        <Label text="نام کامل" fx:id="fullnameLabel"/>
+    </HBox><HBox>
+        <Label text="شماره تلفن     " />
+        <Label text="شماره تلفن" fx:id="phoneNumberLabel"/>
+    </HBox>
+            <CheckBox text="کاربر بلاک شود؟" fx:id="blockCheckBox"/>
+        <Label fx:id="errorMessage" styleClass="errorText" text=" "/>
+        <HBox>
+            <Button text="بازگشت" onAction="#backToUsersList"/>
+            <Button text="ثبت"/>
+        </HBox>
+    </VBox>
 
 </VBox>

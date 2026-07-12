@@ -14,15 +14,17 @@ import static app.repository.UserDAO.isUsernameExist;
 public class TokenDAO {
 
     public static int saveToken(Token token){
-        if(!isTokenExist(token.getToken())){
+        if(isTokenExist(token.getToken())){
             return -1;
         }
-        String sqlQuery="INSERT INTO tokens(token,username,expires_at) VALUES(?,?,?)";
+        String sqlQuery="INSERT INTO tokens(token,username,expires_at,created_at,is_revoked) VALUES(?,?,?,?,?)";
         try(Connection c=DatabaseConnection.getConnection();
             PreparedStatement s=c.prepareStatement(sqlQuery)){
             s.setString(1,token.getToken());
             s.setString(2,token.getUsername());
             s.setString(3,token.getExpiresAt().toString());
+            s.setString(4,token.getCreatedAt().toString());
+            s.setInt(5, token.isRevoked() ?1:0);
             int e=s.executeUpdate();
             if (e==0){
                 return 0;
@@ -85,7 +87,7 @@ public class TokenDAO {
         if (!isTokenExist(token)){
             return null;
         }
-        String sqlQuery="SELECT * FROM tokens WHERE token=?";
+        String sqlQuery="SELECT * FROM tokens WHERE token = ?";
         try(Connection c=DatabaseConnection.getConnection();
         PreparedStatement s=c.prepareStatement(sqlQuery)){
             s.setString(1,token);
@@ -95,6 +97,7 @@ public class TokenDAO {
             }
             return null;
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }

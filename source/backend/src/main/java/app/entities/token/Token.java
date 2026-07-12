@@ -15,11 +15,11 @@ public class Token {
     private String token;
     @Column(name = "username" ,nullable = false)
     private String username;
-    @Column(name="created_at",nullable = false)
+    @Column(name="created_at")
     private LocalDateTime createdAt;
     @Column(name="expires_at",nullable = false)
     private LocalDateTime expiresAt;
-    @Column(name = "is_revoked",nullable = false)
+    @Column(name = "is_revoked")
     private boolean revoked;
     public Token(){}
     public Token(String token,String username,LocalDateTime createdAt,LocalDateTime expiresAt,boolean revoked){
@@ -60,6 +60,10 @@ public class Token {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isRevoked() {
+        return revoked;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

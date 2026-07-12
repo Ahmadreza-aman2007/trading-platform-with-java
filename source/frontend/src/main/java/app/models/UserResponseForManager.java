@@ -1,66 +1,67 @@
-package app.dto.manager;
+package app.models;
 
-public class GetUserResponse {
+public class UserResponseForManager {
     private int id;
     private String username;
     private String phoneNumber;
-    private boolean isBlocked;
     private String fullname;
+    private boolean blocked;
     private String createdDate;
-    public GetUserResponse(int id,String username,  String phoneNumber, String fullname,boolean isBlocked,String createdDate) {
+    public UserResponseForManager(){}
+    public UserResponseForManager(int id, String username, String phoneNumber, String fullname,  String createdDate,boolean blocked) {
         this.id = id;
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.fullname = fullname;
-        this.isBlocked = isBlocked;
+        this.blocked = blocked;
         this.createdDate = createdDate;
-    }
-
-    public String getFullname() {
-        return fullname;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getCreatedDate() {
         return createdDate;
     }
 
+    public String getFullname() {
+        return fullname;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setCreatedDate(String createdAt) {
+        this.createdDate = createdAt;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public boolean isBlocked() {
-        return isBlocked;
-    }
-
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
     public void setBlocked(boolean blocked) {
-        isBlocked = blocked;
+        this.blocked = blocked;
     }
 
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
+    public void setFullName(String fullname) {
+        this.fullname = fullname;
     }
 }

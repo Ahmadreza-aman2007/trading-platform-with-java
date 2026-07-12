@@ -21,6 +21,7 @@ public class ManagerController {
         ArrayList<GetUserResponse>users=ManagerService.getUsers(checkTokenValidationRequest.getUsername(), checkTokenValidationRequest.getToken());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }catch(Exception e){
+        System.out.println(e.getMessage());
         return switch (e.getMessage()) {
             case "token not found" -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case "this username does not match", "token expired" -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

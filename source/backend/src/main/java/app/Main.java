@@ -13,5 +13,6 @@ public class Main {
     public static void main(String[] args) {
         DatabaseInitializer.initDatabase();
         SpringApplication.run(Main.class, args);
+        UserDAO.saveUser(new Manager("admin","admin","000","admin"));
     }
 }
