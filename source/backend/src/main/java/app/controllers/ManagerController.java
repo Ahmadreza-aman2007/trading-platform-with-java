@@ -1,8 +1,7 @@
 package app.controllers;
 
-import app.dto.manager.GetUsersRequest;
-import app.dto.manager.GetUsersResponse;
-import app.entities.users.User;
+import app.dto.CheckTokenValidationRequest;
+import app.dto.manager.GetUserResponse;
 import app.services.ManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +15,25 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/api/manager")
 public class ManagerController {
-    @PostMapping("get-all-users")
-    public ResponseEntity<ArrayList<GetUsersResponse>> getAllUsers(@RequestBody GetUsersRequest getUsersRequest) {
+    @PostMapping("/get-all-users")
+    public ResponseEntity<ArrayList<GetUserResponse>> getAllUsers(@RequestBody CheckTokenValidationRequest checkTokenValidationRequest) {
     try{
-        ArrayList<GetUsersResponse>users=ManagerService.getUsers(getUsersRequest.getUsername(),getUsersRequest.getToken());
+        ArrayList<GetUserResponse>users=ManagerService.getUsers(checkTokenValidationRequest.getUsername(), checkTokenValidationRequest.getToken());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }catch(Exception e){
         return switch (e.getMessage()) {
             case "token not found" -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
             case "this username does not match", "token expired" -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             default -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        };
+        };}
     }
+    @PostMapping("/editUser")
+    public ResponseEntity<String> editUser(@RequestBody CheckTokenValidationRequest checkTokenValidationRequest) {
+        try{
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

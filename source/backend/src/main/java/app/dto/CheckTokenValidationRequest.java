@@ -1,13 +1,13 @@
-package app.dto.manager;
+package app.dto;
 
-public class GetUsersRequest {
+public class CheckTokenValidationRequest {
     private String username;
     private String token;
-    public GetUsersRequest(String username, String token) {
+    public CheckTokenValidationRequest(String username, String token) {
         this.username = username;
         this.token = token;
     }
-    public GetUsersRequest() {}
+    public CheckTokenValidationRequest() {}
     public String getUsername() {
         return username;
     }
