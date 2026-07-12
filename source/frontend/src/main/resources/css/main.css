@@ -47,3 +47,6 @@
 .dashboard-info:hover {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 6);
 }
+.table-cell{
+    -fx-alignment:CENTER;
+}

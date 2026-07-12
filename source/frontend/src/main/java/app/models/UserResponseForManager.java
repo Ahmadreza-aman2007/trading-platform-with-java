@@ -25,7 +25,7 @@ public class UserResponseForManager {
         return phoneNumber;
     }
 
-    public int getUserId() {
+    public int getId() {
         return id;
     }
 
