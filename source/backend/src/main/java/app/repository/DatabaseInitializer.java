@@ -8,49 +8,57 @@ public class DatabaseInitializer {
     public static void initDatabase() {
         String createUsers = """
                 CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT UNIQUE NOT NULL,
-                phone_number TEXT UNIQUE NOT NULL,
-                password TEXT NOT NULL,
-                user_role TEXT CHECK(user_role IN ('MANAGER', 'COMMON_USER')) NOT NULL,
-                is_blocked INTEGER DEFAULT 0,
-                fullname TEXT NOT NULL,
-                created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT UNIQUE NOT NULL,
+                    phone_number TEXT UNIQUE NOT NULL,
+                    password TEXT NOT NULL,
+                    user_role TEXT CHECK(user_role IN ('MANAGER', 'COMMON_USER')) NOT NULL,
+                    is_blocked INTEGER DEFAULT 0,
+                    fullname TEXT NOT NULL,
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL
                 )
                 """;
-        String tokens= """
-                CREATE TABLE  IF NOT EXISTS tokens(
+
+        // رفع باگ تلفظ usename به username برای کلید خارجی
+        String tokens = """
+                CREATE TABLE IF NOT EXISTS tokens (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    token TEXT NOT NULL ,
-                    usename TEXT NOT NULL ,
+                    token TEXT NOT NULL,
+                    username TEXT NOT NULL,
                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    expires_at DATETIME NOT NULL ,
+                    expires_at DATETIME NOT NULL,
                     is_revoked INTEGER DEFAULT 0,
                     FOREIGN KEY (username) REFERENCES users(username)
                 )
                 """;
-        String cites= """
-                CREATE TABLE IF NOT EXISTS cities(
+
+        // اصلاح نام متغیر به cities
+        String cities = """
+                CREATE TABLE IF NOT EXISTS cities (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    city TEXT  UNIQUE NOT NULL
+                    city TEXT UNIQUE NOT NULL
                 )
                 """;
-        String productCategory= """
-                CREATE TABLE IF NOT EXISTS product_categories(
+
+        String productCategory = """
+                CREATE TABLE IF NOT EXISTS product_categories (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     product_category TEXT UNIQUE NOT NULL
                 )
                 """;
+
         try (Connection c = DatabaseConnection.getConnection();
-                Statement s = c.createStatement()) {
+             Statement s = c.createStatement()) {
+
             s.execute(createUsers);
             s.execute(tokens);
-            s.execute(cites);
+            s.execute(cities);
             s.execute(productCategory);
+
             System.out.println("Database is ready");
 
         } catch (SQLException e) {
-            System.err.println("Database error:" + e.getMessage());
+            System.err.println("Database error: " + e.getMessage());
         }
     }
 }
