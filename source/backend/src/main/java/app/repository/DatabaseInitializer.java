@@ -1,3 +1,4 @@
+
 package app.repository;
 
 import java.sql.Connection;
@@ -19,7 +20,6 @@ public class DatabaseInitializer {
                 )
                 """;
 
-        // رفع باگ تلفظ usename به username برای کلید خارجی
         String tokens = """
                 CREATE TABLE IF NOT EXISTS tokens (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,7 +32,6 @@ public class DatabaseInitializer {
                 )
                 """;
 
-        // اصلاح نام متغیر به cities
         String cities = """
                 CREATE TABLE IF NOT EXISTS cities (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,6 +46,24 @@ public class DatabaseInitializer {
                 )
                 """;
 
+        // *** بخش جدید: اضافه شدن جدول آگهی‌ها ***
+        String advertisements = """
+                CREATE TABLE IF NOT EXISTS advertisements (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    title TEXT NOT NULL,
+                    description TEXT NOT NULL,
+                    price REAL NOT NULL,
+                    seller_username TEXT NOT NULL,
+                    city TEXT NOT NULL,
+                    category TEXT NOT NULL,
+                    status TEXT CHECK(status IN ('PENDING', 'APPROVED', 'REJECTED')) DEFAULT 'PENDING',
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (seller_username) REFERENCES users(username),
+                    FOREIGN KEY (city) REFERENCES cities(city),
+                    FOREIGN KEY (category) REFERENCES product_categories(product_category)
+                )
+                """;
+
         try (Connection c = DatabaseConnection.getConnection();
              Statement s = c.createStatement()) {
 
@@ -54,8 +71,9 @@ public class DatabaseInitializer {
             s.execute(tokens);
             s.execute(cities);
             s.execute(productCategory);
+            s.execute(advertisements); // اجرای ساخت جدول آگهی
 
-            System.out.println("Database is ready");
+            System.out.println("Database is ready with Advertisements table");
 
         } catch (SQLException e) {
             System.err.println("Database error: " + e.getMessage());
