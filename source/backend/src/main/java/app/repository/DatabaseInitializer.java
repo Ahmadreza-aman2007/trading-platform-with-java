@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 public class DatabaseInitializer {
     public static void initDatabase() {
+//      initialize query for users table
         String createUsers = """
                 CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,7 +20,7 @@ public class DatabaseInitializer {
                     created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL
                 )
                 """;
-
+//        initialize query for tokens table
         String tokens = """
                 CREATE TABLE IF NOT EXISTS tokens (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,14 +32,14 @@ public class DatabaseInitializer {
                     FOREIGN KEY (username) REFERENCES users(username)
                 )
                 """;
-
+//        initialize query for cities table
         String cities = """
                 CREATE TABLE IF NOT EXISTS cities (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     city TEXT UNIQUE NOT NULL
                 )
                 """;
-
+// initialize query for categories table
         String productCategory = """
                 CREATE TABLE IF NOT EXISTS product_categories (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,15 +64,69 @@ public class DatabaseInitializer {
                     FOREIGN KEY (category) REFERENCES product_categories(product_category)
                 )
                 """;
+        // initialize query for conversations table
+        String conversations= """
+                CREATE TABLE IF NOT EXISTS comments (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    advertisement_id INTEGER NOT NULL,
+                    seller_id INTEGER NOT NULL,
+                    buyer_id INTEGER NOT NULL,
+                    is_bloked INTEGER NOT NULL,
+                    FOREIGN KEY (seller_id) REFERENCES users(id),
+                    FOREIGN KEY (buyer_id) REFERENCES users(id),
+                    FORIGEN KEY (advertisement_id) REFERENCES advertisements(id)
+                )
+                """;
+        // initialize query for messages table
+        String messages= """
+                CREATE TABLE IF NOT EXISTS messages (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    content TEXT NOT NULL,
+                    time DATETIME NOT NULL,
+                    sender_id INTEGER NOT NULL,
+                    conversation_id INTEGER NOT NULL,
+                    isRead INTEGER NOT NULL,
+                    FOREIGN KEY (sender_id) REFERENCES users(id),
+                    FOREIGN KEY (conversation_id) REFERENCES convasations(id)
+                    )
+                """;
+        // initialize query for favorites table
+        String favorites= """
+                CREATE TABLE IF NOT EXISTS favorites (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                ad_id INTEGER NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (ad_id) REFERENCES advertisements(id)
+                )
+                """;
+        //initialize query for ratings table
+        String ratings= """
+                CREATE TABLE IF NOT EXISTS ratings (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                rater_id INTEGER NOT NULL,
+                seller_id INTEGER NOT NULL,
+                ad_id INTEGER NOT NULL,
+                score INTEGER NOT NULL,
+                comment TEXT NOT NULL,
+                created_at DATETIME NOT NULL,
+                FOREIGN KEY (seller_id) REFERENCES users(id),
+                FOREIGN KEY (ad_id) REFERENCES advertisements(id),
+                FOREIGN KEY (seller_id) REFERENCES users(id)
+                )
+                """;
 
         try (Connection c = DatabaseConnection.getConnection();
              Statement s = c.createStatement()) {
-
-            s.execute(createUsers);
-            s.execute(tokens);
-            s.execute(cities);
-            s.execute(productCategory);
+            s.execute(createUsers);//build users table
+            s.execute(tokens);//build tokens table
+            s.execute(cities);//build cities table
+            s.execute(productCategory);//build categories table
             s.execute(advertisements); // اجرای ساخت جدول آگهی
+            s.execute(conversations);//build comments table
+            s.execute(messages);//build messages table
+            s.execute(favorites);//build favorites table
+            s.execute(ratings);//build ratings table
 
             System.out.println("Database is ready with Advertisements table");
 

@@ -1,73 +1,73 @@
-//package app.entities.conversation;
-//
-//import app.entities.users.User;
-//import jakarta.persistence.*;
-//
-//import java.time.LocalDateTime;
-//
-//@Entity
-//@Table(name = "messages")
-//public class Message {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//    @Column(name = "content",nullable = false)
-//    private String content;
-//    @Column(name = "time",nullable = false)
-//    private LocalDateTime time;
-//    @ManyToOne
-//    @JoinColumn(name = "conversation_id",nullable = false)
-//    private Conversation conversation;
-//    @ManyToOne
-//    @JoinColumn(name = "sender_id",nullable = false)
-//    private User sender;
-//    @Column(name = "is_read")
-//    private boolean isRead;
-//    public Message(String content,LocalDateTime time ,Conversation conversation,User sender,boolean isRead){
-//        this.content=content;
-//        this.isRead=isRead;
-//        this.sender=sender;
-//        this.time=time;
-//        this.conversation=conversation;
-//    }
-//
-//    public Conversation getConversation() {
-//        return conversation;
-//    }
-//
-//    public LocalDateTime getTime() {
-//        return time;
-//    }
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public String getContent() {
-//        return content;
-//    }
-//
-//    public User getSender() {
-//        return sender;
-//    }
-//
-//    public void setContent(String content) {
-//        this.content = content;
-//    }
-//
-//    public void setConversation(Conversation conversation) {
-//        this.conversation = conversation;
-//    }
-//
-//    public void setSender(User sender) {
-//        this.sender = sender;
-//    }
-//
-//    public void setTime(LocalDateTime time) {
-//        this.time = time;
-//    }
-//
-//    public void setRead(boolean read) {
-//        isRead = read;
-//    }
-//}
+package app.entities.conversation;
+
+import app.entities.users.User;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "messages")
+public class Message {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "content",nullable = false)
+    private String content;
+    @Column(name = "time",nullable = false)
+    private LocalDateTime time;
+    @ManyToOne
+    @JoinColumn(name = "conversation_id",nullable = false )
+    private Long conversationId;
+    @ManyToOne
+    @JoinColumn(name = "sender_id",nullable = false)
+    private Long senderId;
+    @Column(name = "is_read")
+    private boolean isRead;
+    public Message(String content,LocalDateTime time ,Long conversationId,Long senderId,boolean isRead){
+        this.content=content;
+        this.isRead=isRead;
+        this.senderId=senderId;
+        this.time=time;
+        this.conversationId=conversationId;
+    }
+
+    public Long getConversationId() {
+        return conversationId;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Long getSenderId() {
+        return senderId;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setConversationId(Long conversationId) {
+        this.conversationId = conversationId;
+    }
+
+    public void setSender(Long senderId) {
+        this.senderId = senderId;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+}
