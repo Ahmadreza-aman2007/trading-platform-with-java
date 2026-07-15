@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AdvertisementDAO {
 
-    // متد ثبت آگهی جدید در دیتابیس
+
     public boolean insertAdvertisement(Advertisement ad) {
         String sql = "INSERT INTO advertisements (title, description, price, seller_username, city, category, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -37,7 +37,7 @@ public class AdvertisementDAO {
         }
     }
 
-    // متد دریافت تمام آگهی‌های تایید شده (برای نمایش در صفحه اصلی)
+
     public List<Advertisement> getApprovedAdvertisements() {
         List<Advertisement> ads = new ArrayList<>();
         String sql = "SELECT * FROM advertisements WHERE status = 'APPROVED' ORDER BY created_at DESC";
@@ -66,7 +66,7 @@ public class AdvertisementDAO {
         return ads;
     }
 
-    // متد تغییر وضعیت آگهی (برای پنل مدیر)
+
     public boolean updateAdvertisementStatus(int adId, AdStatus newStatus) {
         String sql = "UPDATE advertisements SET status = ? WHERE id = ?";
 
