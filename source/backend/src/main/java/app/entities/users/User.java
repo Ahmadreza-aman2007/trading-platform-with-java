@@ -1,5 +1,6 @@
 package app.entities.users;
 
+
 import app.entities.users.enums.*;
 import jakarta.persistence.*;
 
@@ -96,5 +97,9 @@ public class User {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = java.time.LocalDateTime.now().toString();
     }
 }
