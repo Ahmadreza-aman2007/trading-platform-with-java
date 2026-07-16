@@ -3,10 +3,10 @@ package app.dto.manager;
 public class EditUserStatusRequest {
     private String senderUsername;
     private String token;
-    private int id;
+    private Long id;
     private boolean isBlocked;
     public EditUserStatusRequest() {}
-    public EditUserStatusRequest(String senderUsername, String token, int id, boolean isBlocked) {
+    public EditUserStatusRequest(String senderUsername, String token, Long id, boolean isBlocked) {
         this.senderUsername = senderUsername;
         this.token = token;
         this.id = id;
@@ -17,7 +17,7 @@ public class EditUserStatusRequest {
         isBlocked = blocked;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -29,7 +29,7 @@ public class EditUserStatusRequest {
         this.token = token;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

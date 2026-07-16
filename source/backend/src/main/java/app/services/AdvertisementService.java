@@ -2,7 +2,7 @@ package app.services;
 
 import app.entities.Advertisement;
 import app.entities.users.enums.AdStatus;
-import app.repository.AdvertisementDAO;
+import app.repository.DAOs.AdvertisementDAO;
 
 import java.util.List;
 

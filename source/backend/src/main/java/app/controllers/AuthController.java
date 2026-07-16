@@ -3,7 +3,7 @@ package app.controllers;
 import app.dto.login.LoginRequest;
 import app.dto.login.LoginResponse;
 import app.dto.register.RegisterRequest;
-import app.repository.UserDAO;
+import app.repository.DAOs.UserDAO;
 import app.services.AuthService;
 import app.utils.TokenUtil;
 import app.entities.users.User;

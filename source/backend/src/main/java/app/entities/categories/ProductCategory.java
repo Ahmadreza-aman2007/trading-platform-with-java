@@ -11,8 +11,18 @@ public class ProductCategory
     private Long id;
     @Column(name = "product_category",nullable = false,unique = true)
     private String name;
+
+    public ProductCategory() {}
     public ProductCategory(String name){
         this.name=name;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

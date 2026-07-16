@@ -4,7 +4,7 @@ import app.dto.manager.EditUserStatusRequest;
 import app.dto.manager.GetUserResponse;
 import app.entities.users.User;
 import app.entities.users.enums.UserRole;
-import app.repository.UserDAO;
+import app.repository.DAOs.UserDAO;
 import app.utils.TokenUtil;
 
 import java.util.ArrayList;

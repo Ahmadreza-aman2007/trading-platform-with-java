@@ -1,22 +1,23 @@
-package app.repository;
+package app.repository.DAOs;
 
 import app.entities.users.*;
 import app.entities.users.enums.UserRole;
+import app.repository.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class UserDAO {
-    public static int saveUser(User user) {
+    public static app.repository.enums.UserDAO saveUser(User user) {
         if (isUsernameExist(user.getUsername())) {
-            return -2;
+            return app.repository.enums.UserDAO.USERNAME_ALREADY_EXISTS;
         }
         if (isPhoneNumberExist(user.getPhoneNumber())) {
-            return -3;
+            return app.repository.enums.UserDAO.PHONE_NUMBER_ALREADY_EXISTS;
         }
         String sqlOrder = "INSERT INTO users(username,password,phone_number,user_role, is_blocked,fullname) VALUES (?,?,?,?,?,?)";
         try (Connection c = DatabaseConnection.getConnection();
-                PreparedStatement s = c.prepareStatement(sqlOrder)) {
+             PreparedStatement s = c.prepareStatement(sqlOrder)) {
             s.setString(1, user.getUsername());
             s.setString(2, user.getPassword());
             s.setString(3, user.getPhoneNumber());
@@ -30,26 +31,26 @@ public class UserDAO {
             try (Statement st = c.createStatement();
                     ResultSet res = st.executeQuery("SELECT last_insert_rowid()")) {
                 if (res.next()) {
-                    int generatedId = res.getInt(1);
+                    Long generatedId = res.getLong(1);
                     user.setId(generatedId);
                     String createdAt = getUserCreatedAt(user.getId());
                     user.setCreatedDate(createdAt);
-                    return generatedId;
+                    return app.repository.enums.UserDAO.USER_SAVED_SUCCESSFULLY;
                 } else {
                     throw new SQLException("user id not created");
                 }
             }
         } catch (Exception e) {
             System.err.println("error in saving user: " + e.getMessage());
-            return -1;
+            return app.repository.enums.UserDAO.UNEXPECTED_ERROR;
         }
     }
 
-    public static String getUserCreatedAt(int userId) {
+    public static String getUserCreatedAt(Long userId) {
         String sqlOrder = "SELECT created_at FROM users WHERE id = ?";
         try (Connection c = DatabaseConnection.getConnection();
                 PreparedStatement s = c.prepareStatement(sqlOrder)) {
-            s.setInt(1, userId);
+            s.setLong(1, userId);
             ResultSet res = s.executeQuery();
             if (res.next()) {
                 return res.getString("created_at");
@@ -82,7 +83,7 @@ public class UserDAO {
         u.setBlocked(rs.getBoolean("is_blocked"));
         u.setFullname(rs.getString("fullname"));
         u.setPhoneNumber(rs.getString("phone_number"));
-        u.setId(rs.getInt("id"));
+        u.setId(rs.getLong("id"));
         u.setCreatedDate(rs.getString("created_at"));
         u.setPassword(rs.getString("password"));
         u.setUserRole(rs.getString("user_role").equals("MANAGER") ? UserRole.MANAGER : UserRole.COMMON_USER);
@@ -121,11 +122,11 @@ public class UserDAO {
         }
     }
 
-    public static boolean isIdExist(int id) {
+    public static boolean isIdExist(Long id) {
         String sqlQuery = "Select username FROM users WHERE id = ?";
         try (Connection c = DatabaseConnection.getConnection();
                 PreparedStatement s = c.prepareStatement(sqlQuery)) {
-            s.setInt(1, id);
+            s.setLong(1, id);
             ResultSet res = s.executeQuery();
             if (res.next()) {
                 return true;
@@ -164,10 +165,10 @@ public class UserDAO {
             ResultSet res = s.executeQuery();
             if (res.next()) {
                 if (res.getString("user_role").equals("MANAGER")) {
-                    return new Manager(res.getInt("id"), username, res.getString("password"),
+                    return new Manager(res.getLong("id"), username, res.getString("password"),
                             res.getString("phone_number"), res.getString("fullname"));
                 } else {
-                    return new CommonUser(res.getInt("id"), username, res.getString("password"),
+                    return new CommonUser(res.getLong("id"), username, res.getString("password"),
                             res.getString("phone_number"), res.getString("fullname"));
                 }
             }
@@ -189,10 +190,10 @@ public class UserDAO {
             ResultSet res = s.executeQuery();
             if (res.next()) {
                 if (res.getString("user_role").equals("MANAGER")) {
-                    return new Manager(res.getInt("id"), res.getString("username"), res.getString("password"),
+                    return new Manager(res.getLong("id"), res.getString("username"), res.getString("password"),
                             phoneNumber, res.getString("fullname"));
                 } else {
-                    return new CommonUser(res.getInt("id"), res.getString("username"), res.getString("password"),
+                    return new CommonUser(res.getLong("id"), res.getString("username"), res.getString("password"),
                             phoneNumber, res.getString("fullname"));
                 }
             }
@@ -203,14 +204,14 @@ public class UserDAO {
         }
     }
 
-    public static User loadUserById(int id) {
+    public static User loadUserById(Long id) {
         if (!isIdExist(id)) {
             return null;
         }
         String sqlQuery = "SELECT * FROM users WHERE id = ?";
         try (Connection c = DatabaseConnection.getConnection();
                 PreparedStatement s = c.prepareStatement(sqlQuery)) {
-            s.setInt(1, id);
+            s.setLong(1, id);
             ResultSet res = s.executeQuery();
             if (res.next()) {
                 if (res.getString("user_role").equals("MANAGER")) {
@@ -228,7 +229,7 @@ public class UserDAO {
         }
     }
 
-    public static int editUser(User u) {
+    public static app.repository.enums.UserDAO editUser(User u) {
         String sqlQuery = "UPDATE users SET password = ? ,is_blocked = ? ,fullname = ? WHERE id = ?";
         try (Connection c = DatabaseConnection.getConnection();
                 PreparedStatement s = c.prepareStatement(sqlQuery)) {
@@ -238,23 +239,23 @@ public class UserDAO {
             System.out.println(u.isBlocked());
             s.setString(3, u.getFullname());
             System.out.println(u.getFullname());
-            s.setInt(4, u.getId());
+            s.setLong(4, u.getId());
             System.out.println(u.getId());
             int e = s.executeUpdate();
             if (e == 0) {
                 throw new Exception("cant edit");
             } else {
-                return 1;
+                return app.repository.enums.UserDAO.USER_EDIT_SUCCESSFULLY;
             }
         } catch (Exception e) {
             System.err.println("error in updating user :" + e.getMessage());
-            return -2;
+            return app.repository.enums.UserDAO.UNEXPECTED_ERROR;
         }
     }
 
-    public static int deleteUser(String username) {
+    public static app.repository.enums.UserDAO deleteUser(String username) {
         if (!isUsernameExist(username)) {
-            return -1;
+            return app.repository.enums.UserDAO.USERNAME_NOT_FOUND;
         }
         String sqlQuery = "DELETE FROM users WHERE username=?";
         try (Connection c = DatabaseConnection.getConnection();
@@ -262,12 +263,12 @@ public class UserDAO {
             s.setString(1, username);
             int e = s.executeUpdate();
             if (e == 0) {
-                return 0;
+                return app.repository.enums.UserDAO.UNEXPECTED_ERROR;
             }
-            return 1;
+            return app.repository.enums.UserDAO.USER_DELETE_SUCCESSFULLY;
         } catch (Exception e) {
             System.err.println("error in delete user :" + e.getMessage());
-            return -2;
+            return app.repository.enums.UserDAO.UNEXPECTED_ERROR;
         }
     }
 }

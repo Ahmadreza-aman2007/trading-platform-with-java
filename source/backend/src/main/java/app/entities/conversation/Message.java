@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "messages")
 public class Message {
+    // fields in table
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +24,9 @@ public class Message {
     private Long senderId;
     @Column(name = "is_read")
     private boolean isRead;
+
+    //constructors
+    public Message() {}
     public Message(String content,LocalDateTime time ,Long conversationId,Long senderId,boolean isRead){
         this.content=content;
         this.isRead=isRead;
@@ -30,7 +34,7 @@ public class Message {
         this.time=time;
         this.conversationId=conversationId;
     }
-
+    //getter methods
     public Long getConversationId() {
         return conversationId;
     }
@@ -51,12 +55,26 @@ public class Message {
         return senderId;
     }
 
+    public boolean isRead() {
+        return isRead;
+    }
+
+    //setter methods
+
     public void setContent(String content) {
         this.content = content;
     }
 
     public void setConversationId(Long conversationId) {
         this.conversationId = conversationId;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
     }
 
     public void setSender(Long senderId) {

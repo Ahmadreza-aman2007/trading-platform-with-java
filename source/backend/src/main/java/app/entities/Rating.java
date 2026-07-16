@@ -9,16 +9,16 @@ public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "rater_id", nullable = false)
-    private int raterId;
+    private Long raterId;
 
     @Column(name = "seller_id", nullable = false)
-    private int sellerId;
+    private Long sellerId;
 
     @Column(name = "ad_id", nullable = false)
-    private int adId;
+    private Long adId;
 
     @Column(nullable = false)
     private int score;
@@ -36,7 +36,7 @@ public class Rating {
 
     public Rating() {}
 
-    public Rating(int raterId, int sellerId, int adId, int score, String comment) {
+    public Rating(Long raterId, Long sellerId, Long adId, int score, String comment) {
         this.raterId = raterId;
         this.sellerId = sellerId;
         this.adId = adId;
@@ -44,17 +44,17 @@ public class Rating {
         this.comment = comment;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public int getRaterId() { return raterId; }
-    public void setRaterId(int raterId) { this.raterId = raterId; }
+    public Long getRaterId() { return raterId; }
+    public void setRaterId(Long raterId) { this.raterId = raterId; }
 
-    public int getSellerId() { return sellerId; }
-    public void setSellerId(int sellerId) { this.sellerId = sellerId; }
+    public Long getSellerId() { return sellerId; }
+    public void setSellerId(Long sellerId) { this.sellerId = sellerId; }
 
-    public int getAdId() { return adId; }
-    public void setAdId(int adId) { this.adId = adId; }
+    public Long getAdId() { return adId; }
+    public void setAdId(Long adId) { this.adId = adId; }
 
     public int getScore() { return score; }
     public void setScore(int score) { this.score = score; }

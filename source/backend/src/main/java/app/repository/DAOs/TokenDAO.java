@@ -1,6 +1,7 @@
-package app.repository;
+package app.repository.DAOs;
 
 import app.entities.token.Token;
+import app.repository.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static app.repository.UserDAO.isUsernameExist;
+import static app.repository.DAOs.UserDAO.isUsernameExist;
 
 
 public class TokenDAO {
@@ -18,7 +19,7 @@ public class TokenDAO {
             return -1;
         }
         String sqlQuery="INSERT INTO tokens(token,username,expires_at,created_at,is_revoked) VALUES(?,?,?,?,?)";
-        try(Connection c=DatabaseConnection.getConnection();
+        try(Connection c= DatabaseConnection.getConnection();
             PreparedStatement s=c.prepareStatement(sqlQuery)){
             s.setString(1,token.getToken());
             s.setString(2,token.getUsername());

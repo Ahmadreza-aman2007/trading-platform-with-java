@@ -19,7 +19,7 @@ public class Manager extends User {
     }
 
 
-    public Manager(int id, String username, String password, String phoneNumber, String fullname) {
+    public Manager(Long id, String username, String password, String phoneNumber, String fullname) {
         super(username, password, phoneNumber, UserRole.MANAGER, fullname);
         this.setId(id);
     }

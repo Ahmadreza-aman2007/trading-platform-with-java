@@ -1,8 +1,9 @@
 
-package app.repository;
+package app.repository.DAOs;
 
 import app.entities.Advertisement;
 import app.entities.users.enums.AdStatus;
+import app.repository.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

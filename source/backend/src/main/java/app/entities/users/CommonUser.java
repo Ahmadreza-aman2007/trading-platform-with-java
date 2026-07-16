@@ -19,7 +19,7 @@ public class CommonUser extends User {
     }
 
 
-    public CommonUser(int id, String username, String password, String phoneNumber, String fullname) {
+    public CommonUser(Long id, String username, String password, String phoneNumber, String fullname) {
         super(username, password, phoneNumber, UserRole.COMMON_USER, fullname);
         this.setId(id);
     }

@@ -1,7 +1,7 @@
 package app.utils;
 
 import app.entities.token.Token;
-import app.repository.TokenDAO;
+import app.repository.DAOs.TokenDAO;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

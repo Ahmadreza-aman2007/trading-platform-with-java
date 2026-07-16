@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Favorites")
 public class Favorite {
+    //table fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,17 +15,15 @@ public class Favorite {
 
     @Column(name = "ad_id",nullable = false)
     private Long adId;
-
+// constructors
     public Favorite(Long userId, Long adId) {
         this.userId = userId;
         this.adId = adId;
     }
     public Favorite() {}
+// getter methods
     public Long getId() {
         return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
     }
     public Long getUserId() {
         return userId;
@@ -35,6 +34,9 @@ public class Favorite {
 
     public Long getAdId() {
         return adId;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setAdId(Long adId) {

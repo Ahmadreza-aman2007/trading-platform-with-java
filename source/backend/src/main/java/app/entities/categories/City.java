@@ -10,8 +10,18 @@ public class City {
     private Long id;
     @Column(name = "city",nullable = false,unique = true)
     private String name;
+
+    public City() {}
     public City(String name){
         this.name=name;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

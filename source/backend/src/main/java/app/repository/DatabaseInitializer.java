@@ -66,15 +66,15 @@ public class DatabaseInitializer {
                 """;
         // initialize query for conversations table
         String conversations= """
-                CREATE TABLE IF NOT EXISTS comments (
+                CREATE TABLE IF NOT EXISTS conversations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    advertisement_id INTEGER NOT NULL,
+                    ad_id INTEGER NOT NULL,
                     seller_id INTEGER NOT NULL,
                     buyer_id INTEGER NOT NULL,
                     is_bloked INTEGER NOT NULL,
                     FOREIGN KEY (seller_id) REFERENCES users(id),
                     FOREIGN KEY (buyer_id) REFERENCES users(id),
-                    FORIGEN KEY (advertisement_id) REFERENCES advertisements(id)
+                    FORIGEN KEY (ad_id) REFERENCES advertisements(id)
                 )
                 """;
         // initialize query for messages table
@@ -85,7 +85,7 @@ public class DatabaseInitializer {
                     time DATETIME NOT NULL,
                     sender_id INTEGER NOT NULL,
                     conversation_id INTEGER NOT NULL,
-                    isRead INTEGER NOT NULL,
+                    is_read INTEGER NOT NULL,
                     FOREIGN KEY (sender_id) REFERENCES users(id),
                     FOREIGN KEY (conversation_id) REFERENCES convasations(id)
                     )
