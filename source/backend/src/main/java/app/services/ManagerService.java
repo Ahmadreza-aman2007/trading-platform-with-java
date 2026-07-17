@@ -1,9 +1,15 @@
 package app.services;
 
+import app.dto.manager.AddCategoryRequest;
+import app.dto.manager.AddCityRequest;
 import app.dto.manager.EditUserStatusRequest;
 import app.dto.manager.GetUserResponse;
+import app.entities.categories.City;
+import app.entities.categories.ProductCategory;
 import app.entities.users.User;
 import app.entities.users.enums.UserRole;
+import app.repository.DAOs.CategoryDAO;
+import app.repository.DAOs.CityDAO;
 import app.repository.DAOs.UserDAO;
 import app.utils.TokenUtil;
 
@@ -32,5 +38,15 @@ public class ManagerService {
         u.setId(editUserStatusRequest.getId());
         u.setBlocked(editUserStatusRequest.isBlocked());
         UserDAO.editUser(u);
+    }
+    public static void addCity(AddCityRequest addCityRequest) throws Exception {
+        TokenUtil.isTokenValid(addCityRequest.getUsername(), addCityRequest.getToken());
+        City city = new City(addCityRequest.getCityName());
+        CityDAO.save(city);
+    }
+    public static void addProductCategory(AddCategoryRequest  addCategoryRequest) throws Exception {
+        TokenUtil.isTokenValid(addCategoryRequest.getUsername(), addCategoryRequest.getToken());
+        ProductCategory category = new ProductCategory(addCategoryRequest.getCategoryName());
+        CategoryDAO.save(category);
     }
 }

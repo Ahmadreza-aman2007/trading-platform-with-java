@@ -1,13 +1,13 @@
 package app.dto.manager;
 
 public class GetUserResponse {
-    private int id;
+    private Long id;
     private String username;
     private String phoneNumber;
     private boolean isBlocked;
     private String fullname;
     private String createdDate;
-    public GetUserResponse(int id,String username,  String phoneNumber, String fullname,boolean isBlocked,String createdDate) {
+    public GetUserResponse(Long id,String username,  String phoneNumber, String fullname,boolean isBlocked,String createdDate) {
         this.id = id;
         this.username = username;
         this.phoneNumber = phoneNumber;
@@ -24,7 +24,7 @@ public class GetUserResponse {
         return username;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -40,7 +40,7 @@ public class GetUserResponse {
         this.username = username;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

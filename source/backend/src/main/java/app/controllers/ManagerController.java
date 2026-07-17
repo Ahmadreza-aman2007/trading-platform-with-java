@@ -1,6 +1,8 @@
 package app.controllers;
 
 import app.dto.CheckTokenValidationRequest;
+import app.dto.manager.AddCategoryRequest;
+import app.dto.manager.AddCityRequest;
 import app.dto.manager.EditUserStatusRequest;
 import app.dto.manager.GetUserResponse;
 import app.services.ManagerService;
@@ -47,5 +49,28 @@ public class ManagerController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @PostMapping("/add-city")
+    public ResponseEntity<String> addCity(@RequestBody AddCityRequest addCityRequest) {
+        try{
+            ManagerService.addCity(addCityRequest);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            if (e.getMessage().equals("token expired")||e.getMessage().equals("this username does not match")||e.getMessage().equals("token not found")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/add-product-category")
+    public  ResponseEntity<String> addProductCategory(@RequestBody AddCategoryRequest addCategoryRequest){
+        try{
+                ManagerService.addProductCategory(addCategoryRequest);
+                return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            if (e.getMessage().equals("token expired")||e.getMessage().equals("this username does not match")||e.getMessage().equals("token not found")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
