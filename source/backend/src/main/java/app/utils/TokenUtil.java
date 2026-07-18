@@ -1,7 +1,10 @@
 package app.utils;
 
 import app.entities.token.Token;
+import app.entities.users.User;
+import app.entities.users.enums.UserRole;
 import app.repository.DAOs.TokenDAO;
+import app.repository.DAOs.UserDAO;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -47,8 +50,10 @@ public class TokenUtil {
     public Long getExpiration() {
         return expiration;
     }
-    public static boolean isTokenValid(String username,String token) throws Exception {
+    public static boolean isTokenValid(String username, String token, UserRole userRole) throws Exception {
         Token t=TokenDAO.findByToken(token);
+        User u= UserDAO.loadUserByUsername(username);
+
         if(t==null){
             throw new Exception("token not found");
         }
@@ -58,6 +63,9 @@ public class TokenUtil {
         if (LocalDateTime.now().isAfter(t.getExpiresAt())) {
             TokenDAO.revokeToken(token);
             throw new Exception("token expired");
+        }
+        if (userRole!=u.getUserRole()){
+            throw new Exception("permission denied");
         }
         TokenDAO.deleteAllExpireTokens();
         return true;

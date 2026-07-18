@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class ManagerService {
     public static ArrayList<GetUserResponse> getUsers(String username, String token) throws Exception {
-        TokenUtil.isTokenValid(username, token);
+        TokenUtil.isTokenValid(username, token,UserRole.MANAGER);
         ArrayList<User> users = UserDAO.getAllUsers();
         ArrayList<GetUserResponse> result = new ArrayList<GetUserResponse>();
         if (users.isEmpty()) {
@@ -33,19 +33,19 @@ public class ManagerService {
     }
 
     public static void editUser(EditUserStatusRequest editUserStatusRequest) throws Exception {
-        TokenUtil.isTokenValid(editUserStatusRequest.getSenderUsername(), editUserStatusRequest.getToken());
+        TokenUtil.isTokenValid(editUserStatusRequest.getSenderUsername(), editUserStatusRequest.getToken(),UserRole.MANAGER);
         User u = UserDAO.loadUserById(editUserStatusRequest.getId());
         u.setId(editUserStatusRequest.getId());
         u.setBlocked(editUserStatusRequest.isBlocked());
         UserDAO.editUser(u);
     }
     public static void addCity(AddCityRequest addCityRequest) throws Exception {
-        TokenUtil.isTokenValid(addCityRequest.getUsername(), addCityRequest.getToken());
+        TokenUtil.isTokenValid(addCityRequest.getUsername(), addCityRequest.getToken(),UserRole.MANAGER);
         City city = new City(addCityRequest.getCityName());
         CityDAO.save(city);
     }
     public static void addProductCategory(AddCategoryRequest  addCategoryRequest) throws Exception {
-        TokenUtil.isTokenValid(addCategoryRequest.getUsername(), addCategoryRequest.getToken());
+        TokenUtil.isTokenValid(addCategoryRequest.getUsername(), addCategoryRequest.getToken(),UserRole.MANAGER);
         ProductCategory category = new ProductCategory(addCategoryRequest.getCategoryName());
         CategoryDAO.save(category);
     }

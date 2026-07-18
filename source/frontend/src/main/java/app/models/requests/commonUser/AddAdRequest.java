@@ -1,6 +1,6 @@
-package app.dto.user;
+package app.models.requests.commonUser;
 
-import app.entities.users.enums.AdStatus;
+import java.time.LocalDateTime;
 
 public class AddAdRequest {
 
@@ -12,7 +12,16 @@ public class AddAdRequest {
     private String city;
     private String category;
     private String createdAt;
-    public AddAdRequest() {}
+    public AddAdRequest(String token,String title, String description, long price, String sellerUsername, String city, String category) {
+        this.token = token;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.sellerUsername = sellerUsername;
+        this.city = city;
+        this.category = category;
+        this.createdAt = LocalDateTime.now().toString();
+    }
 
 
     public void setToken(String token) {
@@ -78,4 +87,5 @@ public class AddAdRequest {
     public String getTitle() {
         return title;
     }
+
 }

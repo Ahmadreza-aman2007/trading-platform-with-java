@@ -12,7 +12,7 @@ public class CityDAO {
         if(isCityExist(city.getName())){
             throw new Exception("City already exists");
         }
-        String query = "INSERT INTO cities (name) VALUES (?)";
+        String query = "INSERT INTO cities (city) VALUES (?)";
         try(Connection connection = DatabaseConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);){
             statement.setString(1, city.getName());

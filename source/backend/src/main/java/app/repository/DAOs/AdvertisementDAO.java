@@ -32,6 +32,7 @@ public class AdvertisementDAO {
             pstmt.setString(6, ad.getCategory());
             pstmt.setString(7, ad.getStatus().name());
 
+
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
 
@@ -95,7 +96,7 @@ public class AdvertisementDAO {
     }
 
     public static void update(Advertisement ad) throws Exception {
-        String query="UPDATE advertisements SET title=? ,discription=?,price=?,city=?,category=? WHERE id = ?";
+        String query="UPDATE advertisements SET title=? ,description=?,price=?,city=?,category=? WHERE id = ?";
         try(Connection c=DatabaseConnection.getConnection();
         PreparedStatement pstmt=c.prepareStatement(query);){
             pstmt.setString(1, ad.getTitle());

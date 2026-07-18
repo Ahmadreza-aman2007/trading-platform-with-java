@@ -2,11 +2,8 @@ package app.controllers;
 
 import app.dto.user.*;
 import app.entities.Advertisement;
-import app.entities.Favorite;
 import app.repository.DAOs.AdvertisementDAO;
-import app.repository.DAOs.FavoriteDAO;
-import app.repository.DAOs.RatingDAO;
-import app.repository.RatingService;
+import app.services.RatingService;
 import app.services.AdvertisementService;
 import app.services.FavoriteService;
 import org.springframework.http.HttpStatus;

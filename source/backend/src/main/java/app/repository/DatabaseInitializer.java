@@ -9,7 +9,7 @@ public class DatabaseInitializer {
     public static void initDatabase() {
 //      initialize query for users table
         String createUsers = """
-                CREATE TABLE users (
+                CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     username TEXT UNIQUE,
                     phone_number TEXT UNIQUE,
@@ -66,7 +66,7 @@ public class DatabaseInitializer {
                 """;
         // initialize query for conversations table
         String conversations= """
-                CREATE TABLE  conversations (
+                CREATE TABLE IF NOT EXISTS conversations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     ad_id INTEGER NOT NULL,
                     seller_id INTEGER NOT NULL,
