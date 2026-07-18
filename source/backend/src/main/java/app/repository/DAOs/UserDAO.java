@@ -15,7 +15,7 @@ public class UserDAO {
         if (isPhoneNumberExist(user.getPhoneNumber())) {
             return app.repository.enums.UserDAO.PHONE_NUMBER_ALREADY_EXISTS;
         }
-        String sqlOrder = "INSERT INTO users(username,password,phone_number,user_role, is_blocked,fullname) VALUES (?,?,?,?,?,?)";
+        String sqlOrder = "INSERT INTO users(username,password,phone_number,user_role, is_blocked,fullname,created_at) VALUES (?,?,?,?,?,?,?)";
         try (Connection c = DatabaseConnection.getConnection();
              PreparedStatement s = c.prepareStatement(sqlOrder)) {
             s.setString(1, user.getUsername());
@@ -24,22 +24,12 @@ public class UserDAO {
             s.setString(4, user.getUserRole().name());
             s.setInt(5, user.isBlocked() ? 1 : 0);
             s.setString(6, user.getFullname());
+            s.setString(7, user.getCreatedDate());
             int e = s.executeUpdate();
             if (e == 0) {
                 throw new SQLException("saving user failed");
             }
-            try (Statement st = c.createStatement();
-                    ResultSet res = st.executeQuery("SELECT last_insert_rowid()")) {
-                if (res.next()) {
-                    Long generatedId = res.getLong(1);
-                    user.setId(generatedId);
-                    String createdAt = getUserCreatedAt(user.getId());
-                    user.setCreatedDate(createdAt);
-                    return app.repository.enums.UserDAO.USER_SAVED_SUCCESSFULLY;
-                } else {
-                    throw new SQLException("user id not created");
-                }
-            }
+            return app.repository.enums.UserDAO.USER_SAVED_SUCCESSFULLY;
         } catch (Exception e) {
             System.err.println("error in saving user: " + e.getMessage());
             return app.repository.enums.UserDAO.UNEXPECTED_ERROR;
@@ -164,13 +154,8 @@ public class UserDAO {
             s.setString(1, username);
             ResultSet res = s.executeQuery();
             if (res.next()) {
-                if (res.getString("user_role").equals("MANAGER")) {
-                    return new Manager(res.getLong("id"), username, res.getString("password"),
-                            res.getString("phone_number"), res.getString("fullname"));
-                } else {
-                    return new CommonUser(res.getLong("id"), username, res.getString("password"),
-                            res.getString("phone_number"), res.getString("fullname"));
-                }
+                return new User(res.getLong("id"), res.getString("username"), res.getString("password"),res.getString("phone_number"),res.getString("user_role").equals("MANAGER")?UserRole.MANAGER:UserRole.COMMON_USER,
+                        res.getString("fullname"));
             }
             return null;
         } catch (Exception e) {
@@ -189,13 +174,8 @@ public class UserDAO {
             s.setString(1, phoneNumber);
             ResultSet res = s.executeQuery();
             if (res.next()) {
-                if (res.getString("user_role").equals("MANAGER")) {
-                    return new Manager(res.getLong("id"), res.getString("username"), res.getString("password"),
-                            phoneNumber, res.getString("fullname"));
-                } else {
-                    return new CommonUser(res.getLong("id"), res.getString("username"), res.getString("password"),
-                            phoneNumber, res.getString("fullname"));
-                }
+                return new User(res.getLong("id"), res.getString("username"), res.getString("password"),res.getString("phone_number"),res.getString("user_role").equals("MANAGER")?UserRole.MANAGER:UserRole.COMMON_USER,
+                         res.getString("fullname"));
             }
             return null;
         } catch (Exception e) {
@@ -214,13 +194,8 @@ public class UserDAO {
             s.setLong(1, id);
             ResultSet res = s.executeQuery();
             if (res.next()) {
-                if (res.getString("user_role").equals("MANAGER")) {
-                    return new Manager(id, res.getString("username"), res.getString("password"),
-                            res.getString("phone_number"), res.getString("fullname"));
-                } else {
-                    return new CommonUser(id, res.getString("username"), res.getString("password"),
-                            res.getString("phone_number"), res.getString("fullname"));
-                }
+                return new User(res.getLong("id"), res.getString("username"), res.getString("password"),res.getString("phone_number"),res.getString("user_role").equals("MANAGER")?UserRole.MANAGER:UserRole.COMMON_USER,
+                        res.getString("fullname"));
             }
             return null;
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import app.dto.login.LoginRequest;
 import app.dto.register.RegisterRequest;
 import app.entities.token.Token;
 import app.entities.users.*;
+import app.entities.users.enums.UserRole;
 import app.repository.DAOs.TokenDAO;
 import app.repository.DAOs.UserDAO;
 import app.utils.TokenUtil;
@@ -23,7 +24,7 @@ public class AuthService {
         if (UserDAO.isPhoneNumberExist(request.getPhoneNumber())) {
             throw new Exception("این شماره تلفن قبلا ثبت شده است");
         }
-        User user = new CommonUser(request.getUsername(), request.getPassword(), request.getPhoneNumber(),
+        User user = new User(request.getUsername(), request.getPassword(), request.getPhoneNumber(), UserRole.COMMON_USER,
                 request.getFullname());
         UserDAO.saveUser(user);
     }

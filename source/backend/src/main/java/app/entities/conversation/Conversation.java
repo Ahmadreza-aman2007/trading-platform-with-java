@@ -8,21 +8,18 @@ public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
     @JoinColumn(name = "ad_id",nullable = false)
     private Long adId;
-    @ManyToOne
     @JoinColumn(name = "buyer_id",nullable = false)
     private  Long buyerId;
-    @ManyToOne
     @JoinColumn(name = "seller_id")
     private Long sellerId;
     @Column(name = "is_blocked")
     private boolean isBlocked;
     public Conversation() {}
-    public Conversation(Long productId,Long buyerId,Long sellerId,boolean isBlocked) {
+    public Conversation(Long adId,Long buyerId,Long sellerId,boolean isBlocked) {
         this.buyerId=buyerId;
-        this.adId =productId;
+        this.adId =adId;
         this.sellerId=sellerId;
         this.isBlocked=isBlocked;
     }

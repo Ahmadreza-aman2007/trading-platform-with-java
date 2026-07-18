@@ -16,10 +16,8 @@ public class Message {
     private String content;
     @Column(name = "time",nullable = false)
     private LocalDateTime time;
-    @ManyToOne
     @JoinColumn(name = "conversation_id",nullable = false )
     private Long conversationId;
-    @ManyToOne
     @JoinColumn(name = "sender_id",nullable = false)
     private Long senderId;
     @Column(name = "is_read")

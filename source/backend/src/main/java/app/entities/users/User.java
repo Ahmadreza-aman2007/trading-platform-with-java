@@ -4,26 +4,28 @@ package app.entities.users;
 import app.entities.users.enums.*;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "username", unique = true,nullable = false)
+    @Column(name = "username")
     private String username;
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
-    @Column(name = "phone_number", unique = true,nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
-    @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
     private UserRole userRole;
     @Column(name="is_blocked")
-    private boolean isBlocked;
-    @Column(name="fullname",nullable = false)
+    private boolean isBlocked=false;
+    @Column(name="fullname")
     private String fullname;
     @Column(name = "created_at")
-    private String createdDate;
+    private String createdDate= LocalDateTime.now().toString();
 
     public User() {}
     public User(String username, String password, String phoneNumber, UserRole userRole, String fullname) {
@@ -31,6 +33,15 @@ public class User {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.isBlocked = false;
+        this.userRole = userRole;
+        this.fullname = fullname;
+        createdDate = LocalDateTime.now().toString();
+    }
+    public User(Long id ,String username, String password, String phoneNumber, UserRole userRole, String fullname) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
         this.userRole = userRole;
         this.fullname = fullname;
     }

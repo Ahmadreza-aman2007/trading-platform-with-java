@@ -1,6 +1,7 @@
 package app;
 
-import app.entities.users.Manager;
+import app.entities.users.User;
+import app.entities.users.enums.UserRole;
 import app.repository.DAOs.UserDAO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,6 @@ public class Main {
     public static void main(String[] args) {
         DatabaseInitializer.initDatabase();
         SpringApplication.run(Main.class, args);
-        UserDAO.saveUser(new Manager("admin","admin","000","admin"));
+        UserDAO.saveUser(new User("admin","admin","000", UserRole.MANAGER,"admin"));
     }
 }

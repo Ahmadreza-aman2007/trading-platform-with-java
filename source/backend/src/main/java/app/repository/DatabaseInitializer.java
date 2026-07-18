@@ -9,15 +9,15 @@ public class DatabaseInitializer {
     public static void initDatabase() {
 //      initialize query for users table
         String createUsers = """
-                CREATE TABLE IF NOT EXISTS users (
+                CREATE TABLE users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    username TEXT UNIQUE NOT NULL,
-                    phone_number TEXT UNIQUE NOT NULL,
-                    password TEXT NOT NULL,
-                    user_role TEXT CHECK(user_role IN ('MANAGER', 'COMMON_USER')) NOT NULL,
+                    username TEXT UNIQUE,
+                    phone_number TEXT UNIQUE,
+                    password TEXT,
+                    user_role TEXT CHECK(user_role IN ('MANAGER', 'COMMON_USER')),
                     is_blocked INTEGER DEFAULT 0,
-                    fullname TEXT NOT NULL,
-                    created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL
+                    fullname TEXT,
+                    created_at TEXT
                 )
                 """;
 //        initialize query for tokens table
@@ -66,7 +66,7 @@ public class DatabaseInitializer {
                 """;
         // initialize query for conversations table
         String conversations= """
-                CREATE TABLE IF NOT EXISTS conversations (
+                CREATE TABLE  conversations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     ad_id INTEGER NOT NULL,
                     seller_id INTEGER NOT NULL,
@@ -74,7 +74,7 @@ public class DatabaseInitializer {
                     is_bloked INTEGER NOT NULL,
                     FOREIGN KEY (seller_id) REFERENCES users(id),
                     FOREIGN KEY (buyer_id) REFERENCES users(id),
-                    FORIGEN KEY (ad_id) REFERENCES advertisements(id)
+                    FOREIGN KEY (ad_id) REFERENCES advertisements(id)
                 )
                 """;
         // initialize query for messages table
