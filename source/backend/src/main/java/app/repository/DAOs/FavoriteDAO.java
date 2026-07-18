@@ -1,11 +1,14 @@
 package app.repository.DAOs;
 
+import app.dto.user.RemoveFavoriteRequest;
+import app.entities.Advertisement;
 import app.entities.Favorite;
 import app.repository.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class FavoriteDAO {
     public static void save(Favorite favorite) throws Exception{
@@ -59,6 +62,35 @@ public class FavoriteDAO {
                 return favorite;
             }
             throw new Exception("user not found");
+        }
+    }
+
+    public static ArrayList<Favorite> getFavorites(Long userId) throws Exception{
+        String query="SELECT * FROM favorites WHERE user_id = ?";
+        try(Connection c= DatabaseConnection.getConnection();
+        PreparedStatement s=c.prepareStatement(query)){
+            s.setLong(1, userId);
+            ResultSet rs=s.executeQuery();
+            ArrayList<Favorite> res=new ArrayList<>();
+            while(rs.next()){
+                Favorite favorite=new Favorite();
+                favorite.setId(rs.getLong("id"));
+                favorite.setUserId(rs.getLong("user_id"));
+                favorite.setAdId(rs.getLong("ad_id"));
+                res.add(favorite);
+            }
+            return res;
+        }
+    }
+    public static void remove(Long id) throws Exception{
+        String query = "DELETE FROM favorites WHERE id = ?";
+        try(Connection c= DatabaseConnection.getConnection();
+        PreparedStatement s=c.prepareStatement(query)){
+            s.setLong(1, id);
+            int e= s.executeUpdate();
+            if(e==0){
+                throw new Exception("error in method remove");
+            }
         }
     }
 }

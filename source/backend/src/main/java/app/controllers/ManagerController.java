@@ -1,10 +1,9 @@
 package app.controllers;
 
 import app.dto.CheckTokenValidationRequest;
-import app.dto.manager.AddCategoryRequest;
-import app.dto.manager.AddCityRequest;
-import app.dto.manager.EditUserStatusRequest;
-import app.dto.manager.GetUserResponse;
+import app.dto.manager.*;
+import app.dto.user.RemoveAdRequset;
+import app.services.AdvertisementService;
 import app.services.ManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,6 +70,24 @@ public class ManagerController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/change-ad-status")
+    public ResponseEntity<String> changeAdStatus(@RequestBody ChangeAdStatusRequest changeAdStatusRequest) {
+        try{
+            AdvertisementService.changeAdStatus(changeAdStatusRequest);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/remove-ad")
+    public ResponseEntity<String> removeAd(@RequestBody RemoveAdRequset removeAdRequset){
+        try{
+            AdvertisementService.removeAdvertisement(removeAdRequset);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

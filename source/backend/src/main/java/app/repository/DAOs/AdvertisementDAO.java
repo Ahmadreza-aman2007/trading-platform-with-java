@@ -1,6 +1,9 @@
 
 package app.repository.DAOs;
 
+import app.dto.user.CustomSearchRequest;
+import app.dto.user.CustomSearchResponse;
+import app.dto.user.RemoveAdRequset;
 import app.entities.Advertisement;
 import app.entities.users.enums.AdStatus;
 import app.repository.DatabaseConnection;
@@ -15,7 +18,7 @@ import java.util.List;
 public class AdvertisementDAO {
 
 
-    public boolean insertAdvertisement(Advertisement ad) {
+    public static boolean insertAdvertisement(Advertisement ad) {
         String sql = "INSERT INTO advertisements (title, description, price, seller_username, city, category, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -38,9 +41,33 @@ public class AdvertisementDAO {
         }
     }
 
+    public static void removeAdvertisement(Long id) throws Exception {
+        String sql = "DELETE FROM advertisements WHERE id = ?";
+        try(Connection conn = DatabaseConnection.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setLong(1, id);
+            int e=pstmt.executeUpdate();
+            if(e==0){
+                throw new Exception("advertisement does not exist");
+            }
+        }
+    }
 
-    public List<Advertisement> getApprovedAdvertisements() {
-        List<Advertisement> ads = new ArrayList<>();
+    public static ArrayList<Advertisement> advancedSearch(CustomSearchRequest customSearchRequest) throws Exception {
+        ArrayList<Advertisement> advertisements = getApprovedAdvertisements();
+        ArrayList<Advertisement> results = new ArrayList<>();
+        for (Advertisement advertisement : advertisements) {
+            if((advertisement.getCategory().equals(customSearchRequest.getCategory())||customSearchRequest.getCategory().equals("null"))
+                    &&(advertisement.getCity().equals(customSearchRequest.getCity())||customSearchRequest.getCity().equals("null"))
+            &&(advertisement.getPrice()<= customSearchRequest.getPriceCeiling())&&advertisement.getPrice()>= customSearchRequest.getPriceFloor()
+            &&(advertisement.getTitle().contains(customSearchRequest.getKeyword())||customSearchRequest.getKeyword().equals("null"))){
+                results.add(advertisement);
+            }
+        }
+        return results;
+    }
+    public static ArrayList<Advertisement> getApprovedAdvertisements() {
+        ArrayList<Advertisement> ads = new ArrayList<>();
         String sql = "SELECT * FROM advertisements WHERE status = 'APPROVED' ORDER BY created_at DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -49,7 +76,7 @@ public class AdvertisementDAO {
 
             while (rs.next()) {
                 Advertisement ad = new Advertisement(
-                        rs.getInt("id"),
+                        rs.getLong("id"),
                         rs.getString("title"),
                         rs.getString("description"),
                         rs.getLong("price"),
@@ -67,8 +94,23 @@ public class AdvertisementDAO {
         return ads;
     }
 
-
-    public boolean updateAdvertisementStatus(int adId, AdStatus newStatus) {
+    public static void update(Advertisement ad) throws Exception {
+        String query="UPDATE advertisements SET title=? ,discription=?,price=?,city=?,category=? WHERE id = ?";
+        try(Connection c=DatabaseConnection.getConnection();
+        PreparedStatement pstmt=c.prepareStatement(query);){
+            pstmt.setString(1, ad.getTitle());
+            pstmt.setString(2, ad.getDescription());
+            pstmt.setLong(3, ad.getPrice());
+            pstmt.setString(4, ad.getCity());
+            pstmt.setString(5, ad.getCategory());
+            pstmt.setLong(6, ad.getId());
+            int e=pstmt.executeUpdate();
+            if (e==0){
+                throw new Exception("Error updating advertisement");
+            }
+        }
+    }
+    public static boolean updateAdvertisementStatus(int adId, AdStatus newStatus) {
         String sql = "UPDATE advertisements SET status = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -83,6 +125,19 @@ public class AdvertisementDAO {
         } catch (SQLException e) {
             System.err.println("Error updating ad status: " + e.getMessage());
             return false;
+        }
+    }
+    public static  Advertisement getAdvertisementById(long id) throws Exception {
+        String sql = "SELECT * FROM advertisements WHERE id = ?";
+        try(Connection c=DatabaseConnection.getConnection();
+        PreparedStatement pstmt=c.prepareStatement(sql);){
+            pstmt.setLong(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Advertisement advertisement=new Advertisement(rs.getLong("id"),rs.getString("title"),rs.getString("discripteion"), rs.getLong("price"),rs.getString("seller_username"),rs.getString("city"),rs.getString("category") );
+                return advertisement;
+            }
+            throw new Exception("No advertisement with id " + id);
         }
     }
 }
