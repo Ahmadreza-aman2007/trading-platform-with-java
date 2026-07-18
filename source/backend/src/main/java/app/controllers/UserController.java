@@ -5,6 +5,8 @@ import app.entities.Advertisement;
 import app.entities.Favorite;
 import app.repository.DAOs.AdvertisementDAO;
 import app.repository.DAOs.FavoriteDAO;
+import app.repository.DAOs.RatingDAO;
+import app.repository.RatingService;
 import app.services.AdvertisementService;
 import app.services.FavoriteService;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ public class UserController {
             AdvertisementService.addAdvertisement(addAdRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -34,6 +37,7 @@ public class UserController {
             AdvertisementService.editAdvertisement(editAdRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -43,6 +47,7 @@ public class UserController {
             AdvertisementService.removeAdvertisement(removeAdRequset);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -52,6 +57,7 @@ public class UserController {
             ArrayList<Advertisement> res=AdvertisementDAO.advancedSearch(customSearchRequest);
             return new ResponseEntity<>(res, HttpStatus.OK);
         }catch(Exception e){
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -61,6 +67,7 @@ public class UserController {
             FavoriteService.addFavorite(addFavoriteRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -70,6 +77,7 @@ public class UserController {
             ArrayList<Advertisement> res= FavoriteService.getFavorites(getFavoritesRequest);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -79,6 +87,17 @@ public class UserController {
             FavoriteService.removeFavorite(removeFavoriteRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
+            System.err.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/add-rating")
+    public ResponseEntity<String> addRating(@RequestBody AddRatingRequest addRatingRequest){
+        try{
+            RatingService.addRating(addRatingRequest);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -54,6 +54,7 @@ public class ManagerController {
             ManagerService.addCity(addCityRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             if (e.getMessage().equals("token expired")||e.getMessage().equals("this username does not match")||e.getMessage().equals("token not found")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
@@ -66,6 +67,7 @@ public class ManagerController {
                 ManagerService.addProductCategory(addCategoryRequest);
                 return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             if (e.getMessage().equals("token expired")||e.getMessage().equals("this username does not match")||e.getMessage().equals("token not found")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
@@ -78,6 +80,7 @@ public class ManagerController {
             AdvertisementService.changeAdStatus(changeAdStatusRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -87,6 +90,7 @@ public class ManagerController {
             AdvertisementService.removeAdvertisement(removeAdRequset);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
