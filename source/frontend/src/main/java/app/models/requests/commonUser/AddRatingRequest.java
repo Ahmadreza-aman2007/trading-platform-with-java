@@ -1,42 +1,25 @@
-package app.models.entities;
+package app.models.requests.commonUser;
 
-
-import java.time.LocalDateTime;
-
-public class Rating {
-
-    private Long id;
-
+public class AddRatingRequest {
     private Long raterId;
-
     private Long sellerId;
-
     private Long adId;
-
     private int score;
-
     private String comment;
+    private String username;
+    private String token;
 
-    private String createdAt;
+    public AddRatingRequest() {}
 
-    private String raterUsername;
-    protected void onCreate() {
-        createdAt = LocalDateTime.now().toString();
-    }
-
-    public Rating() {}
-
-    public Rating(Long raterId, Long sellerId, Long adId, int score, String comment,String raterUsername) {
+    public AddRatingRequest(Long raterId, Long sellerId, Long adId, int score, String comment, String username, String token) {
         this.raterId = raterId;
         this.sellerId = sellerId;
         this.adId = adId;
-        this.raterUsername=raterUsername;
         this.score = score;
         this.comment = comment;
+        this.username = username;
+        this.token = token;
     }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
     public Long getRaterId() { return raterId; }
     public void setRaterId(Long raterId) { this.raterId = raterId; }
@@ -53,14 +36,9 @@ public class Rating {
     public String getComment() { return comment; }
     public void setComment(String comment) { this.comment = comment; }
 
-    public String getCreatedAt() { return createdAt; }
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-    public String getRaterUsername() {
-        return raterUsername;
-    }
-
-    public void setRaterUsername(String raterUsername) {
-        this.raterUsername = raterUsername;
-    }
+    public String getToken() { return token; }
+    public void setToken(String token) { this.token = token; }
 }

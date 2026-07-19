@@ -29,9 +29,8 @@
                 <Region HBox.hgrow="ALWAYS"/>
                 <Label fx:id="priceLabel" text="۰ تومان" style="-fx-font-size: 1.3em;  -fx-text-fill: #27ae60;"/>
 
-                <!-- ===== دکمه‌ی علاقه‌مندی (ستاره) ===== -->
-                <Button fx:id="favoriteBtn" onAction="#toggleFavorite"
-                        style="-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 0;"/>
+                <Button fx:id="favoriteBtn" onAction="#toggleFavorite" text="#"
+                        style="-fx-background-color: transparent; -fx-text-fill: #27ae60;-fx-cursor: hand;-fx-font-size: 2em; -fx-padding:0;"/>
             </HBox>
 
             <!-- ===== اطلاعات اصلی ===== -->

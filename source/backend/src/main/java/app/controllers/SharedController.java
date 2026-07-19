@@ -4,14 +4,13 @@ import app.entities.Advertisement;
 import app.entities.categories.City;
 import app.entities.categories.ProductCategory;
 import app.repository.DAOs.AdvertisementDAO;
+import app.repository.DAOs.UserDAO;
 import app.services.AdvertisementService;
 import app.services.CategoryService;
 import app.services.CityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -44,6 +43,15 @@ public class SharedController {
             return new ResponseEntity<>(ads, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<Long> getUserIdByUsername(@PathVariable String username) {
+        try {
+            Long userId = UserDAO.findIdByUsername(username);
+            return ResponseEntity.ok(userId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 

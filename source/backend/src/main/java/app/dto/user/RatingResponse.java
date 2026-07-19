@@ -1,47 +1,28 @@
-package app.entities;
+package app.dto.user;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "ratings")
-public class Rating {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RatingResponse {
     private Long id;
-
-    @Column(name = "rater_id", nullable = false)
     private Long raterId;
-
-    @Column(name = "seller_id", nullable = false)
     private Long sellerId;
-
-    @Column(name = "ad_id", nullable = false)
     private Long adId;
-
-    @Column(nullable = false)
     private int score;
-
-    @Column(length = 500)
     private String comment;
+    private String createdAt;
+    private String raterUsername;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    public RatingResponse() {}
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
-
-    public Rating() {}
-
-    public Rating(Long raterId, Long sellerId, Long adId, int score, String comment) {
+    public RatingResponse(Long id, Long raterId, Long sellerId, Long adId, int score, String comment,String raterUsername, String createdAt) {
+        this.id = id;
         this.raterId = raterId;
+        this.raterUsername = raterUsername;
         this.sellerId = sellerId;
         this.adId = adId;
         this.score = score;
         this.comment = comment;
+        this.createdAt = createdAt;
     }
 
     public Long getId() { return id; }
@@ -62,7 +43,10 @@ public class Rating {
     public String getComment() { return comment; }
     public void setComment(String comment) { this.comment = comment; }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getCreatedAt() { return createdAt; }
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+
+    public String getRaterUsername() { return raterUsername; }
+    public void setRaterUsername(String raterUsername) { this.raterUsername = raterUsername; }
 
 }

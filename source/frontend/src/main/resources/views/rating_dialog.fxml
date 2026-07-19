@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.lang.Integer?>
+<?import javafx.collections.FXCollections?>
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.controllers.RatingDialogController"
+      spacing="15"
+      style="-fx-padding: 25; -fx-background-color: #f8f9fa;"
+      alignment="CENTER">
+
+    <Label text="⭐ امتیاز دهی" style="-fx-font-size: 1.5em; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <Label text="امتیاز شما (۱ تا ۵):" style="-fx-font-size: 1.1em;"/>
+    <ComboBox fx:id="scoreCombo" promptText="انتخاب امتیاز" style="-fx-pref-width: 100;">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <Integer fx:value="1"/>
+                <Integer fx:value="2"/>
+                <Integer fx:value="3"/>
+                <Integer fx:value="4"/>
+                <Integer fx:value="5"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <Label text="نظر شما (اختیاری):" style="-fx-font-size: 1.1em;"/>
+    <TextArea fx:id="commentArea" promptText="نظر خود را بنویسید..." prefRowCount="4" style="-fx-pref-width: 300;"/>
+
+    <Label fx:id="errorLabel" style="-fx-text-fill: red; -fx-font-size: 0.9em;" visible="false"/>
+
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="💾 ثبت امتیاز" onAction="#submitRating" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 0.7em 2em;"/>
+        <Button text="❌ انصراف" onAction="#closeDialog" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 0.7em 2em;"/>
+    </HBox>
+
+</VBox>

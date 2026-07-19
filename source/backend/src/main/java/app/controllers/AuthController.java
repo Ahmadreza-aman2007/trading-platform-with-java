@@ -34,7 +34,7 @@ public class AuthController {
         try {
             String res=AuthService.login(loginRequest);
             User user=  UserDAO.loadUserByUsername(loginRequest.getUsername());
-            LoginResponse loginResponse=new LoginResponse(res, user.getUsername(),user.getFullname(),user.getUserRole().name(), user.getPhoneNumber());
+            LoginResponse loginResponse=new LoginResponse(user.getId(), res, user.getUsername(),user.getFullname(),user.getUserRole().name(), user.getPhoneNumber());
             return ResponseEntity.ok(loginResponse);
         } catch (Exception e) {
             String message=e.getMessage();

@@ -5,14 +5,19 @@ import app.models.entities.Rating;
 import app.models.entities.User;
 import app.services.FavoriteService;
 import app.services.RatingService;
+import app.services.UserService;
 import app.utils.ControllersUtils;
 import app.utils.SessionManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -38,9 +43,10 @@ public class AdDetailController {
     private boolean isFavorite = false;
     private boolean isOwner = false;
 
-    public void initialize(){
+    public void initialize() {
         ControllersUtils.setRootFontSize(titleLabel);
     }
+
     public void setAdvertisement(Advertisement ad) {
         this.currentAd = ad;
         displayAdDetails();
@@ -50,7 +56,6 @@ public class AdDetailController {
         loadRatings();
     }
 
-    // ===== نمایش اطلاعات آگهی =====
     private void displayAdDetails() {
         if (currentAd == null) return;
         titleLabel.setText(currentAd.getTitle());
@@ -63,15 +68,12 @@ public class AdDetailController {
         sellerLabel.setText("👤 " + currentAd.getSellerUsername());
     }
 
-    // ===== بررسی اینکه کاربر صاحب آگهی است =====
     private void checkIfOwner() {
         User currentUser = SessionManager.getCurrentUser();
         if (currentUser != null && currentAd.getSellerUsername().equals(currentUser.getUsername())) {
             isOwner = true;
             actionButtons.setVisible(false);
-            actionButtons.setManaged(
-
-                    false);
+            actionButtons.setManaged(false);  // ← رفع اشکال (قبلاً دو خط بود)
             commentsSection.setVisible(false);
             commentsSection.setManaged(false);
             favoriteBtn.setVisible(false);
@@ -86,11 +88,9 @@ public class AdDetailController {
             favoriteBtn.setManaged(true);
         }
     }
-    // ===== تنظیم آگهی =====
 
-    // ===== بررسی وضعیت علاقه‌مندی =====
     private void checkFavoriteStatus() {
-        if (isOwner) return;
+        if (isOwner || SessionManager.getCurrentUser() == null) return;
         new Thread(() -> {
             try {
                 boolean fav = FavoriteService.isFavorite(SessionManager.getCurrentUser().getId(), currentAd.getId());
@@ -101,7 +101,6 @@ public class AdDetailController {
         }).start();
     }
 
-    // ===== به‌روزرسانی دکمه‌ی علاقه‌مندی =====
     private void updateFavoriteButton(boolean fav) {
         isFavorite = fav;
         if (isFavorite) {
@@ -113,10 +112,9 @@ public class AdDetailController {
         }
     }
 
-    // ===== تغییر وضعیت علاقه‌مندی =====
     @FXML
     private void toggleFavorite() {
-        if (isOwner) return;
+        if (isOwner || SessionManager.getCurrentUser() == null) return;
         new Thread(() -> {
             try {
                 if (isFavorite) {
@@ -131,50 +129,132 @@ public class AdDetailController {
         }).start();
     }
 
-    // ===== بارگذاری کامنت‌ها =====
     private void loadComments() {
-        // بعداً از سرور می‌گیریم
         commentsContainer.getChildren().clear();
-        commentsContainer.getChildren().add(new Label("💬 نظر خود را ثبت کنید (در حال توسعه)"));
-    }
 
-    // ===== بارگذاری امتیازها =====
-    private void loadRatings() {
         new Thread(() -> {
             try {
-                double avg = RatingService.getAverageScore(currentAd.getSellerUsername());
-                int count = RatingService.getRatingCount(currentAd.getSellerUsername());
+                List<Rating> ratings = RatingService.getSellerRatingsByUsername(currentAd.getSellerUsername(),currentAd.getId());
+
                 Platform.runLater(() -> {
-                    ratingLabel.setText(String.format("⭐ %.1f (%d امتیاز)", avg, count));
+                    if (ratings.isEmpty()) {
+                        commentsContainer.getChildren().add(new Label("💬 هنوز نظری ثبت نشده است."));
+                    } else {
+                        for (Rating r : ratings) {
+                            VBox commentBox = createCommentBox(r);
+                            commentsContainer.getChildren().add(commentBox);
+                        }
+                    }
                 });
             } catch (Exception e) {
+                System.err.println("❌ خطا در دریافت نظرات: " + e.getMessage());
                 e.printStackTrace();
+                Platform.runLater(() -> {
+                    commentsContainer.getChildren().add(new Label("❌ خطا در دریافت نظرات: " + e.getMessage()));
+                });
             }
         }).start();
     }
 
-    // ===== شروع چت =====
+    private VBox createCommentBox(Rating rating) {
+        VBox box = new VBox(5);
+        box.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 8; -fx-padding: 10;");
+
+        // ===== نمایش raterId به همراه یک برچسب بهتر (چون raterUsername در مدل وجود ندارد) =====
+        // در صورت اضافه شدن raterUsername به مدل، می‌توانید این بخش را تغییر دهید.
+        String displayName = "کاربر شماره " + rating.getRaterId();
+        Label userLabel = new Label("👤 " + displayName);
+        userLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 0.9em;");
+
+        Label scoreLabel = new Label("⭐ " + rating.getScore() + " از ۵");
+        scoreLabel.setStyle("-fx-text-fill: #f39c12;");
+
+        Label commentLabel = new Label(rating.getComment() != null ? rating.getComment() : "نظری ثبت نشده");
+        commentLabel.setStyle("-fx-font-size: 0.9em; -fx-text-fill: #2c3e50;");
+        commentLabel.setWrapText(true);
+
+        box.getChildren().addAll(userLabel, scoreLabel, commentLabel);
+        return box;
+    }
+
+    private void loadRatings() {
+        new Thread(() -> {
+            try {
+                List<Rating> ratings = RatingService.getSellerRatingsByUsername(currentAd.getSellerUsername(),currentAd.getId());
+
+                Platform.runLater(() -> {
+                    if (ratings.isEmpty()) {
+                        ratingLabel.setText("⭐ بدون امتیاز");
+                    } else {
+                        double avg = ratings.stream().mapToInt(Rating::getScore).average().orElse(0.0);
+                        ratingLabel.setText(String.format("⭐ %.1f (%d امتیاز)", avg, ratings.size()));
+                    }
+                });
+            } catch (Exception e) {
+                System.err.println("❌ خطا در بارگذاری امتیازات: " + e.getMessage());
+                e.printStackTrace();
+                Platform.runLater(() -> ratingLabel.setText("⭐ بدون امتیاز"));
+            }
+        }).start();
+    }
+
     @FXML
     private void startChat() {
+        if (SessionManager.getCurrentUser() == null) {
+            showTemporaryMessage("❌ لطفاً ابتدا وارد شوید");
+            return;
+        }
         System.out.println("💬 شروع چت با فروشنده: " + currentAd.getSellerUsername());
         // بعداً پیاده‌سازی می‌شود
     }
 
-    // ===== باز کردن دیالوگ امتیازدهی =====
     @FXML
     private void openRatingDialog() {
-        System.out.println("⭐ باز کردن پنجره امتیازدهی برای آگهی: " + currentAd.getId());
-        // بعداً پیاده‌سازی می‌شود
+        if (SessionManager.getCurrentUser() == null) {
+            showTemporaryMessage("❌ لطفاً ابتدا وارد شوید");
+            return;
+        }
+
+        new Thread(() -> {
+            try {
+                Long sellerId = UserService.getUserIdByUsername(currentAd.getSellerUsername());
+
+                Platform.runLater(() -> {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/rating_dialog.fxml"));
+                        Parent root = loader.load();
+
+                        RatingDialogController controller = loader.getController();
+                        controller.setAdData(currentAd.getId(), sellerId);
+
+                        Stage stage = new Stage();
+                        stage.setTitle("⭐ امتیاز دهی");
+                        stage.setScene(new Scene(root, 400, 450));
+                        stage.initModality(Modality.WINDOW_MODAL);
+                        stage.initOwner(favoriteBtn.getScene().getWindow());
+                        stage.showAndWait();
+
+                        loadRatings(); // بارگذاری مجدد امتیازات بعد از بستن دیالوگ
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    System.err.println("❌ خطا در دریافت sellerId: " + e.getMessage());
+                });
+            }
+        }).start();
     }
 
-    // ===== بازگشت =====
     @FXML
     private void goBack() {
         Stage stage = (Stage) titleLabel.getScene().getWindow();
         stage.close();
     }
 
-    // ===== ترجمه وضعیت =====
     private String translateStatus(String status) {
         if (status == null) return "نامشخص";
         return switch (status.toUpperCase()) {
@@ -185,5 +265,11 @@ public class AdDetailController {
             case "DELETED" -> "🗑️ حذف شده";
             default -> status;
         };
+    }
+
+    // ===== متد کمکی برای نمایش پیام موقت (مثلاً در startChat) =====
+    private void showTemporaryMessage(String msg) {
+        // می‌توانید از یک Alert یا Toast استفاده کنید، فعلاً فقط چاپ در کنسول
+        System.out.println(msg);
     }
 }

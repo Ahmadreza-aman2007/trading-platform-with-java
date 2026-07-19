@@ -29,4 +29,20 @@ public class UserService {
                         throw new Exception("error in edit user from server");
                     }
     }
+    public static Long getUserIdByUsername(String username) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/public/by-username/" + username))
+                .header("Content-Type", "application/json")
+                .GET()
+                .timeout(Duration.ofSeconds(10))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            return Long.parseLong(response.body());
+        } else {
+            throw new Exception("کاربری با این نام کاربری یافت نشد");
+        }
+    }
 }

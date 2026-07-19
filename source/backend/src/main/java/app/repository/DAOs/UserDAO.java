@@ -246,4 +246,16 @@ public class UserDAO {
             return app.repository.enums.UserDAO.UNEXPECTED_ERROR;
         }
     }
+    public static Long findIdByUsername(String username) throws Exception {
+        String sql = "SELECT id FROM users WHERE username = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getLong("id");
+            }
+            throw new Exception("User not found");
+        }
+    }
 }
