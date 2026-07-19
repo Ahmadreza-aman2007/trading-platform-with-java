@@ -45,6 +45,7 @@ public class MyAdsController {
     public void initialize() {
         loadCategoriesAndCities();
         loadMyAds();
+        ControllersUtils.setRootFontSize(messageBox);
     }
 
     // ===== دریافت دسته‌بندی‌ها و شهرها =====
@@ -230,7 +231,6 @@ public class MyAdsController {
         VBox root = new VBox(15);
 
         // ===== تنظیم فونت پایه با ControllersUtils =====
-        ControllersUtils.setRootFontSize(root);
         root.setStyle("-fx-padding: 2.5em; -fx-background-color: #f8f9fa;");
 
         // ===== عنوان =====
@@ -303,24 +303,13 @@ public class MyAdsController {
         );
 
         // ===== اندازه‌ی Scene بر اساس صفحه =====
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        double dialogWidth = screenBounds.getWidth() * 0.45;
-        double dialogHeight = screenBounds.getHeight() * 0.65;
 
-        Scene scene = new Scene(root, dialogWidth, dialogHeight);
-
-        // ===== اضافه کردن CSS به Scene =====
-//        try {
-//            String cssPath = getClass().getResource("/css/myAds/style.css").toExternalForm();
-//            scene.getStylesheets().add(cssPath);
-//        } catch (Exception e) {
-//            // CSS پیدا نشد، نادیده گرفته می‌شود
-//        }
-
+        Scene scene = new Scene(root);
+        ControllersUtils.setPageFullScreen(dialog);
+        ControllersUtils.setRootFontSize(root);
         dialog.setScene(scene);
         dialog.setResizable(false);
 
-        // ===== رویدادها =====
         cancelBtn.setOnAction(e -> dialog.close());
 
         saveBtn.setOnAction(e -> {
@@ -402,8 +391,6 @@ public class MyAdsController {
             }).start();
         });
 
-        dialog.setHeight(dialogHeight);
-        dialog.setWidth(dialogWidth);
         dialog.showAndWait();
     }
 

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.controllers.AdDetailController"
+      spacing="15"
+      style="-fx-padding: 25; -fx-background-color: #f8f9fa;"
+      nodeOrientation="RIGHT_TO_LEFT">
+
+    <!-- ===== هدر با دکمه بازگشت ===== -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="📋 جزئیات آگهی" style="-fx-font-size: 1.8em;  -fx-text-fill: #2c3e50;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="🔙 بازگشت" onAction="#goBack" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 0.5em 1.5em;"/>
+    </HBox>
+
+    <Separator style="-fx-background-color: #ddd;"/>
+
+    <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
+        <VBox spacing="20" style="-fx-padding: 10;">
+
+            <!-- ===== عنوان و قیمت و ستاره ===== -->
+            <HBox spacing="20" alignment="CENTER_LEFT">
+                <Label fx:id="titleLabel" text="عنوان آگهی" style="-fx-font-size: 1.5em; -fx-text-fill: #2c3e50;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="priceLabel" text="۰ تومان" style="-fx-font-size: 1.3em;  -fx-text-fill: #27ae60;"/>
+
+                <!-- ===== دکمه‌ی علاقه‌مندی (ستاره) ===== -->
+                <Button fx:id="favoriteBtn" onAction="#toggleFavorite"
+                        style="-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 0;"/>
+            </HBox>
+
+            <!-- ===== اطلاعات اصلی ===== -->
+            <GridPane hgap="15" vgap="10" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);">
+                <Label text="دسته‌بندی:" style=" -fx-text-fill: #7f8c8d;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label fx:id="categoryLabel" text="-" style=" -fx-text-fill: #7f8c8d;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="شهر:" style=" -fx-text-fill: #7f8c8d;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <Label fx:id="cityLabel" text="-" style=" -fx-text-fill: #7f8c8d;" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="وضعیت:" style=" -fx-text-fill: #7f8c8d;" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <Label fx:id="statusLabel" text="-" style=" -fx-text-fill: #7f8c8d;" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <Label text="تاریخ ثبت:" style="-fx-text-fill: #7f8c8d;" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <Label fx:id="createdAtLabel" text="-" style=" -fx-text-fill: #7f8c8d;" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            </GridPane>
+
+            <!-- ===== توضیحات ===== -->
+            <VBox spacing="8" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);">
+                <Label text="📝 توضیحات:" style=" -fx-text-fill: #2c3e50; -fx-font-size: 1.1em;"/>
+                <Label fx:id="descriptionLabel" text="-" wrapText="true" style="-fx-font-size: 1em; -fx-text-fill: #34495e;"/>
+            </VBox>
+
+            <!-- ===== فروشنده و امتیاز ===== -->
+            <VBox spacing="8" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);">
+                <HBox spacing="15" alignment="CENTER_LEFT">
+
+                    <Label text="👤 فروشنده:" style="-fx-text-fill: #2c3e50; -fx-font-size: 1.1em;"/>
+                    <Label fx:id="sellerLabel" text="-" style="-fx-font-size: 1em; -fx-text-fill: #34495e;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="ratingLabel" text="⭐ ۰.۰ (۰ امتیاز)" style="-fx-font-size: 1em; -fx-text-fill: #f39c12;"/>
+                </HBox>
+            </VBox>
+
+            <!-- ===== دکمه‌های اقدام ===== -->
+            <HBox fx:id="actionButtons" spacing="15" alignment="CENTER" visible="false" managed="false">
+                <Button text="💬 شروع چت" onAction="#startChat"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 0.7em 2em;"/>
+                <Button text="⭐ امتیاز دهی" onAction="#openRatingDialog"
+                        style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 0.7em 2em;"/>
+            </HBox>
+
+            <!-- ===== بخش کامنت‌ها ===== -->
+            <VBox fx:id="commentsSection" spacing="10" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);">
+                <Label text="💬 نظرات کاربران" style=" -fx-text-fill: #2c3e50; -fx-font-size: 1.1em;"/>
+                <VBox fx:id="commentsContainer" spacing="8">
+                    <Label text="هنوز نظری ثبت نشده است." style="-fx-text-fill: #95a5a6; -fx-font-style: italic;"/>
+                </VBox>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+</VBox>

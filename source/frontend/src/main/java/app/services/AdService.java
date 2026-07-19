@@ -92,9 +92,7 @@ public class AdService {
         ChangeAdStatusRequest request = new ChangeAdStatusRequest(adId, newStatus, username, token);
         String json = objectMapper.writeValueAsString(request);
 
-        HttpRequest httpRequest
-
-                = HttpRequest.newBuilder()
+        HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(new URI("http://localhost:8080/api/manager/change-ad-status"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -125,16 +123,10 @@ public class AdService {
         }
     }
     public static ArrayList<Advertisement> sendGetApprovedAdsRequest() throws Exception {
-        GetApprovedAdsRequest request = new GetApprovedAdsRequest(
-                SessionManager.getCurrentUser().getUsername(),
-                SessionManager.getToken()
-        );
-
-        String json = objectMapper.writeValueAsString(request);
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(new URI("http://localhost:8080/api/public/get-approved-ads"))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .POST(HttpRequest.BodyPublishers.noBody())
                 .timeout(Duration.ofSeconds(10))
                 .build();
 

@@ -120,7 +120,7 @@ public class AdvertisementDAO {
 
             pstmt.setString(1, newStatus);
             pstmt.setInt(2, adId);
-
+            System.out.println(newStatus);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
 

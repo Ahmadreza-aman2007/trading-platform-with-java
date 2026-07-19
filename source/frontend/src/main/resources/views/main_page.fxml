@@ -32,9 +32,16 @@
             <Button text="پنل کاربری" visible="false" fx:id="userPanel" styleClass="primary-button" onAction="#goToPanelPage"/>
          </HBox>
       </HBox>
-      <ScrollPane>
-
+      <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;">
+         <TilePane fx:id="adsContainer"
+                   prefColumns="3"
+                   hgap="20"
+                   vgap="20"
+                   style="-fx-padding: 20; -fx-background-color: transparent;"/>
       </ScrollPane>
+      <Label fx:id="emptyLabel" text="❌ هیچ آگهی تأییدشده‌ای وجود ندارد."
+             style="-fx-font-size: 1.2em; -fx-text-fill: #7f8c8d; -fx-padding: 40;"
+             visible="false" managed="false"/>
    </VBox>
    <VBox fx:id="searchPanel" styleClass="advanced-search-bar" alignment="CENTER" maxWidth="-Infinity" maxHeight="-Infinity" spacing="40">
       <Label text="جستجوی پیشرفته "/>

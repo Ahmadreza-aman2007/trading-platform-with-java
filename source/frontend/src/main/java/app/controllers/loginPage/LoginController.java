@@ -70,12 +70,13 @@ public class LoginController {
                     switch (statusCode) {
                         case 200: {
                             JsonNode jsonNode = objectMapper.readTree(httpResponse.body());
+                            Long rId = jsonNode.get("id").asLong();
                             String rToken = jsonNode.get("token").asText();
                             String rUsername = jsonNode.get("username").asText();
                             String rRole = jsonNode.get("role").asText();
                             String rFullname = jsonNode.get("fullname").asText();
                             String rPhoneNumber = jsonNode.get("phoneNumber").asText();
-                            User u = new User(rUsername, rPhoneNumber, rRole, rFullname);
+                            User u = new User(rId,rUsername, rPhoneNumber, rRole, rFullname);
                             SessionManager.setCurrentUser(u);
                             SessionManager.setToken(rToken);
                             javafx.application.Platform.runLater(this::goToMainPage);

@@ -2,12 +2,12 @@ package app.models.requests.manager;
 
 public class ChangeAdStatusRequest {
     private Long adId;
-    private String newStatus;
+    private String status;
     private String username;
     private String token;
-    public ChangeAdStatusRequest(Long adId, String newStatus,String username, String token) {
+    public ChangeAdStatusRequest(Long adId, String status,String username, String token) {
         this.adId = adId;
-        this.newStatus = newStatus;
+        this.status = status;
         this.username = username;
         this.token = token;
     }
@@ -36,11 +36,11 @@ public class ChangeAdStatusRequest {
         this.token = token;
     }
 
-    public void setNewStatus(String newStatus) {
-        this.newStatus = newStatus;
+    public void setStatus(String newStatus) {
+        this.status = newStatus;
     }
 
-    public String getNewStatus() {
-        return newStatus;
+    public String getStatus() {
+        return status;
     }
 }
