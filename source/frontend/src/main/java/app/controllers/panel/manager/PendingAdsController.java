@@ -96,6 +96,7 @@ public class PendingAdsController {
 
             } catch (Exception e) {
                 Platform.runLater(() -> {
+                    System.err.println(e);
                     showError("❌ خطا در دریافت لیست آگهی‌ها: " + e.getMessage());
                 });
             }

@@ -54,6 +54,7 @@ public class AdService {
                     HttpResponse<String> httpResponse=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
                     if(httpResponse.statusCode()==200){
                         System.out.println("successful");
+                        return;
                     }
                     throw new Exception("remove ad failed");
                 }
@@ -67,6 +68,7 @@ public class AdService {
                     HttpResponse<String> httpResponse=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
                     if(httpResponse.statusCode()>=200&&httpResponse.statusCode()<300){
                         System.out.println("successful");
+                        return;
                     }
                     throw new Exception("edit ad failed");
                 }
@@ -81,6 +83,7 @@ public class AdService {
                     HttpResponse<String> httpResponse=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
                     if(httpResponse.statusCode()==200){
                         System.out.println("successful");
+                        return;
                     }
                     throw new Exception("add ad failed");
                 }
@@ -99,7 +102,7 @@ public class AdService {
                 .build();
 
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() != 200) {
+        if (response.statusCode() <200 || response.statusCode()>=300) {
             throw new Exception("خطا در تغییر وضعیت آگهی: " + response.statusCode());
         }
     }
@@ -117,6 +120,7 @@ public class AdService {
 
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {
+            System.err.println(response.statusCode());
             throw new Exception("خطا در حذف آگهی: " + response.statusCode());
         }
     }

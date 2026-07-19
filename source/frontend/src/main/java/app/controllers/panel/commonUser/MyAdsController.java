@@ -85,6 +85,7 @@ public class MyAdsController {
 
             } catch (Exception e) {
                 Platform.runLater(() -> {
+                    System.out.println(e);
                     showError("❌ خطا", "دریافت آگهی‌ها: " + e.getMessage());
                 });
             }
@@ -194,9 +195,7 @@ public class MyAdsController {
             if (response == ButtonType.OK) {
                 new Thread(() -> {
                     try {
-                        AdService.sendRemoveAdRequest(
-                                ad.getId()
-                        );
+                        AdService.sendRemoveAdRequest(ad.getId());
                         Platform.runLater(() -> {
                             showInfo("🗑️ حذف موفق", "آگهی «" + ad.getTitle() + "» با موفقیت حذف شد.");
                             loadMyAds();
