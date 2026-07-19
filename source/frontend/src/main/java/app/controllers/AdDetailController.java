@@ -91,12 +91,15 @@ public class AdDetailController {
 
     private void checkFavoriteStatus() {
         if (isOwner || SessionManager.getCurrentUser() == null) return;
+
         new Thread(() -> {
             try {
-                boolean fav = FavoriteService.isFavorite(SessionManager.getCurrentUser().getId(), currentAd.getId());
+                boolean fav = FavoriteService.isFavorite(
+                        currentAd.getId());
                 Platform.runLater(() -> updateFavoriteButton(fav));
             } catch (Exception e) {
                 e.printStackTrace();
+                Platform.runLater(() -> updateFavoriteButton(false));
             }
         }).start();
     }
@@ -115,16 +118,26 @@ public class AdDetailController {
     @FXML
     private void toggleFavorite() {
         if (isOwner || SessionManager.getCurrentUser() == null) return;
+
         new Thread(() -> {
             try {
                 if (isFavorite) {
-                    FavoriteService.removeFavorite(SessionManager.getCurrentUser().getId(), currentAd.getId());
+                    FavoriteService.removeFavorite(
+                            currentAd.getId()
+                    );
                 } else {
-                    FavoriteService.addFavorite(SessionManager.getCurrentUser().getId(), currentAd.getId());
+                    FavoriteService.addFavorite(
+                            SessionManager.getCurrentUser().getId(),
+                            currentAd.getId()
+                    );
                 }
                 Platform.runLater(() -> updateFavoriteButton(!isFavorite));
             } catch (Exception e) {
                 e.printStackTrace();
+                Platform.runLater(() -> {
+                    // نمایش پیام خطا
+                    System.err.println("❌ خطا در تغییر وضعیت علاقه‌مندی: " + e.getMessage());
+                });
             }
         }).start();
     }

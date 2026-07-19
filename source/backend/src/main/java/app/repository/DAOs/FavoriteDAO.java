@@ -1,7 +1,5 @@
 package app.repository.DAOs;
 
-import app.dto.user.RemoveFavoriteRequest;
-import app.entities.Advertisement;
 import app.entities.Favorite;
 import app.repository.DatabaseConnection;
 
@@ -15,7 +13,7 @@ public class FavoriteDAO {
     if (isFavoriteExists(favorite.getUserId(),favorite.getAdId())) {
         throw new Exception("User already exists");
     }
-    String query = "INSERT INTO favorite (user_id, ad_id) VALUES (?, ?)";
+    String query = "INSERT INTO favorites (user_id, ad_id) VALUES (?, ?)";
     try(Connection connection = DatabaseConnection.getConnection();
     PreparedStatement preparedStatement = connection.prepareStatement(query)){
         preparedStatement.setLong(1, favorite.getUserId());
@@ -26,12 +24,12 @@ public class FavoriteDAO {
         }
     }
     }
-    public static void delete(Long id) throws Exception{
-        findById(id);
-        String query = "DELETE FROM favorite WHERE id=?";
+    public static void deleteByAdId(Long adId) throws Exception{
+        findById(adId);
+        String query = "DELETE FROM favorites WHERE ad_id=?";
         try(Connection connection = DatabaseConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query)){
-            preparedStatement.setLong(1, id);
+            preparedStatement.setLong(1, adId);
             int e= preparedStatement.executeUpdate();
             if(e==0){
                 throw new Exception("error in method delete");
@@ -82,15 +80,6 @@ public class FavoriteDAO {
             return res;
         }
     }
-    public static void remove(Long id) throws Exception{
-        String query = "DELETE FROM favorites WHERE id = ?";
-        try(Connection c= DatabaseConnection.getConnection();
-        PreparedStatement s=c.prepareStatement(query)){
-            s.setLong(1, id);
-            int e= s.executeUpdate();
-            if(e==0){
-                throw new Exception("error in method remove");
-            }
-        }
+
     }
-}
+

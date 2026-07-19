@@ -31,6 +31,6 @@ public class FavoriteService {
     }
     public static void removeFavorite(RemoveFavoriteRequest removeFavoriteRequest) throws Exception {
         TokenUtil.isTokenValid(removeFavoriteRequest.getUsername(),removeFavoriteRequest.getToken(), UserRole.COMMON_USER);
-        FavoriteDAO.remove(removeFavoriteRequest.getAdId());
+        FavoriteDAO.deleteByAdId(removeFavoriteRequest.getAdId());
     }
 }
