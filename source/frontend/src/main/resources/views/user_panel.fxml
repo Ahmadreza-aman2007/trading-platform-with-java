@@ -26,7 +26,7 @@
                     <Hyperlink text="اطلاعات کاربری" onAction="#goToDashboard"/>
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="....." />
+                    <Hyperlink text="آگهی های من " onAction="#goToMyAds" />
                 </HBox>
                 <HBox styleClass="list-option">
                     <Hyperlink text="....." />
@@ -49,13 +49,16 @@
                     <Hyperlink text="لیست کاربران"  onAction="#goToUsersList"/>
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="....." />
+                    <Hyperlink text="دسته بندی ها"  onAction="#goToCategories"/>
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="....." />
+                    <Hyperlink text="شهر ها"  onAction="#goToCities"/>
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="....." />
+                    <Hyperlink text="آگهی های در انتظار بررسی"  onAction="#goToPendingAdvertisements"/>
+                </HBox>
+                <HBox styleClass="list-option">
+                    <Hyperlink text="آگهی های تایید شده"  onAction="#goToApprovedAdvertisements"/>
                 </HBox>
                 <HBox styleClass="list-option">
                     <Region VBox.vgrow="ALWAYS" />

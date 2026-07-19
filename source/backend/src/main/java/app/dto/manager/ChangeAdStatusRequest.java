@@ -4,7 +4,7 @@ import app.entities.users.enums.AdStatus;
 
 public class ChangeAdStatusRequest {
     private int adId;
-    private AdStatus status;
+    private String status;
     private String username;
     private String token;
     public ChangeAdStatusRequest(){}
@@ -13,7 +13,7 @@ public class ChangeAdStatusRequest {
         this.adId = adId;
     }
 
-    public void setStatus(AdStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -25,7 +25,7 @@ public class ChangeAdStatusRequest {
         this.username = username;
     }
 
-    public AdStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 

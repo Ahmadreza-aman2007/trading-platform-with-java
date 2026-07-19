@@ -3,6 +3,7 @@ package app.controllers;
 import app.dto.CheckTokenValidationRequest;
 import app.dto.manager.*;
 import app.dto.user.RemoveAdRequset;
+import app.entities.Advertisement;
 import app.services.AdvertisementService;
 import app.services.ManagerService;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,16 @@ public class ManagerController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/get-pending-ads")
+    public ResponseEntity<ArrayList<Advertisement>> getPendingAds(@RequestBody GetPendingAdsRequest getPendingAdsRequest) {
+        try{
+            ArrayList<Advertisement>res=AdvertisementService.getPendingAdvertisements(getPendingAdsRequest);
+            return ResponseEntity.ok(res);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @PostMapping("/change-ad-status")

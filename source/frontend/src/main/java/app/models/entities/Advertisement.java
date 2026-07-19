@@ -1,7 +1,5 @@
+package app.models.entities;
 
-package app.entities;
-
-import app.entities.users.enums.AdStatus;
 public class Advertisement {
     private Long id;
     private String title;
@@ -12,18 +10,6 @@ public class Advertisement {
     private String category;
     private String status;
     private String createdAt;
-
-
-    public Advertisement(String title, String description, long price, String sellerUsername, String city, String category) {
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.sellerUsername = sellerUsername;
-        this.city = city;
-        this.category = category;
-        this.status = AdStatus.PENDING.name();
-    }
-
 
     public Advertisement(Long id, String title, String description, long price, String sellerUsername, String city, String category, String status, String createdAt) {
         this.id = id;
@@ -36,15 +22,7 @@ public class Advertisement {
         this.status = status;
         this.createdAt = createdAt;
     }
-    public Advertisement(Long id, String title, String description, long price, String sellerUsername, String city, String category) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.sellerUsername = sellerUsername;
-        this.city = city;
-        this.category = category;
-    }
+    public Advertisement() {}
 
 
     public Long getId() { return id; }

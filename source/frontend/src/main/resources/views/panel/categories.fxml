@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.controllers.panel.manager.Categories"
+      spacing="20"
+      nodeOrientation="RIGHT_TO_LEFT"
+      style="-fx-padding: 20;">
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Label text="📂 مدیریت دسته‌بندی‌ها" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="➕ افزودن دسته‌بندی" styleClass="primary-button" onAction="#openAddCategoryPanel"/>
+    </HBox>
+
+    <TableView fx:id="categoryTableView" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="80"/>
+            <TableColumn fx:id="nameColumn" text="نام دسته‌بندی" prefWidth="300"/>
+        </columns>
+    </TableView>
+
+    <VBox fx:id="addCategoryPanel"
+          visible="false" managed="false"
+          spacing="15"
+          style="-fx-background-color: #f4f6f9; -fx-padding: 20; -fx-border-color: #ddd; -fx-border-radius: 8;">
+
+        <Label text="➕ افزودن دسته‌بندی جدید" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="نام دسته‌بندی:" minWidth="100"/>
+            <TextField fx:id="categoryNameField" promptText="مثلاً: الکترونیک" HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <Label fx:id="errorLabel" style="-fx-text-fill: red; -fx-font-size: 13px;" visible="false"/>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="💾 ذخیره" styleClass="primary-button" onAction="#addCategory"/>
+            <Button text="❌ انصراف" onAction="#closeAddCategoryPanel"/>
+        </HBox>
+
+    </VBox>
+
+</VBox>

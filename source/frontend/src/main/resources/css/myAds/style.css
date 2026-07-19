@@ -1,0 +1,94 @@
+/* ===== استایل دیالوگ ===== */
+.dialog-root {
+    -fx-font-family: "Segoe UI", "Vazir", sans-serif;
+    -fx-background-color: #f8f9fa;
+}
+
+.dialog-root .label {
+    -fx-font-size: 1em;
+    -fx-text-fill: #2c3e50;
+}
+
+.dialog-root .text-field,
+.dialog-root .text-area,
+.dialog-root .combo-box {
+    -fx-font-size: 1.1em;
+    -fx-padding: 0.6em 0.8em;
+    -fx-background-radius: 8;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 8;
+    -fx-background-color: white;
+}
+
+.dialog-root .button {
+    -fx-font-size: 1.1em;
+    -fx-padding: 0.6em 2em;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+/* ===== کارت‌های آگهی ===== */
+.ad-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 10, 0, 0, 4);
+    -fx-border-color: #ecf0f1;
+    -fx-border-radius: 12;
+}
+
+.ad-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 15, 0, 0, 6);
+}
+
+.ad-card .title {
+    -fx-font-size: 1.2em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.ad-card .price {
+    -fx-font-size: 1.1em;
+    -fx-text-fill: #27ae60;
+    -fx-font-weight: bold;
+}
+
+.ad-card .meta {
+    -fx-font-size: 0.95em;
+    -fx-text-fill: #7f8c8d;
+}
+
+/* ===== پنل پیام ===== */
+#messageOverlay {
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+}
+
+#messageBox {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 15, 0, 0, 5);
+}
+
+/* ===== دکمه‌های کارت ===== */
+.card-btn-edit {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 0.4em 1.2em;
+}
+
+.card-btn-edit:hover {
+    -fx-background-color: #2980b9;
+}
+
+.card-btn-delete {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 0.4em 1.2em;
+}
+
+.card-btn-delete:hover {
+    -fx-background-color: #c0392b;
+}

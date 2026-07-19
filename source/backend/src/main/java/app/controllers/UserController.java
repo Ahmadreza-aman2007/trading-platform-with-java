@@ -2,10 +2,12 @@ package app.controllers;
 
 import app.dto.user.*;
 import app.entities.Advertisement;
+import app.entities.users.enums.UserRole;
 import app.repository.DAOs.AdvertisementDAO;
 import app.services.RatingService;
 import app.services.AdvertisementService;
 import app.services.FavoriteService;
+import app.utils.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,6 +98,16 @@ public class UserController {
         }catch(Exception e){
             System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/my-ads")
+    public ResponseEntity<ArrayList<Advertisement>> getMyAds(@RequestBody GetMyAdsRequest request) {
+        try {
+            TokenUtil.isTokenValid(request.getUsername(), request.getToken(), UserRole.COMMON_USER);
+            ArrayList<Advertisement> ads = AdvertisementDAO.getAdsByUsername(request.getUsername());
+            return ResponseEntity.ok(ads);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 }

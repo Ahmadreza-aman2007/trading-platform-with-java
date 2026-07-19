@@ -6,6 +6,7 @@ import app.repository.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 
 public class CategoryDAO {
@@ -45,6 +46,21 @@ public class CategoryDAO {
             s.setString(1, name);
             ResultSet rs=s.executeQuery();
             return  rs.next();
+        }
+    }
+    public static ArrayList<ProductCategory> getAllCategories() throws Exception{
+        ArrayList<ProductCategory> categories=new ArrayList<>();
+        String query="SELECT * FROM product_categories";
+        try(Connection c=DatabaseConnection.getConnection();
+        PreparedStatement s=c.prepareStatement(query)){
+            ResultSet rs=s.executeQuery();
+            while(rs.next()){
+                ProductCategory p=new ProductCategory();
+                p.setId(rs.getLong("id"));
+                p.setName(rs.getString("product_category"));
+                categories.add(p);
+            }
+            return categories;
         }
     }
 }

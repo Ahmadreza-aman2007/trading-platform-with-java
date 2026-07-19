@@ -1,6 +1,7 @@
 package app.services;
 
 import app.dto.manager.ChangeAdStatusRequest;
+import app.dto.manager.GetPendingAdsRequest;
 import app.dto.user.AddAdRequest;
 import app.dto.user.EditAdRequest;
 import app.dto.user.RemoveAdRequset;
@@ -10,13 +11,15 @@ import app.entities.users.enums.UserRole;
 import app.repository.DAOs.AdvertisementDAO;
 import app.utils.TokenUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdvertisementService {
 
 
     public static void removeAdvertisement(RemoveAdRequset removeAdRequset) throws Exception {
-        TokenUtil.isTokenValid(removeAdRequset.getUsername(), removeAdRequset.getToken(), UserRole.COMMON_USER);
+        TokenUtil.isTokenValid(removeAdRequset.getUsername(), removeAdRequset.getToken(), UserRole.All);
+        AdvertisementDAO.removeAdvertisement(removeAdRequset.getAdId());
     }
     public static void addAdvertisement(AddAdRequest addAdRequest) throws Exception {
         TokenUtil.isTokenValid(addAdRequest.getSellerUsername(), addAdRequest.getToken(), UserRole.COMMON_USER);
@@ -39,8 +42,11 @@ public class AdvertisementService {
         return success ? "Ad submitted successfully and is pending approval." : "Failed to submit ad.";
     }
 
-
-    public List<Advertisement> getApprovedAds() {
+    public static ArrayList<Advertisement> getPendingAdvertisements(GetPendingAdsRequest getPendingAdsRequest) throws Exception {
+        TokenUtil.isTokenValid(getPendingAdsRequest.getUsername(),  getPendingAdsRequest.getToken(), UserRole.MANAGER);
+        return AdvertisementDAO.getPendingAdvertisements();
+    }
+    public static ArrayList<Advertisement> getApprovedAds() {
         return AdvertisementDAO.getApprovedAdvertisements();
     }
 

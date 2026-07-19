@@ -6,6 +6,7 @@ import app.repository.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class CityDAO {
     public static void save(City city) throws Exception{
@@ -44,6 +45,22 @@ public class CityDAO {
             ps.setString(1,name);
             ResultSet rs = ps.executeQuery();
             return rs.next();
+        }
+    }
+    public static ArrayList<City> getAllCities() throws Exception{
+        ArrayList<City> cities = new ArrayList<>();
+        String query = "SELECT * FROM cities";
+        try(Connection c= DatabaseConnection.getConnection();
+        PreparedStatement ps = c.prepareStatement(query);)
+        {
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                City city=new City();
+                city.setName(rs.getString("city"));
+                city.setId(rs.getLong("id"));
+                cities.add(city);
+            }
+            return cities;
         }
     }
 }

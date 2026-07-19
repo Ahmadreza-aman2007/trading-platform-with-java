@@ -64,7 +64,7 @@ public class TokenUtil {
             TokenDAO.revokeToken(token);
             throw new Exception("token expired");
         }
-        if (userRole!=u.getUserRole()){
+        if (userRole!=u.getUserRole() && userRole!=UserRole.All) {
             throw new Exception("permission denied");
         }
         TokenDAO.deleteAllExpireTokens();

@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class AdvertisementDAO {
             pstmt.setString(4, ad.getSellerUsername());
             pstmt.setString(5, ad.getCity());
             pstmt.setString(6, ad.getCategory());
-            pstmt.setString(7, ad.getStatus().name());
+            pstmt.setString(7, ad.getStatus());
 
 
             int affectedRows = pstmt.executeUpdate();
@@ -84,7 +85,7 @@ public class AdvertisementDAO {
                         rs.getString("seller_username"),
                         rs.getString("city"),
                         rs.getString("category"),
-                        AdStatus.valueOf(rs.getString("status")),
+                        rs.getString("status"),
                         rs.getString("created_at")
                 );
                 ads.add(ad);
@@ -111,13 +112,13 @@ public class AdvertisementDAO {
             }
         }
     }
-    public static boolean updateAdvertisementStatus(int adId, AdStatus newStatus) {
+    public static boolean updateAdvertisementStatus(int adId,String newStatus) {
         String sql = "UPDATE advertisements SET status = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, newStatus.name());
+            pstmt.setString(1, newStatus);
             pstmt.setInt(2, adId);
 
             int affectedRows = pstmt.executeUpdate();
@@ -127,6 +128,23 @@ public class AdvertisementDAO {
             System.err.println("Error updating ad status: " + e.getMessage());
             return false;
         }
+    }
+    public static ArrayList<Advertisement> getPendingAdvertisements() throws Exception {
+        ArrayList<Advertisement> results = new ArrayList<>();
+        String sql = "SELECT * FROM advertisements WHERE status = 'PENDING' ORDER BY created_at DESC";
+        try(Connection c=DatabaseConnection.getConnection();
+        PreparedStatement pstmt=c.prepareStatement(sql);){
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                results.add(toAd(rs));
+            }
+            return results;
+        }
+
+    }
+    public static Advertisement toAd(ResultSet rs) throws Exception {
+        Advertisement advertisement=new Advertisement(rs.getLong("id"),rs.getString("title"),rs.getString("description"),rs.getLong("price"),rs.getString("seller_username"),rs.getString("city"),rs.getString("category") ,rs.getString("status"),rs.getString("created_at"));
+        return advertisement;
     }
     public static  Advertisement getAdvertisementById(long id) throws Exception {
         String sql = "SELECT * FROM advertisements WHERE id = ?";
@@ -139,6 +157,25 @@ public class AdvertisementDAO {
                 return advertisement;
             }
             throw new Exception("No advertisement with id " + id);
+        }
+    }
+    public static ArrayList<Advertisement> getAdsByUsername(String username) throws Exception {
+        ArrayList<Advertisement> result = new ArrayList<>();
+        String sql = "SELECT * FROM advertisements WHERE seller_username = ? ORDER BY created_at DESC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                result.add(toAd(rs));
+            }
+            return result;
+
+        } catch (SQLException e) {
+            throw new Exception("خطا در دریافت آگهی‌های کاربر: " + e.getMessage());
         }
     }
 }
