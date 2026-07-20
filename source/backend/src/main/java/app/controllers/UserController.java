@@ -52,6 +52,11 @@ public class UserController {
     }
     @PostMapping("/advanced-search")
     public ResponseEntity<?> advancedSearch(@RequestBody CustomSearchRequest customSearchRequest){
+        System.out.println(customSearchRequest.getCity());
+        System.out.println(customSearchRequest.getCategory());
+        System.out.println(customSearchRequest.getKeyword());
+        System.out.println(customSearchRequest.getPriceCeiling());
+        System.out.println(customSearchRequest.getPriceFloor());
         try{
             ArrayList<Advertisement> res=AdvertisementDAO.advancedSearch(customSearchRequest);
             return new ResponseEntity<>(res, HttpStatus.OK);

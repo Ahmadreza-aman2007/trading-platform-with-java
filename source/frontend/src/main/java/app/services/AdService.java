@@ -18,6 +18,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdService {
 
@@ -25,6 +26,29 @@ public class AdService {
     private static ObjectMapper objectMapper = new ObjectMapper();
 
 
+    public static List<Advertisement> sendAdvancedSearchRequest(
+            String keyword, String category, String city, Long minPrice, Long maxPrice) throws Exception {
+        app.dto.user.CustomSearchRequest customSearchRequest = new app.dto.user.CustomSearchRequest();
+        customSearchRequest.setKeyword(keyword);
+        customSearchRequest.setCategory(category.equals("همه دسته‌بندی‌ها")?null:category);
+        customSearchRequest.setCity(city.equals("همه شهرها")?null:city);
+        customSearchRequest.setPriceCeiling(maxPrice);
+        customSearchRequest.setPriceFloor(minPrice);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8080/api/user/advanced-search"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(customSearchRequest)))
+                .timeout(Duration.ofSeconds(10))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            return objectMapper.readValue(response.body(), new TypeReference<List<Advertisement>>() {});
+        } else {
+            throw new Exception("خطا در جستجو: " + response.statusCode() + " - " + response.body());
+        }
+    }
     public static ArrayList<Advertisement> sendGetPendingAdRequest() throws Exception{
         ArrayList<Advertisement> advertisements = new ArrayList<>();
         GetPendingAdsRequest getPendingAdsRequest = new GetPendingAdsRequest(SessionManager.getCurrentUser().getUsername(), SessionManager.getToken());

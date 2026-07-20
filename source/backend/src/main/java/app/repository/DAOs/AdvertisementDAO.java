@@ -2,8 +2,6 @@
 package app.repository.DAOs;
 
 import app.dto.user.CustomSearchRequest;
-import app.dto.user.CustomSearchResponse;
-import app.dto.user.RemoveAdRequset;
 import app.entities.Advertisement;
 import app.entities.users.enums.AdStatus;
 import app.repository.DatabaseConnection;
@@ -59,10 +57,10 @@ public class AdvertisementDAO {
         ArrayList<Advertisement> advertisements = getApprovedAdvertisements();
         ArrayList<Advertisement> results = new ArrayList<>();
         for (Advertisement advertisement : advertisements) {
-            if((advertisement.getCategory().equals(customSearchRequest.getCategory())||customSearchRequest.getCategory().equals("null"))
-                    &&(advertisement.getCity().equals(customSearchRequest.getCity())||customSearchRequest.getCity().equals("null"))
+            if((advertisement.getCategory().equals(customSearchRequest.getCategory()) || customSearchRequest.getCategory()==null)
+                    &&(advertisement.getCity().equals(customSearchRequest.getCity())|| customSearchRequest.getCity()==null)
             &&(advertisement.getPrice()<= customSearchRequest.getPriceCeiling())&&advertisement.getPrice()>= customSearchRequest.getPriceFloor()
-            &&(advertisement.getTitle().contains(customSearchRequest.getKeyword())||customSearchRequest.getKeyword().equals("null"))){
+            &&(advertisement.getTitle().contains(customSearchRequest.getKeyword())||customSearchRequest.getKeyword()==null)){
                 results.add(advertisement);
             }
         }
