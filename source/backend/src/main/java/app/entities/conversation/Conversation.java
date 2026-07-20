@@ -8,11 +8,11 @@ public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JoinColumn(name = "ad_id",nullable = false)
+    @Column(name = "ad_id",nullable = false)
     private Long adId;
-    @JoinColumn(name = "buyer_id",nullable = false)
+    @Column(name = "buyer_id",nullable = false)
     private  Long buyerId;
-    @JoinColumn(name = "seller_id")
+    @Column(name = "seller_id")
     private Long sellerId;
     @Column(name = "is_blocked")
     private boolean isBlocked;

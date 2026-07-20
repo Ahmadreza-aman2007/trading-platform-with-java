@@ -71,7 +71,7 @@ public class DatabaseInitializer {
                     ad_id INTEGER NOT NULL,
                     seller_id INTEGER NOT NULL,
                     buyer_id INTEGER NOT NULL,
-                    is_bloked INTEGER NOT NULL,
+                    is_blocked INTEGER NOT NULL,
                     FOREIGN KEY (seller_id) REFERENCES users(id),
                     FOREIGN KEY (buyer_id) REFERENCES users(id),
                     FOREIGN KEY (ad_id) REFERENCES advertisements(id)
@@ -82,7 +82,7 @@ public class DatabaseInitializer {
                 CREATE TABLE IF NOT EXISTS messages (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     content TEXT NOT NULL,
-                    time DATETIME NOT NULL,
+                    time TEXT NOT NULL,
                     sender_id INTEGER NOT NULL,
                     conversation_id INTEGER NOT NULL,
                     is_read INTEGER NOT NULL,

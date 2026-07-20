@@ -6,6 +6,9 @@ import app.repository.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ConversationDAO {
@@ -106,5 +109,32 @@ public class ConversationDAO {
                 throw new Exception("error in method delete");
             }
         }
+    }
+
+    public static List<Conversation> findByUserId(Long userId) throws Exception {
+        String query = "SELECT * FROM conversations WHERE seller_id = ? OR buyer_id = ? ORDER BY id DESC";
+        List<Conversation> list = new ArrayList<>();
+
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement s = c.prepareStatement(query)) {
+
+            s.setLong(1, userId);
+            s.setLong(2, userId);
+            ResultSet rs = s.executeQuery();
+
+            while (rs.next()) {
+                Conversation conv = new Conversation();
+                conv.setId(rs.getLong("id"));
+                conv.setAdId(rs.getLong("ad_id"));
+                conv.setBuyerId(rs.getLong("buyer_id"));
+                conv.setSellerId(rs.getLong("seller_id"));
+                conv.setBlocked(rs.getInt("is_blocked") == 1);
+                list.add(conv);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error in findByUserId: " + e.getMessage());
+        }
+
+        return list;
     }
 }

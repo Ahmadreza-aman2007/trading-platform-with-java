@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MessageDAO {
@@ -18,7 +20,7 @@ public class MessageDAO {
             s.setLong(1, message.getSenderId());
             s.setString(2, message.getContent());
             s.setLong(3, message.getConversationId());
-            s.setObject(4, message.getTime());
+            s.setObject(4,LocalDateTime.now().toString());
             s.setInt(5, message.isRead() ? 1 : 0);
             int e=s.executeUpdate();
             if(e!=1){
@@ -65,23 +67,42 @@ public class MessageDAO {
         }
     }
     public static Message find(Long id) throws Exception {
-        String query = "SELECT * FROM messages WHERE id = ?";
-        try(Connection c=DatabaseConnection.getConnection();
-        PreparedStatement s=c.prepareStatement(query)){
+        String query = "SELECT *  FROM messages WHERE id = ?";
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement s = c.prepareStatement(query)) {
             s.setLong(1, id);
-            ResultSet rs=s.executeQuery();
-            if(rs.next()){
-                Message message=new Message();
+            ResultSet rs = s.executeQuery();
+            if (rs.next()) {
+                Message message = new Message();
                 message.setId(rs.getLong("id"));
                 message.setSenderId(rs.getLong("sender_id"));
                 message.setContent(rs.getString("content"));
                 message.setConversationId(rs.getLong("conversation_id"));
-                message.setTime((LocalDateTime) rs.getObject("time"));
-                message.setRead(rs.getBoolean("is_read"));
+                message.setTime(rs.getString("time"));
+                message.setRead(rs.getInt("is_read") == 1);
                 return message;
             }
             throw new Exception("error in method find");
         }
     }
-
+    public static List<Message> findByConversationId(Long conversationId) throws Exception {
+        String query = "SELECT  FROM messages WHERE conversation_id = ? ORDER BY time ASC";
+        List<Message> list = new ArrayList<>();
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement s = c.prepareStatement(query)) {
+            s.setLong(1, conversationId);
+            ResultSet rs = s.executeQuery();
+            while (rs.next()) {
+                Message m = new Message();
+                m.setId(rs.getLong("id"));
+                m.setSenderId(rs.getLong("sender_id"));
+                m.setContent(rs.getString("content"));
+                m.setConversationId(rs.getLong("conversation_id"));
+                m.setTime(rs.getString("time"));  // ← String
+                m.setRead(rs.getInt("is_read") == 1);
+                list.add(m);
+            }
+        }
+        return list;
+    }
 }

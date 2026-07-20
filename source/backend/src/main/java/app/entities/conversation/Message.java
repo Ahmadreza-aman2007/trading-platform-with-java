@@ -15,17 +15,17 @@ public class Message {
     @Column(name = "content",nullable = false)
     private String content;
     @Column(name = "time",nullable = false)
-    private LocalDateTime time;
-    @JoinColumn(name = "conversation_id",nullable = false )
+    private String time;
+    @Column(name = "conversation_id",nullable = false )
     private Long conversationId;
-    @JoinColumn(name = "sender_id",nullable = false)
+    @Column(name = "sender_id",nullable = false)
     private Long senderId;
     @Column(name = "is_read")
     private boolean isRead;
 
     //constructors
     public Message() {}
-    public Message(String content,LocalDateTime time ,Long conversationId,Long senderId,boolean isRead){
+    public Message(String content,String time ,Long conversationId,Long senderId,boolean isRead){
         this.content=content;
         this.isRead=isRead;
         this.senderId=senderId;
@@ -37,7 +37,7 @@ public class Message {
         return conversationId;
     }
 
-    public LocalDateTime getTime() {
+    public String getTime() {
         return time;
     }
 
@@ -79,7 +79,7 @@ public class Message {
         this.senderId = senderId;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
