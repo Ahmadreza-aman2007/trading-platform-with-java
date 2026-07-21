@@ -24,12 +24,12 @@ public class FavoriteDAO {
         }
     }
     }
-    public static void deleteByAdId(Long adId) throws Exception{
-        findById(adId);
-        String query = "DELETE FROM favorites WHERE ad_id=?";
+    public static void deleteByUserAndAd(Long userId, Long adId) throws Exception{
+        String query = "DELETE FROM favorites WHERE user_id=? AND ad_id=?";
         try(Connection connection = DatabaseConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query)){
-            preparedStatement.setLong(1, adId);
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, adId);
             int e= preparedStatement.executeUpdate();
             if(e==0){
                 throw new Exception("error in method delete");

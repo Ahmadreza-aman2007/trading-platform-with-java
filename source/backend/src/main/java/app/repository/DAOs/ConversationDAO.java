@@ -20,7 +20,7 @@ public class ConversationDAO {
         } catch (Exception e) {
             throw new Exception(e);
         }
-        String query="INSERT IINTO conversations(seller_id,buyer_id,ad_id,is_blocked,) VALUES(?,?,?,?)";
+        String query="INSERT INTO conversations(seller_id,buyer_id,ad_id,is_blocked) VALUES(?,?,?,?)";
         try(Connection c= DatabaseConnection.getConnection();
             PreparedStatement s=c.prepareStatement(query)){
             s.setLong(1, conversation.getSellerId());

@@ -154,8 +154,11 @@ public class UserDAO {
             s.setString(1, username);
             ResultSet res = s.executeQuery();
             if (res.next()) {
-                return new User(res.getLong("id"), res.getString("username"), res.getString("password"),res.getString("phone_number"),res.getString("user_role").equals("MANAGER")?UserRole.MANAGER:UserRole.COMMON_USER,
+                User u = new User(res.getLong("id"), res.getString("username"), res.getString("password"),res.getString("phone_number"),res.getString("user_role").equals("MANAGER")?UserRole.MANAGER:UserRole.COMMON_USER,
                         res.getString("fullname"));
+                u.setBlocked(res.getInt("is_blocked") == 1);
+                u.setCreatedDate(res.getString("created_at"));
+                return u;
             }
             return null;
         } catch (Exception e) {
@@ -174,8 +177,11 @@ public class UserDAO {
             s.setString(1, phoneNumber);
             ResultSet res = s.executeQuery();
             if (res.next()) {
-                return new User(res.getLong("id"), res.getString("username"), res.getString("password"),res.getString("phone_number"),res.getString("user_role").equals("MANAGER")?UserRole.MANAGER:UserRole.COMMON_USER,
+                User u = new User(res.getLong("id"), res.getString("username"), res.getString("password"),res.getString("phone_number"),res.getString("user_role").equals("MANAGER")?UserRole.MANAGER:UserRole.COMMON_USER,
                          res.getString("fullname"));
+                u.setBlocked(res.getInt("is_blocked") == 1);
+                u.setCreatedDate(res.getString("created_at"));
+                return u;
             }
             return null;
         } catch (Exception e) {
@@ -194,8 +200,11 @@ public class UserDAO {
             s.setLong(1, id);
             ResultSet res = s.executeQuery();
             if (res.next()) {
-                return new User(res.getLong("id"), res.getString("username"), res.getString("password"),res.getString("phone_number"),res.getString("user_role").equals("MANAGER")?UserRole.MANAGER:UserRole.COMMON_USER,
+                User u = new User(res.getLong("id"), res.getString("username"), res.getString("password"),res.getString("phone_number"),res.getString("user_role").equals("MANAGER")?UserRole.MANAGER:UserRole.COMMON_USER,
                         res.getString("fullname"));
+                u.setBlocked(res.getInt("is_blocked") == 1);
+                u.setCreatedDate(res.getString("created_at"));
+                return u;
             }
             return null;
         } catch (Exception e) {

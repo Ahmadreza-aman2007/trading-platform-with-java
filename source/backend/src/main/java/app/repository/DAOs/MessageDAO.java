@@ -86,7 +86,7 @@ public class MessageDAO {
         }
     }
     public static List<Message> findByConversationId(Long conversationId) throws Exception {
-        String query = "SELECT  FROM messages WHERE conversation_id = ? ORDER BY time ASC";
+        String query = "SELECT * FROM messages WHERE conversation_id = ? ORDER BY time ASC";
         List<Message> list = new ArrayList<>();
         try (Connection c = DatabaseConnection.getConnection();
              PreparedStatement s = c.prepareStatement(query)) {

@@ -22,7 +22,7 @@ public class RatingDAO {
             preparedStatement.setLong(1,rating.getRaterId());
             preparedStatement.setLong(2,rating.getAdId());
             preparedStatement.setLong(3,rating.getSellerId());
-            preparedStatement.setObject(4,LocalDateTime.now());
+            preparedStatement.setString(4,LocalDateTime.now().toString());
             preparedStatement.setInt(5,rating.getScore());
             preparedStatement.setString(6,rating.getComment());
             int e=preparedStatement.executeUpdate();
@@ -107,13 +107,14 @@ public class RatingDAO {
             throw new Exception("user not found");
         }
         System.out.println(u.getId());
-        String sql = "SELECT * FROM ratings WHERE id = ? AND adId=?  ORDER BY created_at DESC";
+        String sql = "SELECT * FROM ratings WHERE seller_id = ? AND ad_id = ?  ORDER BY created_at DESC";
         List<Rating> ratings = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, u.getId());
+            stmt.setLong(2, adId);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
