@@ -2,6 +2,7 @@ package app.controllers.panel.manager;
 
 import app.models.entities.Advertisement;
 import app.services.AdService;
+import app.utils.AdPreviewWindow;
 import app.utils.SessionManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -41,11 +42,13 @@ public class PendingAdsController {
 
         actionColumn.setCellFactory(param -> new TableCell<>() {
             private final HBox buttonBox = new HBox(8);
+            private final Button viewBtn = new Button("👁 مشاهده");
             private final Button approveBtn = new Button("✅ تأیید");
             private final Button rejectBtn = new Button("❌ رد");
             private final Button removeBtn = new Button("🗑️ حذف");
 
             {
+                viewBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
                 approveBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
                 rejectBtn.setStyle("-fx-background-color: #f39c12; -fx-text-fill: white;");
                 removeBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
@@ -59,6 +62,7 @@ public class PendingAdsController {
                     Advertisement ad = getTableView().getItems().get(getIndex());
                     // طبق داک پروژه: مدیر می‌تواند هنگام رد، توضیح (اختیاری) بنویسد
                     TextInputDialog dialog = new TextInputDialog();
+                    dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
                     dialog.setTitle("رد آگهی");
                     dialog.setHeaderText("دلیل رد آگهی «" + ad.getTitle() + "» (اختیاری)");
                     dialog.setContentText("توضیح:");
@@ -70,7 +74,22 @@ public class PendingAdsController {
                     removeAd(ad.getId());
                 });
 
-                buttonBox.getChildren().addAll(approveBtn, rejectBtn, removeBtn);
+                // دکمه مشاهده: پیش‌نمایش کامل آگهی و عکس‌ها قبل از تصمیم‌گیری
+                viewBtn.setOnAction(event -> {
+                    Advertisement ad = getTableView().getItems().get(getIndex());
+                    AdPreviewWindow.open(getTableView().getScene().getWindow(), ad,
+                            () -> changeAdStatus(ad.getId(), "APPROVED", null),
+                            () -> {
+                                TextInputDialog dialog = new TextInputDialog();
+                                dialog.getDialogPane().getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
+                                dialog.setTitle("رد آگهی");
+                                dialog.setHeaderText("دلیل رد آگهی «" + ad.getTitle() + "» (اختیاری)");
+                                dialog.setContentText("توضیح:");
+                                dialog.showAndWait().ifPresent(note -> changeAdStatus(ad.getId(), "REJECTED", note));
+                            });
+                });
+
+                buttonBox.getChildren().addAll(viewBtn, approveBtn, rejectBtn, removeBtn);
             }
 
             @Override

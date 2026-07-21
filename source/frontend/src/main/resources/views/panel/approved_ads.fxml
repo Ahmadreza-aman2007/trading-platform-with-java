@@ -26,6 +26,7 @@
             <TableColumn fx:id="cityColumn" text="شهر" prefWidth="100"/>
             <TableColumn fx:id="categoryColumn" text="دسته‌بندی" prefWidth="120"/>
             <TableColumn fx:id="createdAtColumn" text="تاریخ ثبت" prefWidth="150"/>
+            <TableColumn fx:id="actionColumn" text="عملیات" prefWidth="200"/>
         </columns>
     </TableView>
 
