@@ -29,13 +29,10 @@
                     <Hyperlink text="آگهی های من " onAction="#goToMyAds" />
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="....." />
+                    <Hyperlink text="علاقه مندی های من" onAction="#goToFavorites" />
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="....." />
-                </HBox>
-                <HBox styleClass="list-option">
-                    <Hyperlink text="....." />
+                    <Hyperlink text="گفتگوهای من" onAction="#goToConversations" />
                 </HBox>
                 <HBox styleClass="list-option">
                     <Region VBox.vgrow="ALWAYS" />

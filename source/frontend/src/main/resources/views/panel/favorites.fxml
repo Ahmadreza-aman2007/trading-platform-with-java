@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.controllers.panel.commonUser.FavoritesController"
+      spacing="15" style="-fx-padding: 10;">
+    <HBox alignment="CENTER_RIGHT" spacing="15">
+        <Label text="⭐ علاقه‌مندی‌های من" style="-fx-font-size: 1.4em; -fx-text-fill: #2c3e50;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="🔄 به‌روزرسانی" styleClass="primary-button" onAction="#refreshList"/>
+    </HBox>
+    <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
+        <TilePane fx:id="adsContainer" hgap="15" vgap="15" prefColumns="3" style="-fx-padding: 10;"/>
+    </ScrollPane>
+    <Label fx:id="emptyLabel" visible="false" managed="false" style="-fx-text-fill: #7f8c8d;"/>
+</VBox>

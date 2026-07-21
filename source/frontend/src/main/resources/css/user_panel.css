@@ -1,7 +1,8 @@
- .exit-button{
+.exit-button{
     -fx-background-color:#ff0000;
     -fx-text-fill:#ffffff;
-    -fx-background-radius:0.2em;
+    -fx-background-radius:0.5em;
+    -fx-cursor: hand;
 }
 .exit-button:hover{
     -fx-background-color: #b50000;
@@ -15,7 +16,7 @@
     -fx-padding:1em 0;
 }
 .list{
-    -fx-border-color:#999;
+    -fx-border-color:#e5e5e5;
     -fx-border-style:solid;
     -fx-border-width:1;
 }
@@ -25,7 +26,7 @@
 .contentContainer{
     -fx-background-color:#ffffff;
     -fx-padding:1em;
-    -fx-border-color:#999;
+    -fx-border-color:#e5e5e5;
     -fx-border-style:solid;
     -fx-border-width:1;
 }

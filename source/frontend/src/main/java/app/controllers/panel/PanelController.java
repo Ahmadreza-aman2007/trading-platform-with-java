@@ -94,6 +94,14 @@ public class PanelController {
         setContent("/views/panel/my_ads.fxml");
     }
     @FXML
+    private void goToFavorites() {
+        setContent("/views/panel/favorites.fxml");
+    }
+    @FXML
+    private void goToConversations() {
+        setContent("/views/panel/conversations.fxml");
+    }
+    @FXML
     private void goToUsersList() {
         setContent("/views/panel/users_list.fxml");
     }
