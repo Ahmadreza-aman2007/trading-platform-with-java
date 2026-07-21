@@ -19,7 +19,6 @@ public class Main extends Application {
         stage.setTitle("سمساری احمد و پارسا");
         stage.setScene(scene);
         stage.setMaximized(true);
-        stage.setResizable(false);
         stage.show();
     }
 

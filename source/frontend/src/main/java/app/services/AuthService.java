@@ -21,13 +21,13 @@ public class AuthService {
 
     public User sendLoginRequest(String username, String password) throws Exception {
         LoginRequest loginRequest = new LoginRequest(username, password);
-            String json = objectMapper.writeValueAsString(loginRequest);
-            HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/auth/login"))
-                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
-                    .timeout(Duration.ofSeconds(10)).build();
-            HttpResponse<String> httpResponse = httpClient.send(httpRequest,
-                    HttpResponse.BodyHandlers.ofString());
-            int statusCode = httpResponse.statusCode();
+        String json = objectMapper.writeValueAsString(loginRequest);
+        HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/auth/login"))
+                .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
+                .timeout(Duration.ofSeconds(10)).build();
+        HttpResponse<String> httpResponse = httpClient.send(httpRequest,
+                HttpResponse.BodyHandlers.ofString());
+        int statusCode = httpResponse.statusCode();
         return switch (statusCode) {
             case 200 -> objectMapper.readValue(httpResponse.body(), User.class);
             case 404 -> throw new Exception("User not found");
@@ -42,7 +42,7 @@ public class AuthService {
         HttpResponse<String> httpResponse = httpClient.send(httpRequest,
                 HttpResponse.BodyHandlers.ofString());
         int statusCode = httpResponse.statusCode();
-        if (statusCode == 200) {
+        if (statusCode == 200 || statusCode == 201) {
             return;
         }
         throw new Exception("Internal Server Error");

@@ -53,7 +53,7 @@ public class InputValidator {
     public static void letterWithSpace(TextField field) {
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String newText = change.getControlNewText();
-            if (newText.matches("[a-zA-Z ]*")) {
+            if (newText.matches("[a-zA-Z\u0600-\u06FF\u200c ]*")) {
                 return change;
             }
             return null;

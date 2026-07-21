@@ -4,15 +4,15 @@
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="app.controllers.loginPage.LoginController" fx:id="root" nodeOrientation="RIGHT_TO_LEFT">
     <VBox styleClass="login-div" alignment="CENTER" maxWidth="-Infinity" maxHeight="-Infinity"
-        spacing="80">
+          spacing="30">
         <Label text="ورود" styleClass="login-label label" />
         <HBox styleClass="username-input-div" spacing="40">
-            <Label text="نام کاربری" styleClass="label" labelFor="$usernameField" />
+            <Label text="نام کاربری" styleClass="label" />
             <TextField fx:id="usernameField" promptText="نام کاربری خود را وارد کنید" />
             <Label text=" " fx:id="usernameError" styleClass="errorText"/>
         </HBox>
         <HBox styleClass="pass-input-div" spacing="40">
-            <Label text="رمز عبور" styleClass="label" labelFor="$passField" />
+            <Label text="رمز عبور" styleClass="label" />
             <PasswordField fx:id="passField" promptText="رمز عبور خود را وارد کنید" />
             <Label text=" " fx:id="passError" styleClass="errorText"/>
         </HBox>

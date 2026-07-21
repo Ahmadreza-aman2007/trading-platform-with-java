@@ -14,8 +14,14 @@ public class ControllersUtils {
     }
 
     public static void setPageFullScreen(Stage stage) {
-        stage.setMaximized(true);
-        stage.setResizable(false);
+        // نکته: ترکیب setResizable(false) با setMaximized(true) در ویندوز باعث
+        // مخفی/مینیمایز شدن پنجره هنگام تعویض صفحه می‌شود.
+        stage.setResizable(true);
+        if (!stage.isMaximized()) {
+            stage.setMaximized(true);
+        }
+        stage.setIconified(false);
+        stage.toFront();
     }
 
     public static void setPageSettings(Stage stage, Node node) {

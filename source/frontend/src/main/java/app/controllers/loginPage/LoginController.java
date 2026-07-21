@@ -87,15 +87,23 @@ public class LoginController {
                             break;
                         }
                         case 401: {
-                            javafx.application.Platform.runLater(() -> passError.setText("رمز عبور اشنباه است"));
+                            String body = httpResponse.body();
+                            String msg = (body != null && !body.isBlank()) ? body : "رمز عبور اشتباه است";
+                            javafx.application.Platform.runLater(() -> passError.setText(msg));
                             break;
                         }
                         case 500: {
                             javafx.application.Platform.runLater(() -> passError.setText("خطای سرور"));
                             break;
                         }
+                        default: {
+                            javafx.application.Platform.runLater(() -> passError.setText("خطای ناشناخته (کد " + statusCode + ")"));
+                            break;
+                        }
                     }
                 } catch (Exception e) {
+                    javafx.application.Platform.runLater(
+                            () -> passError.setText("عدم ارتباط با سرور! ابتدا Backend را اجرا کنید."));
                     System.err.println(e.getMessage());
                 }
             }).start();
