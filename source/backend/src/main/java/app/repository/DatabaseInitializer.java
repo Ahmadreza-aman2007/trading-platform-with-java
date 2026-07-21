@@ -7,6 +7,8 @@ import java.sql.Statement;
 
 public class DatabaseInitializer {
     public static void initDatabase() {
+        // اطمینان از وجود پوشه‌ی دیتابیس در اولین اجرا (وگرنه SQLite خطا می‌دهد)
+        new java.io.File("database").mkdirs();
 //      initialize query for users table
         String createUsers = """
                 CREATE TABLE IF NOT EXISTS users (
@@ -57,7 +59,8 @@ public class DatabaseInitializer {
                     seller_username TEXT NOT NULL,
                     city TEXT NOT NULL,
                     category TEXT NOT NULL,
-                    status TEXT CHECK(status IN ('PENDING', 'APPROVED', 'REJECTED')) DEFAULT 'PENDING',
+                    status TEXT CHECK(status IN ('PENDING', 'APPROVED', 'REJECTED', 'SOLD')) DEFAULT 'PENDING',
+                    reject_note TEXT,
                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (seller_username) REFERENCES users(username),
                     FOREIGN KEY (city) REFERENCES cities(city),
@@ -87,7 +90,7 @@ public class DatabaseInitializer {
                     conversation_id INTEGER NOT NULL,
                     is_read INTEGER NOT NULL,
                     FOREIGN KEY (sender_id) REFERENCES users(id),
-                    FOREIGN KEY (conversation_id) REFERENCES convasations(id)
+                    FOREIGN KEY (conversation_id) REFERENCES conversations(id)
                     )
                 """;
         // initialize query for favorites table
@@ -123,10 +126,21 @@ public class DatabaseInitializer {
             s.execute(cities);//build cities table
             s.execute(productCategory);//build categories table
             s.execute(advertisements); // اجرای ساخت جدول آگهی
+            // برای دیتابیس‌های قدیمی که ستون توضیح رد را ندارند
+            try { s.execute("ALTER TABLE advertisements ADD COLUMN reject_note TEXT"); } catch (SQLException ignored) { /* ستون از قبل وجود دارد */ }
             s.execute(conversations);//build comments table
             s.execute(messages);//build messages table
             s.execute(favorites);//build favorites table
             s.execute(ratings);//build ratings table
+            // *** جدول عکس‌های آگهی (Base64) ***
+            s.execute("""
+                CREATE TABLE IF NOT EXISTS ad_images (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ad_id INTEGER NOT NULL,
+                    image TEXT NOT NULL,
+                    FOREIGN KEY (ad_id) REFERENCES advertisements(id)
+                )
+                """);
 
             System.out.println("Database is ready with Advertisements table");
 
