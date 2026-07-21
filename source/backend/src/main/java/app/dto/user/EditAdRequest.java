@@ -11,7 +11,12 @@ public class EditAdRequest {
     private String sellerUsername;
     private String city;
     private String category;
+    private java.util.List<String> images; // عکس‌های جدید به‌صورت Base64 (در صورت تغییر)
     public EditAdRequest() {}
+
+    public java.util.List<String> getImages() { return images; }
+
+    public void setImages(java.util.List<String> images) { this.images = images; }
 
     public void setTitle(String title) {
         this.title = title;

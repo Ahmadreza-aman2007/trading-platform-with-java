@@ -55,4 +55,14 @@ public class SharedController {
         }
     }
 
+    // عکس‌های یک آگهی (Base64) — عمومی چون در جزئیات آگهی نمایش داده می‌شود
+    @GetMapping("/ad-images/{adId}")
+    public ResponseEntity<ArrayList<String>> getAdImages(@PathVariable Long adId) {
+        try {
+            return ResponseEntity.ok(app.repository.DAOs.AdImageDAO.getImagesByAdId(adId));
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
