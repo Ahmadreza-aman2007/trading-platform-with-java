@@ -10,6 +10,7 @@ public class EditAdRequest {
     private String sellerUsername;
     private String city;
     private String category;
+    private java.util.List<String> images; // عکس‌های جدید به‌صورت Base64 (در صورت تغییر)
     public EditAdRequest(Long id,String token, String title, String description, long price, String sellerUsername, String city, String category) {
         this.token = token;
         this.title = title;
@@ -84,5 +85,13 @@ public class EditAdRequest {
 
     public long getPrice() {
         return price;
+    }
+
+    public java.util.List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(java.util.List<String> images) {
+        this.images = images;
     }
 }

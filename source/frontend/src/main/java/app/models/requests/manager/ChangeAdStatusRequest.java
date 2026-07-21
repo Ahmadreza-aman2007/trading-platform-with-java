@@ -5,11 +5,28 @@ public class ChangeAdStatusRequest {
     private String status;
     private String username;
     private String token;
+    private String note;
     public ChangeAdStatusRequest(Long adId, String status,String username, String token) {
         this.adId = adId;
         this.status = status;
         this.username = username;
         this.token = token;
+    }
+
+    public ChangeAdStatusRequest(Long adId, String status, String note, String username, String token) {
+        this.adId = adId;
+        this.status = status;
+        this.note = note;
+        this.username = username;
+        this.token = token;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Long getAdId() {

@@ -1,4 +1,4 @@
-package app.dto.user;
+package app.models.requests.shared;
 
 public class CustomSearchRequest {
     private String keyword;

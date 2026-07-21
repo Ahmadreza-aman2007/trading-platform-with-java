@@ -48,16 +48,21 @@ public class PendingAdsController {
             {
                 approveBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
                 rejectBtn.setStyle("-fx-background-color: #f39c12; -fx-text-fill: white;");
-                removeBtn.setStyle("-fx-background-color: #e74c3c; -fx -text-fill: white;");
+                removeBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
 
                 approveBtn.setOnAction(event -> {
                     Advertisement ad = getTableView().getItems().get(getIndex());
-                    changeAdStatus(ad.getId(),"APPROVED");
+                    changeAdStatus(ad.getId(), "APPROVED", null);
                 });
 
                 rejectBtn.setOnAction(event -> {
                     Advertisement ad = getTableView().getItems().get(getIndex());
-                    changeAdStatus(ad.getId(), "REJECTED");
+                    // طبق داک پروژه: مدیر می‌تواند هنگام رد، توضیح (اختیاری) بنویسد
+                    TextInputDialog dialog = new TextInputDialog();
+                    dialog.setTitle("رد آگهی");
+                    dialog.setHeaderText("دلیل رد آگهی «" + ad.getTitle() + "» (اختیاری)");
+                    dialog.setContentText("توضیح:");
+                    dialog.showAndWait().ifPresent(note -> changeAdStatus(ad.getId(), "REJECTED", note));
                 });
 
                 removeBtn.setOnAction(event -> {
@@ -103,10 +108,10 @@ public class PendingAdsController {
         }).start();
     }
 
-    private void changeAdStatus(Long adId, String newStatus) {
+    private void changeAdStatus(Long adId, String newStatus, String note) {
         new Thread(() -> {
             try {
-                AdService.changeAdStatus(adId, newStatus, SessionManager.getCurrentUser().getUsername(), SessionManager.getToken());
+                AdService.changeAdStatus(adId, newStatus, note, SessionManager.getCurrentUser().getUsername(), SessionManager.getToken());
 
                 Platform.runLater(() -> {
                     showInfo("✅ وضعیت آگهی با موفقیت تغییر کرد");

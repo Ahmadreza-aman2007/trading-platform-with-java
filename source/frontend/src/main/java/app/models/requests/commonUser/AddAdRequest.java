@@ -12,6 +12,7 @@ public class AddAdRequest {
     private String city;
     private String category;
     private String createdAt;
+    private java.util.List<String> images; // عکس‌های آگهی به‌صورت Base64
     public AddAdRequest(String token,String title, String description, long price, String sellerUsername, String city, String category) {
         this.token = token;
         this.title = title;
@@ -86,6 +87,14 @@ public class AddAdRequest {
 
     public String getTitle() {
         return title;
+    }
+
+    public java.util.List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(java.util.List<String> images) {
+        this.images = images;
     }
 
 }

@@ -10,6 +10,7 @@ public class Advertisement {
     private String category;
     private String status;
     private String createdAt;
+    private String rejectNote; // توضیح مدیر هنگام رد آگهی
 
     public Advertisement(Long id, String title, String description, long price, String sellerUsername, String city, String category, String status, String createdAt) {
         this.id = id;
@@ -36,4 +37,6 @@ public class Advertisement {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
     public String getCreatedAt() { return createdAt; }
+    public String getRejectNote() { return rejectNote; }
+    public void setRejectNote(String rejectNote) { this.rejectNote = rejectNote; }
 }

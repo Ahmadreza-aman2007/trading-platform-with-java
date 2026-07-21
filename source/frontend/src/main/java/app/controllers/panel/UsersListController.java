@@ -130,13 +130,17 @@ public class UsersListController {
                 try {
                     HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
                     int status = response.statusCode();
-                    if (status == 200) {
-                        backToUsersList();
-                    } else {
-                        // TODO:this is for other status codes
-                    }
+                    // تغییرات UI حتما باید روی ترد JavaFX انجام شود
+                    javafx.application.Platform.runLater(() -> {
+                        if (status == 200) {
+                            errorMessage.setText("");
+                            backToUsersList();
+                        } else {
+                            errorMessage.setText("خطا در ذخیره تغییرات (کد " + status + ")");
+                        }
+                    });
                 } catch (IOException | InterruptedException e) {
-                    System.err.println(e.getMessage());
+                    javafx.application.Platform.runLater(() -> errorMessage.setText("عدم ارتباط با سرور!"));
                 }
             }).start();
         } catch (Exception e) {

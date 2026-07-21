@@ -122,8 +122,8 @@ public class MyAdsController {
             -fx-border-color: #ecf0f1;
             -fx-border-radius: 12;
         """);
-        card.setPrefWidth(800);
-        card.setPrefHeight(1000);
+        card.setPrefWidth(380);
+        card.setPrefHeight(260);
 
         Label titleLabel = new Label(ad.getTitle());
         titleLabel.setStyle("-fx-font-size: 1.2em; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");titleLabel.setWrapText(true);
@@ -140,6 +140,17 @@ public class MyAdsController {
         Label statusLabel = new Label("وضعیت: " + translateStatus(ad.getStatus()));
         statusLabel.setStyle("-fx-font-size: 0.95em; -fx-text-fill: " + getStatusColor(ad.getStatus()) + ";");
 
+        // نمایش توضیح مدیر برای آگهی‌های ردشده
+        Label noteLabel = new Label();
+        if ("REJECTED".equalsIgnoreCase(ad.getStatus()) && ad.getRejectNote() != null && !ad.getRejectNote().isBlank()) {
+            noteLabel.setText("📝 توضیح مدیر: " + ad.getRejectNote());
+            noteLabel.setWrapText(true);
+            noteLabel.setStyle("-fx-font-size: 0.9em; -fx-text-fill: #e74c3c;");
+        } else {
+            noteLabel.setVisible(false);
+            noteLabel.setManaged(false);
+        }
+
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
@@ -151,13 +162,35 @@ public class MyAdsController {
         deleteBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 0.4em 1.2em;");
         deleteBtn.setOnAction(e -> deleteAd(ad));
 
-        buttonBox.getChildren().addAll(editBtn, deleteBtn);
+        Button soldBtn = new Button("✅ فروخته شد");
+        soldBtn.setStyle("-fx-background-color: #2980b9; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 0.4em 1.2em;");
+        soldBtn.setOnAction(e -> markSold(ad));
+        if (!"APPROVED".equalsIgnoreCase(ad.getStatus())) {
+            soldBtn.setDisable(true);
+        }
+
+        buttonBox.getChildren().addAll(editBtn, soldBtn, deleteBtn);
 
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        card.getChildren().addAll(titleLabel, priceLabel, cityLabel, categoryLabel, statusLabel, spacer, buttonBox);
+        card.getChildren().addAll(titleLabel, priceLabel, cityLabel, categoryLabel, statusLabel, noteLabel, spacer, buttonBox);
         return card;
+    }
+
+    // ===== ثبت فروخته‌شدن آگهی =====
+    private void markSold(Advertisement ad) {
+        new Thread(() -> {
+            try {
+                AdService.sendMarkSoldRequest(ad.getId());
+                Platform.runLater(() -> {
+                    showInfo("✅ ثبت شد", "آگهی «" + ad.getTitle() + "» به عنوان فروخته‌شده ثبت شد.");
+                    loadMyAds();
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> showError("❌ خطا", "ثبت فروخته‌شدن: " + e.getMessage()));
+            }
+        }).start();
     }
 
     // ===== ترجمه وضعیت =====
@@ -165,7 +198,7 @@ public class MyAdsController {
         if (status == null) return "نامشخص";
         return switch (status.toUpperCase()) {
             case "PENDING" -> "⏳ در انتظار بررسی";
-            case "ACTIVE" -> "✅ فعال";
+            case "APPROVED" -> "✅ فعال";
             case "REJECTED" -> "❌ رد شده";
             case "SOLD" -> "💰 فروخته شده";
             case "DELETED" -> "🗑️ حذف شده";
@@ -177,7 +210,7 @@ public class MyAdsController {
         if (status == null) return "#7f8c8d";
         return switch (status.toUpperCase()) {
             case "PENDING" -> "#f39c12";
-            case "ACTIVE" -> "#27ae60";
+            case "APPROVED" -> "#27ae60";
             case "REJECTED" -> "#e74c3c";
             case "SOLD" -> "#2980b9";
             case "DELETED" -> "#95a5a6";
@@ -274,6 +307,52 @@ public class MyAdsController {
                     .ifPresent(cityCombo::setValue);
         }
 
+        // ===== انتخاب عکس (حداکثر ۳ عدد) =====
+        java.util.List<String> selectedImages = new java.util.ArrayList<>();
+        Label imagesLabel = new Label(existingAd == null ? "هنوز عکسی انتخاب نشده" : "برای تغییر عکس‌ها، عکس جدید انتخاب کنید");
+        imagesLabel.setStyle("-fx-font-size: 0.95em; -fx-text-fill: #7f8c8d;");
+        Button pickImagesBtn = new Button("📷 انتخاب عکس‌ها");
+        pickImagesBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 1em; -fx-background-radius: 8; -fx-padding: 0.5em 1.5em;");
+        pickImagesBtn.setOnAction(ev -> {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("انتخاب عکس آگهی");
+            fileChooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("عکس", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp"));
+            java.util.List<java.io.File> files = fileChooser.showOpenMultipleDialog(dialog);
+            if (files == null || files.isEmpty()) return;
+            selectedImages.clear();
+            int skipped = 0;
+            for (java.io.File f : files) {
+                if (selectedImages.size() >= 3) break;
+                try {
+                    // خواندن، کوچک‌سازی و فشرده‌سازی عکس (خروجی JPEG با حداکثر ضلع ۱۰۰۰ پیکسل)
+                    // به همین دلیل دیگر محدودیت حجم فایل ورودی وجود ندارد
+                    java.awt.image.BufferedImage src = javax.imageio.ImageIO.read(f);
+                    if (src == null) { skipped++; continue; }
+                    double ratio = Math.min(1.0, 1000.0 / Math.max(src.getWidth(), src.getHeight()));
+                    int nw = Math.max(1, (int) Math.round(src.getWidth() * ratio));
+                    int nh = Math.max(1, (int) Math.round(src.getHeight() * ratio));
+                    java.awt.image.BufferedImage scaled = new java.awt.image.BufferedImage(nw, nh, java.awt.image.BufferedImage.TYPE_INT_RGB);
+                    java.awt.Graphics2D g = scaled.createGraphics();
+                    g.setColor(java.awt.Color.WHITE);
+                    g.fillRect(0, 0, nw, nh);
+                    g.drawImage(src, 0, 0, nw, nh, null);
+                    g.dispose();
+                    java.io.ByteArrayOutputStream bos = new java.io.ByteArrayOutputStream();
+                    javax.imageio.ImageIO.write(scaled, "jpg", bos);
+                    selectedImages.add(java.util.Base64.getEncoder().encodeToString(bos.toByteArray()));
+                } catch (Exception ex) {
+                    skipped++;
+                }
+            }
+            if (selectedImages.isEmpty()) {
+                imagesLabel.setText("❌ هیچ عکسی خوانده نشد؛ فایل عکس معتبر انتخاب کنید");
+            } else {
+                imagesLabel.setText("✅ " + selectedImages.size() + " عکس انتخاب شد" + (skipped > 0 ? " (" + skipped + " فایل نامعتبر رد شد)" : ""));
+            }
+        });
+        HBox imagesPickBox = new HBox(10, pickImagesBtn, imagesLabel);
+        imagesPickBox.setAlignment(Pos.CENTER_LEFT);
+
         // ===== لیبل خطا =====
         Label errorLabel = new Label();
         errorLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 1em;");
@@ -299,16 +378,22 @@ public class MyAdsController {
                 new Label("قیمت:"), priceField,
                 new Label("دسته‌بندی:"), categoryCombo,
                 new Label("شهر:"), cityCombo,
+                new Label("عکس‌ها:"), imagesPickBox,
                 errorLabel, buttonBox
         );
 
-        // ===== اندازه‌ی Scene بر اساس صفحه =====
-
-        Scene scene = new Scene(root);
-        ControllersUtils.setPageFullScreen(dialog);
+        // ===== اندازه‌ی پنجره: جمع‌وجور، وسط صفحه، با اسکرول (نه تمام‌صفحه) =====
+        javafx.geometry.Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        javafx.scene.control.ScrollPane dialogScroll = new javafx.scene.control.ScrollPane(root);
+        dialogScroll.setFitToWidth(true);
+        dialogScroll.setHbarPolicy(javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER);
+        dialogScroll.setStyle("-fx-background: #ffffff; -fx-background-color: #ffffff;");
+        double dialogWidth = Math.min(640, screenBounds.getWidth() * 0.9);
+        double dialogHeight = Math.min(740, screenBounds.getHeight() * 0.9);
+        Scene scene = new Scene(dialogScroll, dialogWidth, dialogHeight);
         ControllersUtils.setRootFontSize(root);
         dialog.setScene(scene);
-        dialog.setResizable(false);
+        dialog.centerOnScreen();
 
         cancelBtn.setOnAction(e -> dialog.close());
 
@@ -326,7 +411,7 @@ public class MyAdsController {
                 return;
             }
             if (description.isEmpty()) {
-                showErrorLabel(errorLabel, "❌ توضیحات نمی‌تواند خالی باشد");
+                showErrorLabel(errorLabel, "❌ توضیحات نمی‌تو��ند خالی باشد");
                 return;
             }
             if (priceText.isEmpty()) {
@@ -362,7 +447,8 @@ public class MyAdsController {
                                 title, description, price,
                                 SessionManager.getCurrentUser().getUsername(),
                                 selectedCity.getName(),
-                                selectedCategory.getName()
+                                selectedCategory.getName(),
+                                selectedImages.isEmpty() ? null : selectedImages
                         );
                     } else {
                         AdService.sendEditAdRequest(
@@ -371,7 +457,8 @@ public class MyAdsController {
                                 SessionManager.getToken(),
                                 title, description, price,
                                 selectedCity.getName(),
-                                selectedCategory.getName()
+                                selectedCategory.getName(),
+                                selectedImages.isEmpty() ? null : selectedImages
                         );
                     }
 
