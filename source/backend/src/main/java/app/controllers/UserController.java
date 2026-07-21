@@ -26,8 +26,8 @@ public class UserController {
             AdvertisementService.addAdvertisement(addAdRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
-            System.err.println(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @PostMapping("/edit-ad")
@@ -36,14 +36,24 @@ public class UserController {
             AdvertisementService.editAdvertisement(editAdRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
-            System.err.println(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @PostMapping("/remove-ad")
     public  ResponseEntity<String> removeAdd(@RequestBody RemoveAdRequset removeAdRequset){
         try{
             AdvertisementService.removeAdvertisement(removeAdRequset);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/mark-sold")
+    public ResponseEntity<String> markSold(@RequestBody RemoveAdRequset removeAdRequset){
+        try{
+            AdvertisementService.markAsSold(removeAdRequset);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
             System.err.println(e.getMessage());

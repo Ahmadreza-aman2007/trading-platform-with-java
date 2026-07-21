@@ -7,7 +7,16 @@ public class ChangeAdStatusRequest {
     private String status;
     private String username;
     private String token;
+    private String note;
     public ChangeAdStatusRequest(){}
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 
     public void setAdId(int adId) {
         this.adId = adId;

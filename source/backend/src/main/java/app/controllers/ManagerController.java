@@ -65,8 +65,8 @@ public class ManagerController {
     @PostMapping("/add-product-category")
     public  ResponseEntity<String> addProductCategory(@RequestBody AddCategoryRequest addCategoryRequest){
         try{
-                ManagerService.addProductCategory(addCategoryRequest);
-                return new ResponseEntity<>(HttpStatus.OK);
+            ManagerService.addProductCategory(addCategoryRequest);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             if (e.getMessage().equals("token expired")||e.getMessage().equals("this username does not match")||e.getMessage().equals("token not found")) {
