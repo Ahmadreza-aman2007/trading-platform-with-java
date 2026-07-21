@@ -23,7 +23,7 @@ public class TokenUtil {
     private String secret;
     @Value("${token.expiration:86400000}")
     private Long expiration;
-    
+
     public String generateToken(String username, String role) {
         if(expiration==null){
             expiration= 86400000L;
@@ -56,6 +56,9 @@ public class TokenUtil {
 
         if(t==null){
             throw new Exception("token not found");
+        }
+        if(u==null){
+            throw new Exception("user notFound");
         }
         if (!t.getUsername().equals(username)) {
             throw new Exception("this username does not match");

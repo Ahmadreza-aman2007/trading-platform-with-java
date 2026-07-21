@@ -26,9 +26,12 @@ public class ChatService {
     public static ConversationResponse startOrGetConversation(Long adId, Long buyerId, Long sellerId, String username, String token) throws Exception {
         TokenUtil.isTokenValid(username, token, UserRole.COMMON_USER);
 
-        Conversation existing = ConversationDAO.find(sellerId, adId, buyerId);
-        if (existing != null) {
-            return convertToResponse(existing);
+        if (buyerId != null && buyerId.equals(sellerId)) {
+            throw new Exception("امکان گفتگو روی آگهی خودتان وجود ندارد");
+        }
+
+        if (ConversationDAO.isConversationExist(sellerId, adId, buyerId)) {
+            return convertToResponse(ConversationDAO.find(sellerId, adId, buyerId));
         }
 
         Conversation newConv = new Conversation(adId, buyerId, sellerId, false);

@@ -8,6 +8,7 @@ import app.entities.Favorite;
 import app.entities.users.enums.UserRole;
 import app.repository.DAOs.AdvertisementDAO;
 import app.repository.DAOs.FavoriteDAO;
+import app.repository.DAOs.UserDAO;
 import app.utils.TokenUtil;
 
 import java.util.ArrayList;
@@ -24,13 +25,18 @@ public class FavoriteService {
         ArrayList<Advertisement> res = new ArrayList<>();
         ArrayList<Favorite> favorites=FavoriteDAO.getFavorites(getFavoritesRequest.getUserId());
         for(Favorite favorite:favorites){
-            Advertisement ad=AdvertisementDAO.getAdvertisementById(favorite.getId());
-            res.add(ad);
+            try {
+                Advertisement ad=AdvertisementDAO.getAdvertisementById(favorite.getAdId());
+                res.add(ad);
+            } catch (Exception ignored) {
+                // آگهی حذف شده است؛ از لیست علاقه‌مندی صرف نظر می‌شود
+            }
         }
         return res;
     }
     public static void removeFavorite(RemoveFavoriteRequest removeFavoriteRequest) throws Exception {
         TokenUtil.isTokenValid(removeFavoriteRequest.getUsername(),removeFavoriteRequest.getToken(), UserRole.COMMON_USER);
-        FavoriteDAO.deleteByAdId(removeFavoriteRequest.getAdId());
+        Long userId = UserDAO.findIdByUsername(removeFavoriteRequest.getUsername());
+        FavoriteDAO.deleteByUserAndAd(userId, removeFavoriteRequest.getAdId());
     }
 }

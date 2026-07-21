@@ -17,6 +17,10 @@ public class RatingService {
     public static void addRating(AddRatingRequest request) throws Exception {
         TokenUtil.isTokenValid(request.getUsername(), request.getToken(), UserRole.COMMON_USER);
 
+        if (request.getRaterId() != null && request.getRaterId().equals(request.getSellerId())) {
+            throw new Exception("نمی‌توانید به خودتان امتیاز دهید");
+        }
+
         if (RatingDAO.isRatingExist(request.getRaterId(), request.getAdId())) {
             throw new Exception("شما قبلاً به این آگهی امتیاز داده‌اید");
         }
