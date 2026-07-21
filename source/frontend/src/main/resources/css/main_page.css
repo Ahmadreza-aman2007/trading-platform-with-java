@@ -3,12 +3,32 @@
     -fx-padding: 10 20;
     -fx-pref-height: 60;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+    -fx-border-color: transparent transparent #27ae60 transparent;
+    -fx-border-width: 0 0 2 0;
 }
 .searchField{
-    -fx-pref-width:10em;
+    -fx-pref-width:14em;
 }
 .advanced-search-bar{
     -fx-pref-width:30em;
     -fx-background-color:#fff;
     -fx-padding:2em 4em;
+    -fx-background-radius: 1em;
+    -fx-border-color: #e8efe9;
+    -fx-border-radius: 1em;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 24, 0, 0, 8);
+}
+.ad-card{
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
+    -fx-border-color: #ecf0f1;
+    -fx-border-radius: 12;
+    -fx-cursor: hand;
+}
+.ad-card:hover{
+    -fx-effect: dropshadow(gaussian, rgba(39,174,96,0.30), 14, 0, 0, 6);
+    -fx-border-color: #27ae60;
+    -fx-translate-y: -2;
 }

@@ -1,11 +1,28 @@
 .root{
     -fx-pref-width: 5em;
 }
-
 .login-div{
     -fx-background-color: #fff;
     -fx-pref-width: 40em;
-    -fx-background-radius: 0.75em;
-    -fx-padding:2em;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4);
+    -fx-background-radius: 1em;
+    -fx-padding: 2.5em 3em;
+    -fx-border-color: #27ae60 #e8efe9 #e8efe9 #e8efe9;
+    -fx-border-width: 3 1 1 1;
+    -fx-border-radius: 1em;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 18, 0, 0, 6);
+}
+.brand-title-big{
+    -fx-font-size: 2em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+    -fx-effect: dropshadow(gaussian, rgba(39,174,96,0.30), 8, 0, 0, 2);
+}
+.brand-subtitle{
+    -fx-font-size: 0.95em;
+    -fx-text-fill: #7f8c8d;
+}
+.login-label{
+    -fx-font-size: 1.3em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
 }

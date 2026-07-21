@@ -9,7 +9,7 @@
            nodeOrientation="RIGHT_TO_LEFT">
    <VBox fx:id="mainPage">
       <HBox styleClass="header" alignment="CENTER_RIGHT">
-         <Label text="سمساری احمد و پارسا" styleClass="text-primary" />
+         <Label text="سمساری احمد و پارسا" styleClass="brand-title" />
          <Region HBox.hgrow="ALWAYS"/>
          <HBox>
             <TextField promptText="جستوجو...." fx:id="searchField" styleClass="field searchField" onAction="#handleQuickSearch" />
@@ -23,10 +23,10 @@
          </HBox>
          <Region HBox.hgrow="ALWAYS"/>
          <HBox spacing="40">
-            <Button text="جستجوی پیشرفته" styleClass="primary-button" onAction="#openSearchBar"/>
-            <Button onAction="#goToLoginPage" text="ورود/ثبت نام"
+            <Button text="🔎 جستجوی پیشرفته" styleClass="primary-button" onAction="#openSearchBar"/>
+            <Button onAction="#goToLoginPage" text="👤 ورود/ثبت نام"
                     styleClass="primary-button"  fx:id="loginButton"/>
-            <Button text="پنل کاربری" visible="false" fx:id="userPanel" styleClass="primary-button" onAction="#goToPanelPage"/>
+            <Button text="⚙ پنل کاربری" visible="false" fx:id="userPanel" styleClass="primary-button" onAction="#goToPanelPage"/>
          </HBox>
       </HBox>
       <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;">
@@ -50,30 +50,30 @@
          <Region HBox.hgrow="ALWAYS"/>
          <ComboBox promptText="شهر" fx:id="cityCombo"/>
       </HBox>
-      <VBox>
-         <Label text="قیمت"/>
-         <HBox>
-            <Label text="از"/>
-            <Slider min="0" max="1000000000" value="0" showTickMarks="true" showTickLabels="true" fx:id="minPriceSlider"/>
-            <Label text="0" fx:id="minPriceLabel"/>
-            <TextField fx:id="minPriceField" prefWidth="120" text="۰"
-                       style="-fx-alignment: CENTER; -fx-padding: 4 8;"/>
-         </HBox>
-         <HBox>
+         <VBox>
+            <Label text="قیمت"/>
+            <HBox>
+               <Label text="از"/>
+               <Slider min="0" max="1000000000" value="0" showTickMarks="true" showTickLabels="true" fx:id="minPriceSlider"/>
+               <Label text="0" fx:id="minPriceLabel"/>
+               <TextField fx:id="minPriceField" prefWidth="120" text="۰"
+                          style="-fx-alignment: CENTER; -fx-padding: 4 8;"/>
+            </HBox>
+            <HBox>
             <Label text="تا" />
             <Slider min="0" max="1000000000" value="1000000000" showTickLabels="true" showTickMarks="true" fx:id="maxPriceSlider"/>
             <Label text="1,000,000,000" fx:id="maxPriceLabel"/>
-            <TextField fx:id="maxPriceField" prefWidth="120" text="۱,۰۰۰,۰۰۰,۰۰۰"
-                       style="-fx-alignment: CENTER; -fx-padding: 4 8;"/>
-         </HBox>
-         <HBox>
-            <Button text="بستن" styleClass="primary-button" onAction="#closeSearchBar"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Button text="جستجو" styleClass="primary-button" onAction="#handleAdvancedSearch"/>
-         </HBox>
-         <Label fx:id="priceErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12px;"
-                visible="false" managed="false"/>
-      </VBox>
+               <TextField fx:id="maxPriceField" prefWidth="120" text="۱,۰۰۰,۰۰۰,۰۰۰"
+                          style="-fx-alignment: CENTER; -fx-padding: 4 8;"/>
+            </HBox>
+            <HBox>
+               <Button text="بستن" styleClass="primary-button" onAction="#closeSearchBar"/>
+               <Region HBox.hgrow="ALWAYS"/>
+               <Button text="جستجو" styleClass="primary-button" onAction="#handleAdvancedSearch"/>
+            </HBox>
+            <Label fx:id="priceErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12px;"
+                   visible="false" managed="false"/>
+         </VBox>
    </VBox>
 
 

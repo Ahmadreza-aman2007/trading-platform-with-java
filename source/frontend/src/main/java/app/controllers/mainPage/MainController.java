@@ -86,6 +86,7 @@ public class MainController {
     // ===== بخش قیمت (اسلایدر + TextField + اعتبارسنجی) =====
     // ============================================================
 
+    // هماهنگ نگه داشتن اسلایدر و فیلد قیمت
     private void setupPriceControls() {
         // ۱. اسلایدر → TextField
         minPriceSlider.valueProperty().addListener((obs, old, val) -> {
@@ -236,13 +237,8 @@ public class MainController {
 
     private VBox createAdCard(Advertisement ad) {
         VBox card = new VBox(10);
-        card.setStyle("""
-            -fx-background-color: white;-fx-background-radius: 12;
-            -fx-padding: 15;
-            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
-            -fx-border-color: #ecf0f1;
-            -fx-border-radius: 12;
-        """);
+        // استایل کارت از CSS خوانده می‌شود تا افکت hover هم داشته باشد
+        card.getStyleClass().add("ad-card");
         card.setPrefWidth(600);
         card.setMaxWidth(Double.MAX_VALUE);
 
@@ -288,7 +284,7 @@ public class MainController {
         sellerLabel.setStyle("-fx-font-size: 0.95em; -fx-text-fill: #7f8c8d;");
 
         Button detailBtn = new Button("📋 مشاهده جزئیات");
-        detailBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 0.5em 1.5em;");
+        detailBtn.getStyleClass().add("primary-button");
         detailBtn.setOnAction(e -> openAdDetail(ad));
 
         // چیدمان فشرده: متن سمت راست، عکس گوشه سمت چپ — بدون فضای خالی اضافه
@@ -457,6 +453,7 @@ public class MainController {
     private void showError(String msg) {
         // نمایش خطا در یک Alert ساده یا هر جای دیگر
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
         alert.setTitle("خطا");
         alert.setHeaderText(null);
         alert.setContentText(msg);

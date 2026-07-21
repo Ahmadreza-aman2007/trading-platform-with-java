@@ -8,7 +8,7 @@
             nodeOrientation="RIGHT_TO_LEFT">
     <top>
         <HBox alignment="CENTER_RIGHT" styleClass="header">
-            <Label text="به پنل کاربری خوش آمدید" />
+            <Label text="به پنل کاربری خوش آمدید" styleClass="brand-title" />
             <Region HBox.hgrow="ALWAYS" />
             <HBox spacing="80">
                 <Button text="بازگشت" styleClass="primary-button" onAction="#goToMainPage" />
@@ -22,11 +22,12 @@
         <StackPane styleClass="list">
 
             <VBox styleClass="selection-box" fx:id="commonUserPanelList">
+                <Label text="منوی کاربری" styleClass="menu-title" />
                 <HBox styleClass="list-option">
                     <Hyperlink text="اطلاعات کاربری" onAction="#goToDashboard"/>
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="آگهی های من " onAction="#goToMyAds" />
+                    <Hyperlink text="آگهی های من" onAction="#goToMyAds" />
                 </HBox>
                 <HBox styleClass="list-option">
                     <Hyperlink text="علاقه مندی های من" onAction="#goToFavorites" />
@@ -39,23 +40,24 @@
                 </HBox>
             </VBox>
             <VBox styleClass="selection-box" fx:id="managerPanelList" visible="false">
+                <Label text="منوی مدیریت" styleClass="menu-title" />
                 <HBox styleClass="list-option">
                     <Hyperlink text="اطلاعات کاربری" onAction="#goToDashboard" />
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="لیست کاربران"  onAction="#goToUsersList"/>
+                    <Hyperlink text="لیست کاربران" onAction="#goToUsersList"/>
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="دسته بندی ها"  onAction="#goToCategories"/>
+                    <Hyperlink text="دسته بندی ها" onAction="#goToCategories"/>
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="شهر ها"  onAction="#goToCities"/>
+                    <Hyperlink text="شهر ها" onAction="#goToCities"/>
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="آگهی های در انتظار بررسی"  onAction="#goToPendingAdvertisements"/>
+                    <Hyperlink text="آگهی های در انتظار بررسی" onAction="#goToPendingAdvertisements"/>
                 </HBox>
                 <HBox styleClass="list-option">
-                    <Hyperlink text="آگهی های تایید شده"  onAction="#goToApprovedAdvertisements"/>
+                    <Hyperlink text="آگهی های تایید شده" onAction="#goToApprovedAdvertisements"/>
                 </HBox>
                 <HBox styleClass="list-option">
                     <Region VBox.vgrow="ALWAYS" />
