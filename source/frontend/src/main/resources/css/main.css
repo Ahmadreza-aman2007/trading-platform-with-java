@@ -4,13 +4,15 @@
 .root{
     -fx-font-size:0.8em;
     -fx-text-alignment:right;
-    -fx-background-color:#0f0f0f;
+    -fx-background-color:#f4f6f8;
     -fx-font-family: "Vazir";
 }
 .primary-button{
     -fx-background-color: #4a90e2;
     -fx-text-fill: #ffffff;
-    -fx-background-radius: 0.2em;
+    -fx-background-radius: 0.5em;
+    -fx-padding: 0.45em 1.2em;
+    -fx-cursor: hand;
 }
 .title-label{
     -fx-font-size:2em;
@@ -32,7 +34,19 @@
     -fx-background-color: #357abd;
 }
 .field{
-    -fx-background-radius: 0.2em;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0.5em;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 0.5em;
+    -fx-padding: 0.35em 0.6em;
+}
+.hyperlink{
+    -fx-text-fill: #4a90e2;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+.hyperlink:hover{
+    -fx-underline: true;
 }
 .dashboard-info{
     -fx-background-color: #fff;

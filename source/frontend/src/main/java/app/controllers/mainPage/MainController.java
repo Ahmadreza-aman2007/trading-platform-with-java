@@ -40,6 +40,7 @@ public class MainController {
     @FXML private Label emptyLabel;
 
     // ===== فیلدهای جستجوی پیشرفته =====
+    @FXML private TextField searchField;
     @FXML private TextField keywordField;
     @FXML private ComboBox<String> categoryCombo;
     @FXML private ComboBox<String> cityCombo;
@@ -199,7 +200,7 @@ public class MainController {
 
                     // ===== شهرها =====
                     cityCombo.getItems().clear();
-                    cityCombo.getItems().add("همه شهرها");
+                    cityCombo.getItems().add("همه ��هرها");
                     for (City c : cities) {
                         cityCombo.getItems().add(c.getName());
                     }
@@ -243,8 +244,31 @@ public class MainController {
             -fx-border-radius: 12;
         """);
         card.setPrefWidth(600);
-        card.setPrefHeight(450);
         card.setMaxWidth(Double.MAX_VALUE);
+
+        // عکس بندانگشتی آگهی (اولین عکس) — در پس‌زمینه بارگذاری می‌شود
+        javafx.scene.image.ImageView thumb = new javafx.scene.image.ImageView();
+        thumb.setFitWidth(150);
+        thumb.setFitHeight(110);
+        thumb.setPreserveRatio(true);
+        thumb.setManaged(false);
+        thumb.setVisible(false);
+        new Thread(() -> {
+            try {
+                java.util.ArrayList<String> imgs = app.services.AdService.getAdImages(ad.getId());
+                if (imgs != null && !imgs.isEmpty()) {
+                    byte[] bytes = java.util.Base64.getDecoder().decode(imgs.get(0));
+                    javafx.scene.image.Image img = new javafx.scene.image.Image(new java.io.ByteArrayInputStream(bytes));
+                    javafx.application.Platform.runLater(() -> {
+                        thumb.setImage(img);
+                        thumb.setManaged(true);
+                        thumb.setVisible(true);
+                    });
+                }
+            } catch (Exception ignored) {
+                // اگر عکس نداشت یا خطا داد، کارت بدون عکس نمایش داده می‌شود
+            }
+        }).start();
 
         Label titleLabel = new Label(ad.getTitle());
         titleLabel.setStyle("-fx-font-size: 1.2em; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
@@ -263,17 +287,19 @@ public class MainController {
         Label sellerLabel = new Label("👤 " + ad.getSellerUsername());
         sellerLabel.setStyle("-fx-font-size: 0.95em; -fx-text-fill: #7f8c8d;");
 
-        Region spacer = new Region();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
-
         Button detailBtn = new Button("📋 مشاهده جزئیات");
         detailBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 0.5em 1.5em;");
         detailBtn.setOnAction(e -> openAdDetail(ad));
 
-        card.getChildren().addAll(
-                titleLabel, priceLabel, cityLabel, categoryLabel, sellerLabel,
-                spacer, detailBtn
-        );
+        // چیدمان فشرده: متن سمت راست، عکس گوشه سمت چپ — بدون فضای خالی اضافه
+        VBox info = new VBox(6);
+        info.getChildren().addAll(titleLabel, priceLabel, cityLabel, categoryLabel, sellerLabel, detailBtn);
+        javafx.scene.layout.HBox row = new javafx.scene.layout.HBox(15);
+        row.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+        row.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        javafx.scene.layout.HBox.setHgrow(info, Priority.ALWAYS);
+        row.getChildren().addAll(info, thumb);
+        card.getChildren().add(row);
 
         return card;
     }
@@ -322,6 +348,32 @@ public class MainController {
     }
 
     // ============================================================
+    // ===== جستجوی سریع با کلیدواژه (نوار بالا) =====
+    // ============================================================
+
+    @FXML
+    private void handleQuickSearch() {
+        String keyword = searchField.getText() == null ? "" : searchField.getText().trim();
+        new Thread(() -> {
+            try {
+                List<Advertisement> results = AdService.sendAdvancedSearchRequest(
+                        keyword, "همه دسته‌بندی‌ها", "همه شهرها", 0L, 1_000_000_000L
+                );
+                Platform.runLater(() -> {
+                    approvedAdsList.clear();
+                    approvedAdsList.addAll(results);
+                    renderAds();
+                    if (results.isEmpty()) {
+                        showEmptyMessage("🔍 هیچ آگهی با این شرایط یافت نشد.");
+                    }
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> showEmptyMessage("❌ خطا در جستجو: " + e.getMessage()));
+            }
+        }).start();
+    }
+
+    // ============================================================
     // ===== ناوبری =====
     // ============================================================
 
@@ -330,7 +382,8 @@ public class MainController {
         try {
             PageChanger.changePage(Pages.LOGIN_PAGE, root);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            showError("خطا در باز کردن صفحه ورود: " + e.getMessage());
         }
     }
 
@@ -338,8 +391,9 @@ public class MainController {
     private void goToPanelPage() {
         try {
             PageChanger.changePage(Pages.PANEL_PAGE, root);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("خطا در باز کردن پنل کاربری: " + e.getMessage());
         }
     }
 
@@ -426,8 +480,8 @@ public class MainController {
             userPanel.setManaged(true);
 
             if (SessionManager.getCurrentUser().getRole().equals("MANAGER")) {
-                // اگر مدیر بود، به صفحه‌ی مدیریت برود
-                goToLoginPage();
+                // اگر مدیر بود، به پنل مدیریت برود
+                Platform.runLater(this::goToPanelPage);
             }
         } else {
             loginButton.setVisible(true);

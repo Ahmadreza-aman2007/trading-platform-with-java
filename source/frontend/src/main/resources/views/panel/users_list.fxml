@@ -30,7 +30,7 @@
         <Label text="شماره تلفن     " />
         <Label text="شماره تلفن" fx:id="phoneNumberLabel"/>
     </HBox>
-            <CheckBox text="کاربر بلاک شود؟" fx:id="blockCheckBox"/>
+        <CheckBox text="کاربر بلاک شود؟" fx:id="blockCheckBox"/>
         <Label fx:id="errorMessage" styleClass="errorText" text=" "/>
         <HBox>
             <Button text="بازگشت" onAction="#backToUsersList"/>

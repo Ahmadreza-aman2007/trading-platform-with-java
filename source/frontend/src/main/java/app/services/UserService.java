@@ -16,18 +16,18 @@ public class UserService {
     private static ObjectMapper mapper = new ObjectMapper();
 
     private static void sendEditRequest(EditUserRequest editUserRequest) throws Exception {
-            String json = mapper.writeValueAsString(editUserRequest);
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:8080/api/manager/editUser"))
-                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
-                    .timeout(Duration.ofSeconds(10)).build();
-                    HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-                    int status = response.statusCode();
-                    if (status == 200) {
-                        System.out.println("success");
-                    } else {
-                        throw new Exception("error in edit user from server");
-                    }
+        String json = mapper.writeValueAsString(editUserRequest);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8080/api/manager/editUser"))
+                .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
+                .timeout(Duration.ofSeconds(10)).build();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int status = response.statusCode();
+        if (status == 200) {
+            System.out.println("success");
+        } else {
+            throw new Exception("error in edit user from server");
+        }
     }
     public static Long getUserIdByUsername(String username) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()

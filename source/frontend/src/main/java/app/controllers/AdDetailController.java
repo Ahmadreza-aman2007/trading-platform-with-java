@@ -38,6 +38,8 @@ public class AdDetailController {
     @FXML private HBox actionButtons;
     @FXML private VBox commentsContainer;
     @FXML private VBox commentsSection;
+    @FXML private VBox imagesSection;
+    @FXML private HBox imagesContainer;
 
     private Advertisement currentAd;
     private boolean isFavorite = false;
@@ -54,6 +56,74 @@ public class AdDetailController {
         checkFavoriteStatus();
         loadComments();
         loadRatings();
+        loadImages();
+    }
+
+    // بارگذاری عکس‌های آگهی از سرور و نمایش در صفحه جزئیات
+    private void loadImages() {
+        if (currentAd == null || imagesContainer == null) return;
+        new Thread(() -> {
+            try {
+                java.util.ArrayList<String> images = app.services.AdService.getAdImages(currentAd.getId());
+                Platform.runLater(() -> {
+                    imagesContainer.getChildren().clear();
+                    if (images == null || images.isEmpty()) {
+                        if (imagesSection != null) {
+                            imagesSection.setVisible(false);
+                            imagesSection.setManaged(false);
+                        }
+                        return;
+                    }
+                    if (imagesSection != null) {
+                        imagesSection.setVisible(true);
+                        imagesSection.setManaged(true);
+                    }
+                    for (String base64 : images) {
+                        try {
+                            byte[] bytes = java.util.Base64.getDecoder().decode(base64);
+                            javafx.scene.image.Image image = new javafx.scene.image.Image(new java.io.ByteArrayInputStream(bytes));
+                            javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
+                            imageView.setFitWidth(240);
+                            imageView.setFitHeight(180);
+                            imageView.setPreserveRatio(true);
+                            imageView.setStyle("-fx-cursor: hand;");
+                            imageView.setOnMouseClicked(ev -> showFullImage(image));
+                            imagesContainer.getChildren().add(imageView);
+                        } catch (Exception ignored) {
+                            // عکس خراب نادیده گرفته می‌شود
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    if (imagesSection != null) {
+                        imagesSection.setVisible(false);
+                        imagesSection.setManaged(false);
+                    }
+                });
+            }
+        }).start();
+    }
+
+    // نمایش عکس در اندازه بزرگ در پنجره جدا (بستن با کلیک یا Esc)
+    private void showFullImage(javafx.scene.image.Image image) {
+        javafx.stage.Stage stage = new javafx.stage.Stage();
+        javafx.scene.image.ImageView big = new javafx.scene.image.ImageView(image);
+        big.setPreserveRatio(true);
+        javafx.geometry.Rectangle2D bounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+        big.setFitWidth(Math.min(image.getWidth() * 2, bounds.getWidth() * 0.85));
+        big.setFitHeight(Math.min(image.getHeight() * 2, bounds.getHeight() * 0.85));
+        javafx.scene.layout.StackPane root = new javafx.scene.layout.StackPane(big);
+        root.setStyle("-fx-background-color: black; -fx-padding: 10; -fx-cursor: hand;");
+        javafx.scene.Scene scene = new javafx.scene.Scene(root);
+        root.setOnMouseClicked(ev -> stage.close());
+        scene.setOnKeyPressed(ev -> {
+            if (ev.getCode() == javafx.scene.input.KeyCode.ESCAPE) stage.close();
+        });
+        stage.setTitle("مشاهده عکس");
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 
     private void displayAdDetails() {
@@ -217,8 +287,24 @@ public class AdDetailController {
             showTemporaryMessage("❌ لطفاً ابتدا وارد شوید");
             return;
         }
-        System.out.println("💬 شروع چت با فروشنده: " + currentAd.getSellerUsername());
-        // بعداً پیاده‌سازی می‌شود
+        if (isOwner) {
+            showTemporaryMessage("❌ امکان گفتگو روی آگهی خودتان وجود ندارد");
+            return;
+        }
+        new Thread(() -> {
+            try {
+                Long sellerId = UserService.getUserIdByUsername(currentAd.getSellerUsername());
+                com.fasterxml.jackson.databind.JsonNode conversation =
+                        app.services.ChatService.startOrGetConversation(currentAd.getId(), sellerId);
+                Long conversationId = conversation.path("id").asLong();
+                Platform.runLater(() -> app.utils.ChatWindow.open(
+                        titleLabel.getScene().getWindow(),
+                        conversationId,
+                        "گفتگو با " + currentAd.getSellerUsername()));
+            } catch (Exception e) {
+                Platform.runLater(() -> showTemporaryMessage("❌ خطا در شروع گفتگو: " + e.getMessage()));
+            }
+        }).start();
     }
 
     @FXML
@@ -282,7 +368,10 @@ public class AdDetailController {
 
     // ===== متد کمکی برای نمایش پیام موقت (مثلاً در startChat) =====
     private void showTemporaryMessage(String msg) {
-        // می‌توانید از یک Alert یا Toast استفاده کنید، فعلاً فقط چاپ در کنسول
-        System.out.println(msg);
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle("پیام");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.show();
     }
 }

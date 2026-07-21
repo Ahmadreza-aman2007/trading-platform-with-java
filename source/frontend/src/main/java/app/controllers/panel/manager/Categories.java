@@ -107,7 +107,7 @@ public class Categories {
             }
         }).start();
     }
-    
+
     private void showError(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
