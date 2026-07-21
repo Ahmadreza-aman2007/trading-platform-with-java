@@ -101,6 +101,11 @@ public class RegisterController {
             phoneNumberError.setText("شماره تلفن باید 11 رقم باشد و با 09 شروع شود");
             return;
         }
+        // رمز باید بیشتر از 6 کاراکتر باشد
+        if (pass.length() <= 6) {
+            passError.setText("رمز عبور باید بیشتر از 6 کاراکتر باشد");
+            return;
+        }
         if (!pass.equals(rPass)) {
             rPassError.setText("همخوانی ندارد");
             return;
@@ -108,6 +113,7 @@ public class RegisterController {
         sendRegisterRequest(fullname, username, phoneNumber, pass);
     }
 
+    // ارسال اطلاعات ثبت نام به سرور
     private void sendRegisterRequest(String fullname, String username, String phoneNumber, String pass) {
         RegisterRequest requestBody = new RegisterRequest(fullname, username, phoneNumber, pass);
         try {
@@ -126,7 +132,7 @@ public class RegisterController {
                             goToLoginPage();
                         } else if (statusCode == 409) {
                             showMessage("");
-                            showError("این نام کاربری یا شماره تلفن قبلا ثبت نام شده است");
+                            showError(responseBody);
                         } else {
                             showError("خطا در ثبت نام" + responseBody);
                         }

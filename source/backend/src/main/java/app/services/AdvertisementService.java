@@ -16,6 +16,7 @@ import app.utils.TokenUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+// منطق اصلی آگهی ها: ثبت، ویرایش، حذف، جستجو و عکس ها
 public class AdvertisementService {
 
 
@@ -63,7 +64,7 @@ public class AdvertisementService {
             app.repository.DAOs.AdImageDAO.saveImages(editAdRequest.getId(), editAdRequest.getImages());
         }
     }
-
+    
     public static String publishAd(String title, String description, long price, String username, String city, String category) {
         if (title == null || title.isBlank()) return "Title cannot be empty!";
         if (price <= 0) return "Price must be greater than zero!";

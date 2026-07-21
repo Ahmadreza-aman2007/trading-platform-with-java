@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+// تب آگهی های نشان شده
 public class FavoritesController {
 
     @FXML private TilePane adsContainer;

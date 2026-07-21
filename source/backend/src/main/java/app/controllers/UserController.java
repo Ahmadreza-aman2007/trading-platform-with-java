@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
+// endpoint های مربوط به کاربر لاگین کرده
 @RestController
 @RequestMapping("/api/user")
 public class UserController {

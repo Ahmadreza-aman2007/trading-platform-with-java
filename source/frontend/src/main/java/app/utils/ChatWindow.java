@@ -99,6 +99,7 @@ public class ChatWindow {
             }
         }).start();
 
+        // ارسال پیام و رفرش لیست بعد از موفقیت
         Runnable send = () -> {
             String text = input.getText() == null ? "" : input.getText().trim();
             if (text.isEmpty()) return;
@@ -131,6 +132,8 @@ public class ChatWindow {
         root.getChildren().addAll(header, scrollPane, errorLabel, inputRow);
 
         Scene scene = new Scene(root, 520, 560);
+        // استایل اصلی برنامه تا فونت با بقیه صفحه ها یکی باشد
+        scene.getStylesheets().add(ChatWindow.class.getResource("/css/main.css").toExternalForm());
         ControllersUtils.setRootFontSize(root);
         stage.setScene(scene);
         loadMessages.run();

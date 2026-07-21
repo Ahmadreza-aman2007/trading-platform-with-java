@@ -328,7 +328,9 @@ public class AdDetailController {
 
                         Stage stage = new Stage();
                         stage.setTitle("⭐ امتیاز دهی");
-                        stage.setScene(new Scene(root, 400, 450));
+                        Scene ratingScene = new Scene(root, 400, 450);
+                        ratingScene.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
+                        stage.setScene(ratingScene);
                         stage.initModality(Modality.WINDOW_MODAL);
                         stage.initOwner(favoriteBtn.getScene().getWindow());
                         stage.showAndWait();

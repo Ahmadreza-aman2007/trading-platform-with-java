@@ -18,6 +18,10 @@ public class AuthService {
     @Autowired
     private static TokenUtil tokenUtil=new TokenUtil();
     public static void registerUser(RegisterRequest request) throws Exception {
+        // چک طول رمز سمت سرور هم انجام می شود که قابل دور زدن نباشد
+        if (request.getPassword() == null || request.getPassword().length() <= 6) {
+            throw new Exception("رمز عبور باید بیشتر از 6 کاراکتر باشد");
+        }
         if (UserDAO.isUsernameExist(request.getUsername())) {
             throw new Exception("این نام کاربری قبلا ثبت شده است");
         }

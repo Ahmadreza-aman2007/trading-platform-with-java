@@ -221,6 +221,7 @@ public class MyAdsController {
     // ===== حذف آگهی =====
     private void deleteAd(Advertisement ad) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.getDialogPane().getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
         confirm.setTitle("حذف آگهی");
         confirm.setHeaderText(null);
         confirm.setContentText("آیا از حذف آگهی «" + ad.getTitle() + "» اطمینان دارید؟");
@@ -313,6 +314,7 @@ public class MyAdsController {
         imagesLabel.setStyle("-fx-font-size: 0.95em; -fx-text-fill: #7f8c8d;");
         Button pickImagesBtn = new Button("📷 انتخاب عکس‌ها");
         pickImagesBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 1em; -fx-background-radius: 8; -fx-padding: 0.5em 1.5em;");
+        // انتخاب عکس از سیستم؛ عکس های بزرگ قبل از ارسال کوچک می شوند
         pickImagesBtn.setOnAction(ev -> {
             javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
             fileChooser.setTitle("انتخاب عکس آگهی");
@@ -391,6 +393,7 @@ public class MyAdsController {
         double dialogWidth = Math.min(640, screenBounds.getWidth() * 0.9);
         double dialogHeight = Math.min(740, screenBounds.getHeight() * 0.9);
         Scene scene = new Scene(dialogScroll, dialogWidth, dialogHeight);
+        scene.getStylesheets().add(getClass().getResource("/css/main.css").toExternalForm());
         ControllersUtils.setRootFontSize(root);
         dialog.setScene(scene);
         dialog.centerOnScreen();

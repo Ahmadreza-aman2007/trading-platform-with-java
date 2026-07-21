@@ -55,6 +55,7 @@ public class LoginController {
         sendLoginRequest(username, pass);
     }
 
+    // لاگین در thread جدا انجام می شود که رابط کاربری هنگ نکند
     private void sendLoginRequest(String username, String password) {
         LoginRequest loginRequest = new LoginRequest(username, password);
         try {

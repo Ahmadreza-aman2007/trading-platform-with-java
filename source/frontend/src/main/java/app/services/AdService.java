@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+// همه درخواست های مربوط به آگهی از اینجا به سرور می رود
 public class AdService {
 
     private static HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
@@ -52,36 +53,36 @@ public class AdService {
     public static ArrayList<Advertisement> sendGetPendingAdRequest() throws Exception{
         ArrayList<Advertisement> advertisements = new ArrayList<>();
         GetPendingAdsRequest getPendingAdsRequest = new GetPendingAdsRequest(SessionManager.getCurrentUser().getUsername(), SessionManager.getToken());
-        String json = objectMapper.writeValueAsString(getPendingAdsRequest);
-        HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/manager/get-pending-ads"))
-                .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
-                .timeout(Duration.ofSeconds(10)).build();
+            String json = objectMapper.writeValueAsString(getPendingAdsRequest);
+            HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/manager/get-pending-ads"))
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
+                    .timeout(Duration.ofSeconds(10)).build();
 
-        HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        ArrayList<Advertisement> ads = objectMapper.readValue(httpResponse.body(), new TypeReference<ArrayList<Advertisement>>() {
-        });
-        if (httpResponse.statusCode() == 200) {
-            for (Advertisement advertisement : ads) {
-                System.out.println(advertisement.getId());
-            }
-            System.out.println("successful");
-            return ads;
-        }
-        throw new Exception("get pending adds failed");
-    }
+                    HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                    ArrayList<Advertisement> ads = objectMapper.readValue(httpResponse.body(), new TypeReference<ArrayList<Advertisement>>() {
+                    });
+                    if (httpResponse.statusCode() == 200) {
+                        for (Advertisement advertisement : ads) {
+                            System.out.println(advertisement.getId());
+                        }
+                        System.out.println("successful");
+                        return ads;
+                    }
+                    throw new Exception("get pending adds failed");
+                }
     public static void sendRemoveAdRequest(Long id) throws Exception{
         RemoveAdRequest removeAdRequest = new RemoveAdRequest(id,SessionManager.getCurrentUser().getUsername(),SessionManager.getToken());
-        String json = objectMapper.writeValueAsString(removeAdRequest);
-        HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/user/remove-ad"))
-                .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
-                .timeout(Duration.ofSeconds(10)).build();
-        HttpResponse<String> httpResponse=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
-        if(httpResponse.statusCode()==200){
-            System.out.println("successful");
-            return;
-        }
-        throw new Exception("remove ad failed");
-    }
+            String json = objectMapper.writeValueAsString(removeAdRequest);
+            HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/user/remove-ad"))
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
+                    .timeout(Duration.ofSeconds(10)).build();
+                    HttpResponse<String> httpResponse=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
+                    if(httpResponse.statusCode()==200){
+                        System.out.println("successful");
+                        return;
+                    }
+                    throw new Exception("remove ad failed");
+                }
     public static void sendMarkSoldRequest(Long id) throws Exception{
         RemoveAdRequest request = new RemoveAdRequest(id,SessionManager.getCurrentUser().getUsername(),SessionManager.getToken());
         String json = objectMapper.writeValueAsString(request);
@@ -103,17 +104,17 @@ public class AdService {
         EditAdRequest request = new EditAdRequest(id,token,title,description,price,username,city,category);
         request.setImages(images);
 
-        String json = objectMapper.writeValueAsString(request);
-        HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/user/edit-ad"))
-                .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
-                .timeout(Duration.ofSeconds(10)).build();
-        HttpResponse<String> httpResponse=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
-        if(httpResponse.statusCode()>=200&&httpResponse.statusCode()<300){
-            System.out.println("successful");
-            return;
-        }
-        throw new Exception("ویرایش آگهی ناموفق (کد " + httpResponse.statusCode() + "): " + httpResponse.body());
-    }
+            String json = objectMapper.writeValueAsString(request);
+            HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/user/edit-ad"))
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
+                    .timeout(Duration.ofSeconds(10)).build();
+                    HttpResponse<String> httpResponse=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
+                    if(httpResponse.statusCode()>=200&&httpResponse.statusCode()<300){
+                        System.out.println("successful");
+                        return;
+                    }
+                    throw new Exception("ویرایش آگهی ناموفق (کد " + httpResponse.statusCode() + "): " + httpResponse.body());
+                }
 
     public static void sendAddAdRequest(String title, String description, long price, String sellerUsername, String city, String category) throws Exception{
         sendAddAdRequest(title, description, price, sellerUsername, city, category, null);
@@ -122,18 +123,18 @@ public class AdService {
     public static void sendAddAdRequest(String title, String description, long price, String sellerUsername, String city, String category, List<String> images) throws Exception{
         AddAdRequest addAdRequest=new AddAdRequest(SessionManager.getToken(),title,description,price,sellerUsername,city,category);
         addAdRequest.setImages(images);
-        String json = objectMapper.writeValueAsString(addAdRequest);
-        HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/user/add-ad"))
-                .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
-                .timeout(Duration.ofSeconds(10)).build();
+            String json = objectMapper.writeValueAsString(addAdRequest);
+            HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("http://localhost:8080/api/user/add-ad"))
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json))
+                    .timeout(Duration.ofSeconds(10)).build();
 
-        HttpResponse<String> httpResponse=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
-        if(httpResponse.statusCode()==200){
-            System.out.println("successful");
-            return;
-        }
-        throw new Exception("ثبت آگهی ناموفق (کد " + httpResponse.statusCode() + "): " + httpResponse.body());
-    }
+                    HttpResponse<String> httpResponse=httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
+                    if(httpResponse.statusCode()==200){
+                        System.out.println("successful");
+                        return;
+                    }
+                    throw new Exception("ثبت آگهی ناموفق (کد " + httpResponse.statusCode() + "): " + httpResponse.body());
+                }
 
     // دریافت عکس‌های آگهی (Base64) از سرور
     public static ArrayList<String> getAdImages(Long adId) throws Exception {

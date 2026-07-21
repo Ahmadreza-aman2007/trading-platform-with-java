@@ -1,6 +1,6 @@
 /* ===== استایل دیالوگ ===== */
 .dialog-root {
-    -fx-font-family: "Segoe UI", "Vazir", sans-serif;
+    -fx-font-family: "Vazir", "Segoe UI", sans-serif;
     -fx-background-color: #f8f9fa;
 }
 

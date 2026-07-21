@@ -14,6 +14,7 @@ import javafx.scene.control.ListView;
 
 import java.util.List;
 
+// تب گفتگوهای کاربر در پنل
 public class ConversationsController {
 
     @FXML private ListView<JsonNode> conversationsList;

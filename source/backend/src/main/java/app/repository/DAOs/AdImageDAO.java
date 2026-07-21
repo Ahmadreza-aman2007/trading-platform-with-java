@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+// ذخیره و خواندن عکس های آگهی به صورت Base64 در جدول ad_images
 public class AdImageDAO {
 
     // اطمینان از وجود جدول (برای دیتابیس‌های قدیمی که قبل از این قابلیت ساخته شده‌اند)
