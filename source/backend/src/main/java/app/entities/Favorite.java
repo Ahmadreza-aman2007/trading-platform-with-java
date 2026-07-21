@@ -15,13 +15,13 @@ public class Favorite {
 
     @Column(name = "ad_id",nullable = false)
     private Long adId;
-// constructors
+    // constructors
     public Favorite(Long userId, Long adId) {
         this.userId = userId;
         this.adId = adId;
     }
     public Favorite() {}
-// getter methods
+    // getter methods
     public Long getId() {
         return id;
     }
