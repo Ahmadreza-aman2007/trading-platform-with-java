@@ -29,7 +29,7 @@
             <Button text="⚙ پنل کاربری" visible="false" fx:id="userPanel" styleClass="primary-button" onAction="#goToPanelPage"/>
          </HBox>
       </HBox>
-      <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;">
+      <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;">
          <TilePane fx:id="adsContainer"
                    prefColumns="3"
                    hgap="20"
@@ -54,16 +54,16 @@
             <Label text="قیمت"/>
             <HBox>
                <Label text="از"/>
-               <Slider min="0" max="1000000000" value="0" showTickMarks="true" showTickLabels="true" fx:id="minPriceSlider"/>
+               <Slider min="0" max="100000000000" value="0" showTickMarks="true" showTickLabels="true" fx:id="minPriceSlider"/>
                <Label text="0" fx:id="minPriceLabel"/>
                <TextField fx:id="minPriceField" prefWidth="120" text="۰"
                           style="-fx-alignment: CENTER; -fx-padding: 4 8;"/>
             </HBox>
             <HBox>
             <Label text="تا" />
-            <Slider min="0" max="1000000000" value="1000000000" showTickLabels="true" showTickMarks="true" fx:id="maxPriceSlider"/>
+            <Slider min="0" max="100000000000" value="100000000000" showTickLabels="true" showTickMarks="true" fx:id="maxPriceSlider"/>
             <Label text="1,000,000,000" fx:id="maxPriceLabel"/>
-               <TextField fx:id="maxPriceField" prefWidth="120" text="۱,۰۰۰,۰۰۰,۰۰۰"
+               <TextField fx:id="maxPriceField" prefWidth="120" text="۱۰۰,۰۰۰,۰۰۰,۰۰۰"
                           style="-fx-alignment: CENTER; -fx-padding: 4 8;"/>
             </HBox>
             <HBox>
