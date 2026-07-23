@@ -201,7 +201,7 @@ public class MainController {
 
                     // ===== شهرها =====
                     cityCombo.getItems().clear();
-                    cityCombo.getItems().add("همه ��هرها");
+                    cityCombo.getItems().add("همه شهرها");
                     for (City c : cities) {
                         cityCombo.getItems().add(c.getName());
                     }

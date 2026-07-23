@@ -21,7 +21,7 @@
     <Separator style="-fx-background-color: #ddd; -fx-pref-height: 1;"/>
 
     <!-- ===== محتوای اصلی (کارت‌ها) ===== -->
-    <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;">
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;">
         <TilePane fx:id="adsContainer"  hgap="20" vgap="20"
                   style="-fx-padding: 10; -fx-background-color: transparent;"/>
     </ScrollPane>

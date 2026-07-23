@@ -9,7 +9,7 @@
         <Region HBox.hgrow="ALWAYS"/>
         <Button text="🔄 به‌روزرسانی" styleClass="primary-button" onAction="#refreshList"/>
     </HBox>
-    <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background: transparent; -fx-background-color: transparent;">
         <TilePane fx:id="adsContainer" hgap="15" vgap="15" prefColumns="3" style="-fx-padding: 10;"/>
     </ScrollPane>
     <Label fx:id="emptyLabel" visible="false" managed="false" style="-fx-text-fill: #7f8c8d;"/>

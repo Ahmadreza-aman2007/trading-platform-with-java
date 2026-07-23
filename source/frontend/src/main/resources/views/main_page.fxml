@@ -29,7 +29,7 @@
             <Button text="⚙ پنل کاربری" visible="false" fx:id="userPanel" styleClass="primary-button" onAction="#goToPanelPage"/>
          </HBox>
       </HBox>
-      <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;">
+      <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;">
          <TilePane fx:id="adsContainer"
                    prefColumns="3"
                    hgap="20"
